@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <beans xmlns="http://www.springframework.org/schema/beans" -->
+<!-- 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" -->
+<!-- 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"> -->
+
+<!-- ★★★mapper설정 추가!!  -->
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+           http://mybatis.org/schema/mybatis-spring 
+           http://mybatis.org/schema/mybatis-spring.xsd">
+<!-- ★★★mapper설정 추가!!  -->
+           
+           
+	<!-- SqlSession setup for MyBatis Database Layer -->
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/egovframework/sqlmap/example/sql-mapper-config.xml" />
+		<property name="mapperLocations"> 
+			<list>
+				<value>classpath:/egovframework/sqlmap/example/mappers/*.xml</value>
+				<value>classpath:/egovframework/sqlmap/mysql/springpractice/**/*.xml</value>
+			</list>
+		</property>	
+	</bean>
+	
+	<!-- springpractice용 SqlSessionTemplate -->
+<!-- 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate"> -->
+<!-- 	    <constructor-arg ref="sqlSession" /> -->
+<!-- 	</bean> -->
+
+	<!-- ★★★hireSystem DB 세션 -->
+	<bean id="hireSystemSqlSession" class="org.mybatis.spring.SqlSessionFactoryBean">
+	    <property name="dataSource" ref="hireSystemDataSource"/>
+	    <property name="configLocation" value="classpath:/egovframework/sqlmap/example/sql-mapper-config.xml"/>
+	    <property name="mapperLocations">
+	        <list>
+	            <value>classpath:/egovframework/sqlmap/mysql/hireSystem/*.xml</value>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- ★★★mapper설정 추가!!  -->
+	<!-- 1. @Mapper 어노테이션 스캔 설정 -->
+<!--     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"> -->
+<!--         <property name="basePackage" value="hireSystem.service.mapper" /> -->
+<!--         <property name="sqlSessionFactoryBeanName" value="hireSystemSqlSession" /> -->
+<!--         <property name="annotationClass" value="org.apache.ibatis.annotations.Mapper"/> -->
+<!--     </bean> -->
+
+	<!-- 2. 기존 MapperScannerConfigurer 대신 -->
+<mybatis:scan base-package="hireSystem.service.mapper" 
+              factory-ref="hireSystemSqlSession"
+              annotation="org.apache.ibatis.annotations.Mapper"/>
+    <!-- ★★★mapper설정 추가!!  -->          
+
+	<bean id="hireSystemSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	    <constructor-arg ref="hireSystemSqlSession" />
+	</bean>
+
+	<!-- MapperConfigurer setup for MyBatis Database Layer with @Mapper("deptMapper") in DeptMapper Interface -->
+<!--  	<bean class="org.egovframe.rte.psl.dataaccess.mapper.MapperConfigurer"> -->
+<!-- 		<property name="basePackage" value="egovframework.example.sample.service.impl" /> -->
+<!-- 	</bean> -->
+    
+<!--     	만약 특정 패키지만 지정하고 싶다면: value="practice.service.impl" -->
+<!--     	value="practice"로 설정하면 practice 패키지 아래의 모든 하위 패키지를 포함해서 스캔 -->
+<!--     <bean class="org.egovframe.rte.psl.dataaccess.mapper.MapperConfigurer"> -->
+<!--     	<property name="basePackage" value="practice.service.impl" /> -->
+<!-- 	</bean> -->
+
+</beans>

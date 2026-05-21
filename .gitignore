@@ -1,0 +1,11 @@
+target/
+
+.metadata/
+bin/
+.settings/
+.project
+.classpath
+
+Servers/
+
+src/main/resources/egovframework/property/globals.properties

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="hireSystem.service.mapper.HireBoareListMapper">
+
+	<!-- 게시판 글 등록 -->
+	<insert id="boardInsert" parameterType="boardWriteVo">
+		INSERT INTO BOARD
+			(
+				  CATEGORY
+				, TITLE
+				, CONTENT
+				, WRITER
+				, REG_DT
+				, UPDATE_DT
+				, VIEW_CNT
+			) VALUES 
+			(
+				  #{category}
+				, #{title}
+				, #{content}
+				, #{writer}
+				, NOW()
+				, #{updateDt}
+				, #{viewCnt}
+			)
+	</insert>
+</mapper>

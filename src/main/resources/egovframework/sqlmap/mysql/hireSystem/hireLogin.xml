@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hireLoginDao">
+
+	<!-- 로그인정보 검색 -->
+	<select id="checkLogin" parameterType="hireUserVo" resultType="hireUserVo">
+		SELECT 
+			*
+		FROM HIRE_USER
+		WHERE USER_ID = #{userId}
+		AND USER_PW = #{userPw} 
+		
+	</select>
+
+</mapper>

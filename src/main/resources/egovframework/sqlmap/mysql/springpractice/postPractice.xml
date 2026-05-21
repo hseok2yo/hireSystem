@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PostPracticeDao">
+    
+	<!-- 게시판 리스트정보 -->
+	<select id="selectPostList" parameterType="postPracticeVo" resultType="egovMap">
+		SELECT * FROM board
+		ORDER BY NUM DESC
+		LIMIT #{pagingLimitStartNum}, #{pagePostSize}
+	</select>
+	
+	<!-- 게시판 총 갯수 -->
+	<select id="selectPostListCnt" resultType="int">
+		SELECT COUNT(*) FROM BOARD
+	</select>
+</mapper>

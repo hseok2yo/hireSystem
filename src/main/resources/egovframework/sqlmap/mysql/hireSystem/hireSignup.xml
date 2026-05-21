@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireSignupDao">
+	<!-- 아이디 중복체크 -->
+	<select id="checkDuplicationID" parameterType="String" resultType="int">
+		SELECT 
+			 COUNT(*)
+		FROM HIRE_USER
+		WHERE USER_ID = #{id}
+	</select>
+	
+	<!-- 유저정보 등록 -->
+	<insert id="insertUserInfo" parameterType="hireUserVo"
+	useGeneratedKeys="true" keyProperty="userNum">
+		INSERT INTO HIRE_USER (
+			 USER_ID
+			,USER_EMAIL
+			,USER_PW
+			,USER_NM
+			,USER_PHONE
+			,USER_MEMBER_TYPE
+			,REG_DT
+			,KAKAO_ID
+			,LOGIN_TYPE
+			)
+		VALUES (
+			 #{userId}
+			,#{userEmail}
+			,#{userPw}
+			,#{userNm}
+			,#{userPhone}
+			,#{userMemberType} 
+			,NOW()
+			,#{kakaoId}
+			,#{loginType}
+			)
+<!-- 			<selectKey keyProperty="userNum" resultType="int" order="AFTER"> -->
+<!-- 			SELECT LAST_INSERT_ID() -->
+<!-- 		</selectKey> -->
+	
+	</insert>
+	
+	<!-- 약관동의 리스트 -->
+	<select id="selectAgreeList" resultType="userAgreeDefVo">
+		SELECT 
+			  AGREE_CD
+			, AGREE_NM
+			, REQUIRED_YN
+			, USE_YN
+			, REG_DT
+		FROM USER_AGREE_DEF
+	</select>
+		
+	<!-- 회원약관동의 정보 저장 -->	
+	<insert id="insertUserAgreement" parameterType="java.util.List">
+		INSERT INTO USER_AGREEMENT (
+			  USER_NUM
+			, AGREE_CD
+			, AGREE_YN
+			, AGREE_DT
+			, PAGES
+		) VALUES
+		<foreach collection="list" item="item" separator=",">
+		(
+			  #{item.userNum}
+			, #{item.agreeCd}
+			, #{item.agreeYn}
+			, NOW()
+			, #{item.pages}
+		)
+		</foreach>
+		
+	</insert>
+			
+</mapper>

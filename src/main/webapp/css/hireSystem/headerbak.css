@@ -1,0 +1,171 @@
+
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding-top: 70px; /* header의 높이만큼 상단 패딩 추가 */
+    min-height: 100vh;
+}
+
+/* Header Styles */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100vw; /* 항상 화면 전체 너비 */
+    height: 70px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 내부 컨테이너 정렬 */
+.main-header {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+
+/* Logo Styles */
+.logo h1 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.logo a {
+    color: #1a73e8;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.logo a:hover {
+    color: #1557b0;
+}
+
+/* Navigation Styles */
+.main-nav {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-item {
+    color: #333;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.nav-item:hover {
+    color: #1a73e8;
+    background-color: rgba(26, 115, 232, 0.1);
+}
+
+.nav-item.premium {
+    color: #1a73e8;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.badge {
+    background-color: #ff4081;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Auth Buttons Styles */
+.auth-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-login, .btn-register {
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-login {
+    color: #1a73e8;
+    border: 1px solid #1a73e8;
+    background-color: transparent;
+}
+
+.btn-login:hover {
+    background-color: rgba(26, 115, 232, 0.1);
+}
+
+.btn-register {
+    color: white;
+    background-color: #1a73e8;
+    border: 1px solid #1a73e8;
+}
+
+.btn-register:hover {
+    background-color: #1557b0;
+    border-color: #1557b0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .main-nav {
+        gap: 20px;
+    }
+
+    .nav-item {
+        font-size: 15px;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .site-header {
+        height: 60px;
+    }
+
+    .header-container {
+        height: 60px;
+    }
+
+    .logo h1 {
+        font-size: 20px;
+    }
+
+    .main-nav {
+        display: none;
+    }
+
+    .auth-buttons {
+        gap: 8px;
+    }
+
+    .btn-login, .btn-register {
+        padding: 6px 16px;
+        font-size: 13px;
+    }
+}
