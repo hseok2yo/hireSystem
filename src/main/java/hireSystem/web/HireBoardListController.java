@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hireSystem.service.HireBoareListService;
@@ -26,7 +28,17 @@ public class HireBoardListController {
 	
 	
 	@RequestMapping("/boardList.do")
-	public String boardList() {
+	public String boardList(@ModelAttribute BoardWriteVo getVo, Model model) {
+		
+		Map<String, Object> result = hireBoareListService.selectList(getVo);
+		
+		model.addAttribute("list", result.get("list"));
+		model.addAttribute("displayNo", result.get("displayNo"));
+		model.addAttribute("startPage", result.get("startPage"));
+		model.addAttribute("endPage", result.get("endPage"));
+		model.addAttribute("totalPage", result.get("totalPage"));
+		model.addAttribute("currentPage", result.get("currentPage"));
+		
 		return path + "boardList";
 	}
 	
@@ -54,9 +66,10 @@ public class HireBoardListController {
 	
 	@PostMapping("/boardInsert.do")
 	@ResponseBody
-	public EgovMap boardInsert(@ModelAttribute BoardWriteVo writeVo) {
+	public EgovMap boardInsert(@ModelAttribute BoardWriteVo writeVo
+			, HttpSession session) {
 		EgovMap result = new EgovMap();
-		int insertCnt = hireBoareListService.boardInsert(writeVo);
+		int insertCnt = hireBoareListService.boardInsert(writeVo, session);
 		if(insertCnt > 0 ) {
 			result.put("result", "success");
 		}else {
@@ -65,4 +78,17 @@ public class HireBoardListController {
 		
 		return result;
 	}
+	
+	@RequestMapping("/boardDetail.do")
+	public String boardDetail(@RequestParam int boardNum, Model model) {
+		model.addAttribute("board", hireBoareListService.selectDetail(boardNum));
+		return path + "boardDetail";
+	}
+
+	@RequestMapping("/boardEdit.do")
+	public String boardEdit(@RequestParam int boardNum, Model model) {
+		model.addAttribute("board", hireBoareListService.selectDetailForEdit(boardNum));
+		return path + "boardEdit";
+	}
+	
 }

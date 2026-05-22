@@ -14,7 +14,7 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/48.0.1/ckeditor5.umd.js"></script>
 <link rel="stylesheet" href="/css/hireSystem/boardWrite.css" />
 <script defer src="/js/hireSystem/ckeditorcustom.js"></script>
-
+<script defer src="/js/hireSystem/common.js"></script>
 <script defer="defer" src="/js/hireSystem/boardWrite.js"></script>
 </head>
 <body>
@@ -41,13 +41,8 @@
 			<%-- 에디터가 붙을 div --%>
 			<div id="editor"></div>
 
-			<div class="mb-3">
-				<label for="writer" class="form-label">작성자</label> <input
-					type="text" class="form-control" id="writer" name="writer">
-			</div>
-
 			<div class="d-flex justify-content-between">
-				<a href="/board/list" class="btn btn-outline-secondary"> <i
+				<a href="/hireSystem/board/boardList.do" class="btn btn-outline-secondary"> <i
 					class="fas fa-arrow-left me-1"></i>취소
 				</a>
 				<button type="button" class="btn btn-primary">

@@ -23,8 +23,13 @@ public class LoginInterceptor implements HandlerInterceptor {
         System.out.println("@@@@@@@@@@@@@@@@@@@");
         System.out.println("🔥 인터셉터 실행됨: " + request.getRequestURI());
         
-        // 로그인 체크만
         if (loginUser == null) {
+            // fetch/AJAX → 401 (common.js apiLoginCommonFetch)
+            if (isAjaxRequest(request)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return false;
+            }
+
             String redirectUrl = request.getRequestURI();
             String queryString = request.getQueryString();
             
@@ -33,14 +38,18 @@ public class LoginInterceptor implements HandlerInterceptor {
             }
             
             response.sendRedirect(
-                request.getContextPath() + 
-                "/hireSystem/login/login.do?redirectUrl=" + 
+                request.getContextPath() +
+                "/hireSystem/login/login.do?redirectUrl=" +
                 java.net.URLEncoder.encode(redirectUrl, "UTF-8")
             );
-            
+
             return false;
         }
 
-        return true; // 로그인 되어있으면 통과
+        return true;
+    }
+
+    private boolean isAjaxRequest(HttpServletRequest request) {
+        return "XMLHttpRequest".equals(request.getHeader("X-Requested-With"));
     }
 }

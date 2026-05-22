@@ -70,6 +70,7 @@ public class KakaoAuthController {
         HireUserVo HireUserVo = kakaoAuthService.selectJoinID(kakaoUser);
         
         if(HireUserVo != null) { //로그인성공
+        	session.setAttribute("loginUserNum", HireUserVo.getUserNum());
         	session.setAttribute("loginUser", HireUserVo.getKakaoId());
         	session.setAttribute("loginNm", HireUserVo.getUserNm());
             session.setMaxInactiveInterval(60 * 60 * 24); // 카카오는 remember 체크 없으니 1일

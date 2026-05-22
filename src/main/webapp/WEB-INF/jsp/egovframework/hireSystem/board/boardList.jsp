@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -19,31 +20,67 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/header.jsp"></jsp:include>
-	
+
+	<form id="searchForm" method="get" action="/hireSystem/board/boardList.do">
+		<input type="hidden" name="page" id="pageInput" value="1">
+		<input type="hidden" name="category" value="${param.category}">
+		<input type="hidden" name="searchType" value="${param.searchType}">
+		<input type="hidden" name="searchKeyword" value="${param.searchKeyword}">
+	</form>
+
 	<main class="board-container">
 		<div class="board-header">
 			<h2>커뮤니티 게시판</h2>
 			<div class="board-utils">
 				<div class="search-area">
-					<select class="category-select">
-						<option value="">전체 카테고리</option>
-						<option value="취업정보">취업정보</option>
-						<option value="자유게시판">자유게시판</option>
-						<option value="질문답변">질문답변</option>
-					</select>
-					<input type="text" class="search-input" placeholder="검색어를 입력하세요">
-					<button type="button" class="search-btn">검색</button>
+					<select class="category-select" id="searchType">
+						<option value="all"
+							${param.searchType == 'all' || empty param.searchType ? 'selected' : ''}>전체</option>
+						<option value="title"
+							${param.searchType == 'title' ? 'selected' : ''}>제목</option>
+						<option value="writer"
+							${param.searchType == 'writer' ? 'selected' : ''}>작성자</option>
+					</select> 
+					<input type="text" class="search-input" id="searchKeyword" value="${param.searchKeyword}" placeholder="검색어를 입력하세요">
+					<button type="button" class="search-btn" onclick="goSearch()">검색</button>
 				</div>
 			</div>
 		</div>
+		<script>
+			function goSearch() {
+				document.querySelector("[name=category]").value = '';
+			    document.querySelector("[name=searchType]").value = document.querySelector(".category-select").value;
+			    document.querySelector("[name=searchKeyword]").value = document.querySelector(".search-input").value;
+			    document.getElementById("pageInput").value = 1;
+			    document.getElementById("searchForm").submit();
+			}
+		</script>
 
 		<ul class="category-menu">
-			<li class="category-item"><a href="#" class="category-link active">전체</a></li>
-			<li class="category-item"><a href="#" class="category-link">취업정보</a></li>
-			<li class="category-item"><a href="#" class="category-link">자유게시판</a></li>
-			<li class="category-item"><a href="#" class="category-link">질문답변</a></li>
+			<li class="category-item"><a href="#"
+				onclick="goCategory(''); return false;"
+				class="category-link ${empty param.category ? 'active' : ''}">전체</a>
+			</li>
+			<li class="category-item"><a href="#"
+				onclick="goCategory('JOB_INFO'); return false;"
+				class="category-link ${param.category == 'JOB_INFO' ? 'active' : ''}">취업정보</a>
+			</li>
+			<li class="category-item"><a href="#"
+				onclick="goCategory('FREE'); return false;"
+				class="category-link ${param.category == 'FREE' ? 'active' : ''}">자유게시판</a>
+			</li>
+			<li class="category-item"><a href="#"
+				onclick="goCategory('QNA'); return false;"
+				class="category-link ${param.category == 'QNA' ? 'active' : ''}">질문답변</a>
+			</li>
 		</ul>
-
+		<script>
+			function goCategory(category) {
+			    document.querySelector("[name=category]").value = category;
+			    document.getElementById("pageInput").value = 1;
+			    document.getElementById("searchForm").submit();
+			}
+		</script>
 		<div class="write-btn-area">
 			<button type="button" class="write-btn">글쓰기</button>
 		</div>
@@ -59,85 +96,71 @@
 						<th>작성자</th>
 						<th>작성일</th>
 						<th>조회</th>
-						<th>좋아요</th>
+<!-- 						<th>좋아요</th> -->
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>10</td>
-						<td><span class="category-badge">취업정보</span></td>
-						<td class="title">
-							<a href="#">2024 상반기 신입 개발자 채용 정보</a>
-							<span class="comment-count">[5]</span>
-						</td>
-						<td>취업멘토</td>
-						<td>2024-01-10</td>
-						<td>128</td>
-						<td>23</td>
-					</tr>
-					<tr>
-						<td>9</td>
-						<td><span class="category-badge">자유게시판</span></td>
-						<td class="title">
-							<a href="#">개발자 스터디 모집합니다</a>
-							<span class="comment-count">[3]</span>
-						</td>
-						<td>코딩왕</td>
-						<td>2024-01-09</td>
-						<td>95</td>
-						<td>12</td>
-					</tr>
-					<tr>
-						<td>8</td>
-						<td><span class="category-badge">질문답변</span></td>
-						<td class="title">
-							<a href="#">Spring Boot vs Node.js 고민입니다</a>
-							<span class="comment-count">[8]</span>
-						</td>
-						<td>초보개발자</td>
-						<td>2024-01-08</td>
-						<td>156</td>
-						<td>18</td>
-					</tr>
-					<tr>
-						<td>7</td>
-						<td><span class="category-badge">취업정보</span></td>
-						<td class="title">
-							<a href="#">백엔드 개발자 포트폴리오 팁</a>
-							<span class="comment-count">[12]</span>
-						</td>
-						<td>경력쌓기</td>
-						<td>2024-01-07</td>
-						<td>245</td>
-						<td>45</td>
-					</tr>
-					<tr>
-						<td>6</td>
-						<td><span class="category-badge">자유게시판</span></td>
-						<td class="title">
-							<a href="#">개발자 연봉 이야기</a>
-							<span class="comment-count">[15]</span>
-						</td>
-						<td>연봉킹</td>
-						<td>2024-01-06</td>
-						<td>312</td>
-						<td>67</td>
-					</tr>
+					<c:forEach items="${list}" var="board" varStatus="status">
+						<tr>
+							<td>${displayNo - status.index}</td>
+							<td><span class="category-badge">${board.category }</span></td>
+							<td class="title">
+								<a href="/hireSystem/board/boardDetail.do?boardNum=${board.boardNum }">${board.title }</a>
+								<span class="comment-count">[0]</span>
+							</td>
+							<td>${board.writer }</td>
+							<td><fmt:formatDate value="${board.regDt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+							<td>${board.viewCnt }</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</div>
 
 		<div class="board-footer">
 			<div class="pagination">
-				<a href="#" class="page-btn">이전</a>
-				<a href="#" class="page-num active">1</a>
-				<a href="#" class="page-num">2</a>
-				<a href="#" class="page-num">3</a>
-				<a href="#" class="page-num">4</a>
-				<a href="#" class="page-num">5</a>
-				<a href="#" class="page-btn">다음</a>
+				<c:if test="${currentPage > 1}">
+					<a href="#" onclick="goPage(1); return false;" class="page-btn">◁◁</a>
+				</c:if>
+
+				<c:if test="${startPage > 1}">
+					<a href="#" onclick="goPage(${startPage - 1}); return false;"
+						class="page-btn">◁</a>
+				</c:if>
+
+				<c:forEach begin="${startPage}" end="${endPage}" var="i">
+					<c:choose>
+						<c:when test="${i == currentPage}">
+							<a href="#" onclick="goPage(${i}); return false;"
+								class="page-num active">${i}</a>
+						</c:when>
+						<c:otherwise>
+							<a href="#" onclick="goPage(${i}); return false;"
+								class="page-btn">${i}</a>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+				<c:if test="${endPage < totalPage}">
+					<a href="#" onclick="goPage(${endPage + 1}); return false;"
+						class="page-btn">▷</a>
+				</c:if>
+				<c:if test="${currentPage < totalPage}">
+					<a href="#" onclick="goPage(${totalPage}); return false;"
+						class="page-btn">▷▷</a>
+				</c:if>
 			</div>
+			<script>
+				function goPage(page) {
+				    document.getElementById("pageInput").value = page;
+				    document.getElementById("searchForm").submit();
+				}
+			</script>
+			
 		</div>
+		
+		
 	</main>
+	<jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/footer.jsp"></jsp:include>
 </body>
 </html> 

@@ -3,7 +3,93 @@
 
 
 <mapper namespace="hireSystem.service.mapper.HireBoareListMapper">
-
+	
+	<!-- 공통 where절 분리 -->
+	<sql id="searchWhere">
+	    <where>
+	        <if test="category != null and category != ''">
+	            AND CATEGORY = #{category}
+	        </if>
+	        <if test="searchKeyword != null and searchKeyword != ''">
+	            <choose>
+	                <when test="searchType == 'title'">
+	                    AND TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	                </when>
+	                <when test="searchType == 'writer'">
+	                    AND WRITER LIKE CONCAT('%', #{searchKeyword}, '%')
+	                </when>
+	                <otherwise>
+	                    AND (TITLE LIKE CONCAT('%', #{searchKeyword}, '%')
+	                    OR WRITER LIKE CONCAT('%', #{searchKeyword}, '%'))
+	                </otherwise>
+	            </choose>
+	        </if>
+	    </where>
+	</sql>
+	
+	<!-- 게시글 조회 -->
+	<select id="selectList" parameterType="boardWriteVo" resultType="boardWriteVo">
+		SELECT
+			BOARD_NUM
+			,CASE CATEGORY
+				WHEN 'JOB_INFO' THEN
+				'취업정보'
+				WHEN 'FREE' THEN '자유게시판'
+				WHEN 'QNA' THEN '질문답변'
+				ELSE '미지정'
+			END AS
+			CATEGORY
+			,TITLE
+			,CONTENT
+			,WRITER
+			,REG_DT
+			,UPDATE_DT
+			,VIEW_CNT
+			,USER_NUM
+			FROM
+			BOARD
+		<include refid="searchWhere" />
+			ORDER BY BOARD_NUM DESC
+			LIMIT #{offset}, #{pageSize}
+	</select>
+	
+	<select id="selectTotalCount" parameterType="boardWriteVo" resultType="int">
+		SELECT 
+			COUNT(*)
+		FROM BOARD
+		<include refid="searchWhere"/>
+	</select>
+	
+	<!-- 게시글 상세보기 -->
+	<select id="selectDetail" parameterType="int" resultType="boardWriteVo">
+		SELECT
+			BOARD_NUM
+			,CASE CATEGORY
+				WHEN 'JOB_INFO' THEN '취업정보'
+				WHEN 'FREE' THEN '자유게시판'
+				WHEN 'QNA' THEN '질문답변'
+				ELSE '미지정'
+			END AS CATEGORY
+			,TITLE
+			,CONTENT
+			,WRITER
+			,REG_DT
+			,UPDATE_DT
+			,VIEW_CNT
+			,USER_NUM
+		FROM BOARD
+		WHERE BOARD_NUM = #{boardNum}
+	</select>
+	
+	<!-- 조회수 +1 -->
+	<update id="updateDetailCnt" parameterType="int"> 
+		UPDATE BOARD SET
+			VIEW_CNT = VIEW_CNT + 1
+		WHERE 
+			BOARD_NUM = #{boardNum}
+	</update>
+	
+	
 	<!-- 게시판 글 등록 -->
 	<insert id="boardInsert" parameterType="boardWriteVo">
 		INSERT INTO BOARD
@@ -15,6 +101,7 @@
 				, REG_DT
 				, UPDATE_DT
 				, VIEW_CNT
+				, USER_NUM
 			) VALUES 
 			(
 				  #{category}
@@ -24,6 +111,7 @@
 				, NOW()
 				, #{updateDt}
 				, #{viewCnt}
+				, #{userNum}
 			)
 	</insert>
 </mapper>

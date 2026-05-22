@@ -8,7 +8,6 @@ function validCheck() {
         if (!categoryCheck()) return;
         if (!titleCheck()) return;
         if (!contentCheck()) return;
-        if (!writerCheck()) return;
         
         // 모두 통과시 submit
         var form = document.querySelector("form");
@@ -33,12 +32,14 @@ function submitAjax() {
 	// editor 값만 따로 덮어쓰기
 	formData.set("content", editorInstance.getData());
 
-    fetch("/hireSystem/board/boardInsert.do", {
+    apiLoginCommonFetch("/hireSystem/board/boardInsert.do", {
         method: "POST",
         body: formData
     })
-    .then(res => res.json())
-    .then(data => {
+    .then(function(data) {
+        if (!data) {
+            return;
+        }
         if (data.result === "success") {
             alert("작성되었습니다");
             location.href = "/hireSystem/board/boardList.do";
@@ -46,7 +47,7 @@ function submitAjax() {
             alert("에러 발생");
         }
     })
-    .catch(() => {
+    .catch(function() {
         alert("서버 오류");
     });
 }
@@ -69,8 +70,3 @@ function contentCheck() {
     return true;
 }
 
-function writerCheck() {
-    var writer = document.getElementById("writer").value.trim();
-    if (!writer) { alert("작성자를 입력해주세요."); return false; }
-    return true;
-}

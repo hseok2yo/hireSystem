@@ -54,6 +54,7 @@ public class HireLoginController {
 		if(resultVo != null) {
 			map.put("result", "success");
 			// 로그인 성공 → 세션에 저장
+			session.setAttribute("loginUserNum", resultVo.getUserNum());
 	        session.setAttribute("loginUser", resultVo.getUserId());
 	        session.setAttribute("loginNm", resultVo.getUserNm());
 			// ✅ 로그인 상태 유지 체크 여부 확인

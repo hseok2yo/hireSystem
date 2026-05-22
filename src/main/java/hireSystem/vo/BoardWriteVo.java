@@ -23,4 +23,16 @@ public class BoardWriteVo {
 
     private int viewCnt;
     
+    private int userNum;
+    
+    //페이징 조건들
+    private int page;
+    private int pageSize;
+    private int offset;
+    
+    private String searchType;
+    private String searchKeyword;
+    
+    
+    
 }

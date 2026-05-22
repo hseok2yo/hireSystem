@@ -26,10 +26,16 @@
 		<div class="footer-section">
 			<h4>다운로드</h4>
 			<div class="app-downloads">
+				<!-- App Store -->
 				<a href="#" class="app-button"> <img
-					src="<c:url value='/images/app-store.png' />" alt="App Store">
-				</a> <a href="#" class="app-button"> <img
-					src="<c:url value='/images/google-play.png' />" alt="Google Play">
+					src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
+					alt="App Store">
+				</a>
+
+				<!-- Google Play -->
+				<a href="#" class="app-button"> <img
+					src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+					alt="Google Play">
 				</a>
 			</div>
 		</div>

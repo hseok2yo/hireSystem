@@ -63,17 +63,11 @@
 	
 	<!-- ★로그인이 필요한 페이지들 인터셉트 걸어서 로그인 안되어있으면 로그인페이지로 보내기 -->
 	<mvc:interceptors>
-	    <!-- REST API 방식 -->
 	    <mvc:interceptor>
-	        <mvc:mapping path="/hireSystem/board/boardWriteCheck.do"/>
-	        <bean class="hireSystem.common.RestLoginInterceptor"/>
+	        <mvc:mapping path="/hireSystem/board/boardWrite.do"/>
+	        <mvc:mapping path="/hireSystem/board/boardInsert.do"/>
+	        <bean class="hireSystem.common.LoginInterceptor"/>
 	    </mvc:interceptor>
-	    
-	    <!-- 전통 방식 -->
-<!-- 	    <mvc:interceptor> -->
-<!-- 	        <mvc:mapping path="/hireSystem/mypage/**"/> -->
-<!-- 	        <bean class="hireSystem.common.LoginInterceptor"/> -->
-<!-- 	    </mvc:interceptor> -->
 	</mvc:interceptors>
 	<!-- ★로그인이 필요한 페이지들 인터셉트 걸어서 로그인 안되어있으면 로그인페이지로 보내기 -->
 	

@@ -29,27 +29,33 @@ public class ImageServeController {
 	public void serveImage(@RequestParam String filename,
 	                       HttpServletResponse response) throws Exception {
 		
-		String tempPath = propertiesService.getString("image.temp.path");
-		
-	    File file = new File(tempPath + filename);
-
+		String path = propertiesService.getString("image.temp.path");
+	    serveImageFile(path, filename, response);
+	}
+	
+	// store 이미지 서빙
+	@RequestMapping("/image/store.do")
+	public void serveStoreImage(@RequestParam String filename,
+	                       HttpServletResponse response) throws Exception {
+	    String path = propertiesService.getString("image.store.path");
+	    serveImageFile(path, filename, response);
+	}
+	
+	// 공통 메서드
+	private void serveImageFile(String path, String filename, HttpServletResponse response) throws Exception {
+	    File file = new File(path + filename);
 	    String contentType = Files.probeContentType(file.toPath());
-
 	    response.setContentType(contentType);
-
 	    FileInputStream fis = new FileInputStream(file);
 	    OutputStream os = response.getOutputStream();
-
 	    byte[] buffer = new byte[1024];
 	    int length;
-
 	    while ((length = fis.read(buffer)) != -1) {
 	        os.write(buffer, 0, length);
 	    }
-
 	    os.flush();
-
 	    fis.close();
 	    os.close();
 	}
+	
 }
