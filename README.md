@@ -102,7 +102,7 @@ src/main/webapp/js/hireSystem/
 
 
 ### 게시판
-
+* 워크넷 api 기업정보목록 사용
 * 게시글 목록 조회 (페이징, 카테고리 필터)
 * 게시글 등록 / 수정 / 삭제
 * CKEditor5 텍스트 에디터
