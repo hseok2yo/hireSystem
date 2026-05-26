@@ -40,7 +40,7 @@
             </footer>
         </article>
     </main>
-
+	
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/footer.jsp"></jsp:include>
 
     <script>
@@ -48,18 +48,25 @@
             if (!confirm('정말 삭제하시겠습니까?')) {
                 return;
             }
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '<c:url value="/hireSystem/board/boardDelete.do" />';
-
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = 'boardNum';
-            input.value = '${board.boardNum}';
-
-            form.appendChild(input);
-            document.body.appendChild(form);
-            form.submit();
+            fetch('<c:url value="/hireSystem/board/boardDelete.do" />', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ boardNum: ${board.boardNum} })
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(result) {
+                if (result.result) {
+                    alert('삭제되었습니다.');
+                    location.href = '<c:url value="/hireSystem/board/boardList.do" />';
+                } else {
+                    alert('삭제에 실패했습니다.');
+                }
+            })
+            .catch(function() {
+                alert('오류가 발생했습니다.');
+            });
         }
     </script>
 </body>

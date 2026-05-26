@@ -32,6 +32,7 @@ public class BoardWriteVo {
     
     private String searchType;
     private String searchKeyword;
+    private List<String> filenames;
     
     
     

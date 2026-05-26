@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,14 +26,6 @@ public class ImageServeController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping("/image/temp.do")
-	public void serveImage(@RequestParam String filename,
-	                       HttpServletResponse response) throws Exception {
-		
-		String path = propertiesService.getString("image.temp.path");
-	    serveImageFile(path, filename, response);
-	}
-	
 	// store 이미지 서빙
 	@RequestMapping("/image/store.do")
 	public void serveStoreImage(@RequestParam String filename,
@@ -40,6 +33,7 @@ public class ImageServeController {
 	    String path = propertiesService.getString("image.store.path");
 	    serveImageFile(path, filename, response);
 	}
+	
 	
 	// 공통 메서드
 	private void serveImageFile(String path, String filename, HttpServletResponse response) throws Exception {
@@ -57,5 +51,7 @@ public class ImageServeController {
 	    fis.close();
 	    os.close();
 	}
+	
+	
 	
 }

@@ -1,13 +1,12 @@
 package hireSystem.service;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import hireSystem.vo.BoardWriteVo;
 
-public interface HireBoareListService {
+public interface HireBoardListService {
 	
 	/**
 	 * 게시글 등록
@@ -22,5 +21,11 @@ public interface HireBoareListService {
 	BoardWriteVo selectDetail(int boardNum);
 
 	BoardWriteVo selectDetailForEdit(int boardNum);
+	
+	int insertTempImgInfo(Map<String, Object> insertMap);
+
+	int boardUpdate(BoardWriteVo writeVo);
+
+	int boardDelete(int boardNum);
 
 }

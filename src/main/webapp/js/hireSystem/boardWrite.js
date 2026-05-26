@@ -9,17 +9,6 @@ function validCheck() {
         if (!titleCheck()) return;
         if (!contentCheck()) return;
         
-        // 모두 통과시 submit
-        var form = document.querySelector("form");
-        var hiddenInput = document.createElement("input");
-
-        hiddenInput.type = "hidden";
-        hiddenInput.name = "content";
-        hiddenInput.value = editorInstance.getData();
-        form.appendChild(hiddenInput);
-	
-        //form.submit();
- 		
         submitAjax(); // AJAX로 전송
     });
 }
@@ -31,6 +20,23 @@ function submitAjax() {
 	
 	// editor 값만 따로 덮어쓰기
 	formData.set("content", editorInstance.getData());
+	
+	// 에디터에 현재 있는 이미지 파일명만 추출 (삭제된 건 자동으로 빠짐)
+    const editorData = editorInstance.getData();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(editorData, 'text/html');
+    const imgs = doc.querySelectorAll('img');
+    
+    imgs.forEach(img => {
+        const src = img.getAttribute('src');
+        const filename = src.split('filename=')[1];
+        if (filename) formData.append('filenames', filename);
+    });
+
+	console.log("5. 최종 formData filenames:");
+    for (let [key, value] of formData.entries()) {
+        console.log(`   ${key}:`, value);
+    }
 
     apiLoginCommonFetch("/hireSystem/board/boardInsert.do", {
         method: "POST",

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 
-<mapper namespace="hireSystem.service.mapper.HireBoareListMapper">
+<mapper namespace="hireSystem.service.mapper.HireBoardListMapper">
 	
 	<!-- 공통 where절 분리 -->
 	<sql id="searchWhere">
@@ -91,7 +91,10 @@
 	
 	
 	<!-- 게시판 글 등록 -->
-	<insert id="boardInsert" parameterType="boardWriteVo">
+	<insert id="boardInsert"
+        parameterType="boardWriteVo"
+        useGeneratedKeys="true"
+        keyProperty="boardNum">
 		INSERT INTO BOARD
 			(
 				  CATEGORY
@@ -114,4 +117,22 @@
 				, #{userNum}
 			)
 	</insert>
+	
+	<!-- 게시판 정보 업뎃 -->
+	<update id="boardUpdate" parameterType="boardWriteVo">
+		UPDATE BOARD SET
+			CATEGORY 	= #{category}
+			, TITLE		= #{title}
+			, CONTENT		= #{content}
+			, UPDATE_DT	= NOW()
+		WHERE 
+			BOARD_NUM = #{boardNum}
+	</update>
+	
+	<!-- 게시판 삭제 -->
+	<delete id="boardDelete" parameterType="int">
+		DELETE FROM BOARD
+		WHERE 
+			BOARD_NUM = #{boardNum}
+	</delete>
 </mapper>
