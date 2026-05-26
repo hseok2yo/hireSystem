@@ -151,36 +151,6 @@ src/main/webapp/js/hireSystem/
 
 
 
-## ⚙️ 실행 방법
-
-### 1\. DB 설정
-
-`src/main/resources/egovframework/spring/context-datasource.xml` 에서 DB 연결 정보 수정
-<property name="url" value="jdbc:mysql://localhost:3306/hireSystem?useSSL=false\&amp;characterEncoding=UTF-8"/>
-<property name="username" value="root"/>
-<property name="password" value="your\_password"/>
-
-
-### 2\. 파일 저장 경로 설정
-
-`src/main/resources/egovframework/property/globals.properties` 수정
-
-image.store.path=C:/your/path/hireSystem/images/store/
-
-image.store.url=/image/store.do?filename=
-
-
-
-### 3. 카카오 로그인 설정 (선택)
-
-카카오 개발자 콘솔에서 앱 키 발급 후 설정 파일에 추가
-
-
-
-### 4\. 서버 실행
-
-Apache Tomcat 8.5 배포 후 실행
-
 
 
 
