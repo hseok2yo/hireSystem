@@ -1,7 +1,11 @@
 package hireSystem.vo;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -46,5 +50,17 @@ public class HireUserVo {
 	
 	/** 회원가입 경로 null (NORMAL): 일반 / kakao : 카카오*/
 	private String loginType;
-    
+	
+	/** 생년월일 */
+    private String birthDate; 
+	
+	/** 만나이*/
+	private int age;
+	
+	/** 대표이미지 파일명*/
+	private String userPhotoName;
+	
+	/** 대표이미지 경로*/
+	private String userPhotoPath;
+	
 }

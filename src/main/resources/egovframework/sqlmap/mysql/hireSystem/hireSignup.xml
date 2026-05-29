@@ -22,6 +22,7 @@
 			,REG_DT
 			,KAKAO_ID
 			,LOGIN_TYPE
+			,BIRTH_DATE
 			)
 		VALUES (
 			 #{userId}
@@ -33,6 +34,7 @@
 			,NOW()
 			,#{kakaoId}
 			,#{loginType}
+			,#{birthDate}
 			)
 <!-- 			<selectKey keyProperty="userNum" resultType="int" order="AFTER"> -->
 <!-- 			SELECT LAST_INSERT_ID() -->
@@ -71,5 +73,26 @@
 		</foreach>
 		
 	</insert>
+		
+	<!-- 회원정보 단건조회 -->
+	<select id="selectHireUserInfo" parameterType="int" resultType="hireUserVo">
+	    SELECT
+	        USER_NUM
+	       , USER_ID
+	       , USER_EMAIL
+	       , USER_PW
+	       , USER_NM
+	       , USER_PHONE
+	       , USER_MEMBER_TYPE
+	       , USER_PHOTO_NAME
+		   , USER_PHOTO_PATH
+	       , KAKAO_ID
+	       , LOGIN_TYPE
+	       , DATE_FORMAT(BIRTH_DATE, '%Y-%m-%d') AS BIRTH_DATE
+	       , TIMESTAMPDIFF(YEAR, BIRTH_DATE, CURDATE()) AS AGE
+	       , REG_DT
+	    FROM HIRE_USER
+	    WHERE USER_NUM = #{userNum}
+	</select>
 			
 </mapper>

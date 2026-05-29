@@ -1,5 +1,9 @@
 package hireSystem.service;
 
+import java.io.IOException;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import hireSystem.vo.HireUserVo;
 
 public interface HireSignupService {
@@ -17,4 +21,13 @@ public interface HireSignupService {
 	 * @return 성공여부
 	 */
 	public boolean registMember(HireUserVo hireUserVo);
+	
+	/**
+	 * 유저 1명 전체정보 가져오기
+	 * @param userNum 조회할 유저pk번호
+	 * @return 유저정보 단건조회
+	 */
+	public HireUserVo selectHireUserInfo(int userNum);
+
+	public String updateUserPhoto(MultipartFile file, int userNum) throws IOException;
 }

@@ -14,7 +14,7 @@
 			<nav class="main-nav">
 				<a href="jobs.jsp" class="nav-item">채용정보</a>
 				<a href="<c:url value='/hireSystem/company/companies.do' />" class="nav-item">기업정보</a>
-				<a href="/hireSystem/resume/resume.do" class="nav-item">이력서관리</a>
+				<a href="/hireSystem/resume/resumeMain.do" class="nav-item">이력서관리</a>
 				<a href="/hireSystem/board/boardList.do" class="nav-item">커뮤니티</a>
 				<a href="ai-match.jsp" class="nav-item premium">AI 매칭 <span class="badge">NEW</span></a>
 			</nav>
@@ -40,7 +40,9 @@
 								+ encodeURIComponent(currentUrl);
 					}
 				</script>
-				<a href="/hireSystem/signup/signup.do" class="btn-register">회원가입</a>
+				<c:if test="${empty sessionScope.loginUser}">
+					<a href="/hireSystem/signup/signup.do" class="btn-register">회원가입</a>
+				</c:if>
 			</div>
 		</div>
 	</header>

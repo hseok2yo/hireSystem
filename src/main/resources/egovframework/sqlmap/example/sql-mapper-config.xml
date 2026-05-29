@@ -21,6 +21,9 @@
 		<typeAlias alias="userAgreementVo" type="hireSystem.vo.UserAgreementVo"/>
 		<typeAlias alias="kakaoUserVo" type="hireSystem.vo.KakaoUserVo"/>
 		<typeAlias alias="boardWriteVo" type="hireSystem.vo.BoardWriteVo"/>
+		<typeAlias alias="hireResumeVo" type="hireSystem.vo.HireResumeVo"/>
+		
+		
 		
 		
 		

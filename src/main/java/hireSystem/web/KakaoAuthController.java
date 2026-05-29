@@ -86,7 +86,7 @@ public class KakaoAuthController {
             return "redirect:/hireSystem/main.do"; // 메인으로
         }else { // 신규회원
         	session.setAttribute("kakaoUser", kakaoUser); //사용자 정보
-            return "redirect:/hireSystem/signup/signup.do"; //회원가입 페이지
+            return "redirect:/hireSystem/signup/signup.do?type=kakao"; //회원가입 페이지
         }
 
 
@@ -197,7 +197,8 @@ public class KakaoAuthController {
         kakaoUser.setEmail(email);
         kakaoUser.setProfileImage(profileImage);
         
-        log.info("카카오 사용자 정보 - id: {}, nickname: {}", id, nickname);
+        //log.info("카카오 사용자 정보 - id: {}, nickname: {}", id, nickname);
+        log.info("kakaoUser : {}", kakaoUser);
         
         return kakaoUser;
     }

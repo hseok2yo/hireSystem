@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
+import com.mysql.cj.Session;
+
 import hireSystem.common.HireSystemAbstractMapper;
 import hireSystem.vo.HireUserVo;
 import hireSystem.vo.UserAgreeDefVo;
@@ -46,6 +48,13 @@ public class HireSignupDao extends HireSystemAbstractMapper {
 	public int insertUserAgreement(List<UserAgreementVo> userAgreeInfo) {
 		return insert("hireSignupDao.insertUserAgreement", userAgreeInfo);
 	}
-
+	/**
+	 * 유저정보 단건조회
+	 * @param userNum 유저usernum pk값
+	 * @return 유저전체정보
+	 */
+	public HireUserVo selectHireUserInfo(int userNum) {
+		return selectOne("hireSignupDao.selectHireUserInfo", userNum);
+	}
 
 }

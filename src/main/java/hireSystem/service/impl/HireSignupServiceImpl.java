@@ -1,19 +1,26 @@
 package hireSystem.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import hireSystem.common.CommonFileService;
 import hireSystem.service.HireSignupService;
+import hireSystem.service.dao.HireResumeDao;
 import hireSystem.service.dao.HireSignupDao;
 import hireSystem.service.mapper.HireSignUpMapper;
 import hireSystem.vo.HireUserVo;
@@ -26,8 +33,17 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 	@Resource(name = "hireSignupDao")
 	private HireSignupDao hireDao;
 	
+	@Resource(name = "hireResumeDao")
+	private HireResumeDao hireResumeDao;
+	
 	@Autowired
 	private HireSignUpMapper hireMapper;
+	
+	@Resource(name = "propertiesService")
+	private EgovPropertyService propertiesService;
+	
+	@Resource(name = "commonFileService")
+	private CommonFileService commonFileService;
 	
 	@Override
 	public int checkDuplicationID(String id) {
@@ -44,6 +60,8 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 		//1. 회원정보 등록
 		hireUserVo.setUserPw(StringEscapeUtils.unescapeHtml4(hireUserVo.getUserPw()));
 		results = hireDao.insertUserInfo(hireUserVo); //등록한 회원번호 받아옴
+		
+		hireResumeDao.insertEmptyResume(hireUserVo.getUserNum()); //이력서 최소1개 있기 위해서 임시이력서 테이블 생성
 		
 		if (results <= 0) {
 	        return false;
@@ -108,6 +126,36 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
     	agreeVo.setAgreeYn(value);
     	agreeVo.setPages("regist");
 		return agreeVo;
+	}
+
+	@Override
+	public HireUserVo selectHireUserInfo(int userNum) {
+		return hireDao.selectHireUserInfo(userNum);
+	}
+
+	@Override
+	public String updateUserPhoto(MultipartFile file, int userNum) throws IOException {
+		String uploadPath = propertiesService.getString("resume.store.path");
+	    String storeUrl   = propertiesService.getString("resume.store.url");
+
+	    String filename = commonFileService.saveFile(file, uploadPath);
+
+	    // 기존 파일명 조회
+	    HireUserVo hireUserVo = hireDao.selectHireUserInfo(userNum);
+	    String oldFileName = hireUserVo.getUserPhotoName();
+	    String oldFilePath = hireUserVo.getUserPhotoPath();
+	    if(oldFileName != null && oldFilePath != null) {
+	    	commonFileService.deleteFile(oldFilePath, oldFileName);
+	    }
+	    
+	    Map<String, Object> updateMap = new HashMap<>();
+	    updateMap.put("userNum", userNum);
+	    updateMap.put("userPhotoName", filename);
+	    updateMap.put("userPhotoPath", uploadPath);
+
+	    hireMapper.updateUserPhoto(updateMap);
+
+	    return storeUrl + filename; // 뷰에서 쓸 URL 반환
 	}
 	
 	

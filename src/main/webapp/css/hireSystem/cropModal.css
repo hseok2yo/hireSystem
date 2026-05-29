@@ -1,0 +1,151 @@
+/* ── 크롭 모달 오버레이 ── */
+#cropModal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#cropModal.hidden { display: none; }
+
+/* ── 모달 박스 ── */
+.crop-modal-box {
+    background: #fff;
+    border-radius: 8px;
+    padding: 32px 36px;
+    width: 600px;
+    position: relative;
+}
+.crop-modal-box h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+.crop-modal-close {
+    position: absolute;
+    top: 16px; right: 20px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #666;
+}
+
+/* ── 안내문 ── */
+.crop-guide {
+    background: #f9f9f9;
+    border-radius: 6px;
+    padding: 14px 18px 14px 32px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* ── 원본 + 미리보기 영역 ── */
+.crop-preview-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: #f0f2f5;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+/* ── 원본사진 / 이력서용 사진 타이틀 ── */
+.crop-left p, .crop-right p {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* ── 원본사진 영역 ── */
+.crop-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 플레이스홀더 박스 */
+#cropPlaceholder {
+    width: 260px;
+    height: 195px;
+    background: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #aaa;
+}
+
+/* 이미지 - Cropper가 붙는 곳, 크기 제한만 */
+#cropImage {
+    display: none;
+    max-width: 260px;
+    max-height: 260px;
+}
+
+/* ── 화살표 ── */
+.crop-arrow {
+    font-size: 28px;
+    color: #aaa;
+    flex-shrink: 0;
+}
+
+/* ── 이력서용 사진 미리보기 ── */
+.crop-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#preview {
+    width: 100px;
+    height: 140px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+/* ── 파일 선택 ── */
+.crop-file-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+}
+.crop-file-area input[type="file"] { display: none; }
+.crop-file-label span {
+    background: #fff;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 5px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.crop-file-name { font-size: 13px; color: #888; }
+.crop-file-info { font-size: 12px; color: #888; margin: 2px 0; }
+
+/* ── 하단 버튼 ── */
+.crop-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+.crop-buttons .btn-outline { width: 120px; }
+.crop-buttons .btn-primary { width: 120px; }
+.cropper-bg {
+    background-image: none !important;
+    background-color: #fff;
+}

@@ -34,15 +34,15 @@ public class CkEditor5Controller {
 	public Map<String, Object> uploadImage(
 	        @RequestParam("upload") MultipartFile file) throws IOException {
 		
-		String uploadPath = propertiesService.getString("image.store.path"); // 저장 폴더
-	    String storeUrl    = propertiesService.getString("image.store.url");
+		String uploadPath = propertiesService.getString("community.store.path"); // 저장 폴더
+	    String storeUrl    = propertiesService.getString("community.store.url");
 	    
 	    Map<String, Object> result = new HashMap<>();
 	    
 	    String filename = commonFileService.saveFile(file, uploadPath); //파일저장
 	   	    
 	    Map<String, Object> insertMap = new HashMap<>();
-	    insertMap.put("filePath", storeUrl);
+	    insertMap.put("filePath", uploadPath);
 	    insertMap.put("fileName", filename);
 	    insertMap.put("status", "TEMP");
 	    

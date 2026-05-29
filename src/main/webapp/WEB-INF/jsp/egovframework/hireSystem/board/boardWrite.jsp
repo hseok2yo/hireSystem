@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="/css/hireSystem/boardWrite.css" />
 <script defer src="/js/hireSystem/ckeditorcustom.js"></script>
 <script defer src="/js/hireSystem/common.js"></script>
-<script defer="defer" src="/js/hireSystem/boardWrite.js"></script>
+<script defer="defer" src="/js/hireSystem/board/boardWrite.js"></script>
 </head>
 <body>
 	<div class="write-container">

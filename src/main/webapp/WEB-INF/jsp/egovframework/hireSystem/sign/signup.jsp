@@ -15,9 +15,6 @@
 <body>
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/header.jsp"></jsp:include>
 
-	<!-- 로그인타입 체크 -->
-	<input type="hidden" id="isKakao" value="${isKakao}">
-	<input type="hidden" name="loginType" value="${loginType}">
 	
 	<main class="signup-container">
         <div class="signup-content">
@@ -27,6 +24,10 @@
             </div>
 
             <form class="signup-form" id="signupForm" action="/hireSystem/signup/registMember.do" method="POST">
+	            <!-- 로그인타입 체크 -->
+				<input type="hidden" id="isKakao" value="${isKakao}">
+				<input type="hidden" name="loginType" value="${loginType}">
+				
                 <!-- 회원 유형 선택 -->
                 <div class="form-section">
                     <h2>회원 유형</h2>

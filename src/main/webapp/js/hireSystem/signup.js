@@ -15,6 +15,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	if(isKakao) {
         // 카카오 전용 초기화
         validateFormKakao();
+		// 카카오인데 이메일 없는 경우 인증 초기화
+	    const kakaoEmailVerified = document.getElementById('kakaoEmailVerified').value;
+	    if (kakaoEmailVerified === 'false') {
+	        emailVerifyClick(); //이메일 인증클릭
+	        emailVerifyCheck(); //이메일 인증번호 확인
+	    }
         
     } else {
         // 일반 전용 초기화
@@ -197,7 +203,13 @@ function validateFormKakao() {
         // 이름, 휴대폰만 체크
         if (!nameCheck()) return;
         if (!phoneCheck()) return;
-        
+        // 카카오 이메일 여부 확인
+        const kakaoEmailVerified = document.getElementById('kakaoEmailVerified').value;
+        if (kakaoEmailVerified === 'false') {
+            // 카카오 이메일 없는 경우 → 직접입력 + 인증 필요
+            if (!emailCheck()) return;
+            if (!emailValidAccess()) return;
+        }
         // 약관동의
         const requiredAgreements = Array.from(document.querySelectorAll('input[name="agreements"].required'));
         if (!requiredAgreements.every(checkbox => checkbox.checked)) {

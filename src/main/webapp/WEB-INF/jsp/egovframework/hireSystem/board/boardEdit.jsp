@@ -11,7 +11,7 @@
     <script src="https://cdn.ckeditor.com/ckeditor5/48.0.1/ckeditor5.umd.js"></script>
     <link rel="stylesheet" href="<c:url value='/css/hireSystem/boardEdit.css' />" />
     <script defer src="/js/hireSystem/ckeditorcustom.js"></script>
-    <script defer src="/js/hireSystem/boardEdit.js"></script>
+    <script defer src="/js/hireSystem/board/boardEdit.js"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/header.jsp"></jsp:include>

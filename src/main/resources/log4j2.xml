@@ -37,9 +37,14 @@
             <AppenderRef ref="console"/>
             <AppenderRef ref="file"/>
         </Logger>
-
+		
+		<!-- 이거 추가 -->
+	    <Logger name="org.springframework" level="DEBUG" additivity="false">
+	        <AppenderRef ref="console"/>
+	    </Logger>
+	    
         <!-- General logging -->
-        <Root level="INFO">
+        <Root level="DEBUG">
             <AppenderRef ref="console"/>
         </Root>
     </Loggers>

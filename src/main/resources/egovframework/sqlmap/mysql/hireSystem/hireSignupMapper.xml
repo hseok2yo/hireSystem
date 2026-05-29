@@ -10,4 +10,14 @@
 		WHERE USER_ID = #{id}
 	</select>
 	
+	<!-- 대표이미지 업데이트 -->
+	<update id="updateUserPhoto" parameterType="map">
+		UPDATE HIRE_USER SET
+			USER_PHOTO_NAME = #{userPhotoName}
+			, USER_PHOTO_PATH = #{userPhotoPath}
+		WHERE
+			USER_NUM = #{userNum}
+	
+	</update>
+	
 </mapper>

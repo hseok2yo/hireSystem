@@ -21,19 +21,35 @@ public class ImageServeController {
 	private EgovPropertyService propertiesService;
 		
 	/**
-	 * ckeditor 이미지업로드
+	 * 이미지 보여주기
+	 * @param type 이미지 테이블 종류
 	 * @param filename 파일명
 	 * @param response
 	 * @throws Exception
 	 */
-	// store 이미지 서빙
-	@RequestMapping("/image/store.do")
-	public void serveStoreImage(@RequestParam String filename,
-	                       HttpServletResponse response) throws Exception {
-	    String path = propertiesService.getString("image.store.path");
+	@RequestMapping("/image/view.do")
+	public void serveImage(
+	        @RequestParam String type,
+	        @RequestParam String filename,
+	        HttpServletResponse response) throws Exception {
+
+	    String path = "";
+
+	    switch(type) {
+	        case "community":
+	            path = propertiesService.getString("community.store.path");
+	            break;
+
+	        case "resume":
+	            path = propertiesService.getString("resume.store.path");
+	            break;
+
+	        default:
+	            throw new IllegalArgumentException("잘못된 타입");
+	    }
+
 	    serveImageFile(path, filename, response);
 	}
-	
 	
 	// 공통 메서드
 	private void serveImageFile(String path, String filename, HttpServletResponse response) throws Exception {

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireResumeDao">
+	
+	<!-- 이력서 기본정보 조회 -->
+	<select id="selectResumeUserInfo" parameterType="int" resultType="egovMap">
+		SELECT 
+			R.RESUME_ID,
+			COALESCE(U.USER_NUM, R.USER_NUM)      AS USER_NUM,
+			R.TITLE,
+			COALESCE(R.NAME,     U.USER_NM)      AS NAME,
+			DATE_FORMAT(COALESCE(R.BIRTH_DATE, U.BIRTH_DATE), '%Y-%m-%d') AS BIRTH_DATE,
+			R.GENDER,
+			COALESCE(R.PHONE,    U.USER_PHONE)   AS PHONE,
+			COALESCE(R.EMAIL,    U.USER_EMAIL)   AS EMAIL,
+			R.ADDRESS_FIRST,
+			R.ADDRESS_SECOND,
+			U.USER_PHOTO_NAME,
+		    U.USER_PHOTO_PATH,
+		    U.USER_ID,
+		    U.KAKAO_ID,
+		    U.USER_MEMBER_TYPE,
+		    TIMESTAMPDIFF(YEAR, U.BIRTH_DATE, CURDATE()) AS AGE
+		FROM HIRE_USER U
+		LEFT JOIN RESUME R 
+			ON U.USER_NUM = R.USER_NUM
+		WHERE U.USER_NUM = #{userNum}
+	</select>
+	
+	<!-- 이력서  임시resume생성 -->
+	<insert id="insertEmptyResume" parameterType="int">
+		INSERT INTO RESUME
+			(
+				USER_NUM
+				,CREATED_AT
+				,IS_MAIN
+			) VALUES
+			(
+				#{userNum}
+				,NOW()	
+				,'Y'		
+			)
+	</insert>
+</mapper>

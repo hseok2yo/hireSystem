@@ -84,7 +84,7 @@
 		<div class="write-btn-area">
 			<button type="button" class="write-btn">글쓰기</button>
 		</div>
-		<script defer src="/js/hireSystem/boardList.js"></script>
+		<script defer src="/js/hireSystem/board/boardList.js"></script>
 
 		<div class="board-content">
 			<table class="board-table">

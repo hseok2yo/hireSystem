@@ -176,7 +176,7 @@ public class HireBoardListServiceImpl extends EgovAbstractServiceImpl implements
 	    log.info("boardUpdate 결과: {}", result);
 	    
 	    // 5. 파일 삭제 (공통 서비스)
-	    String storePath = propertiesService.getString("image.store.path");
+	    String storePath = propertiesService.getString("community.store.path");
 	    commonFileService.deleteFiles(storePath, toDelete);
 
 	    log.info("=== boardUpdate 서비스 종료 ===");
@@ -196,7 +196,7 @@ public class HireBoardListServiceImpl extends EgovAbstractServiceImpl implements
 		int result = boardListMapper.boardDelete(boardNum);
 		
 		// 파일 삭제 (공통 서비스)
-	    String storePath = propertiesService.getString("image.store.path");
+	    String storePath = propertiesService.getString("community.store.path");
 	    commonFileService.deleteFiles(storePath, storedFilenames);
 		
 		return result;

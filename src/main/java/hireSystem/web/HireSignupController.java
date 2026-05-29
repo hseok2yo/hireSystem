@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,8 +29,15 @@ public class HireSignupController {
 	private HireSignupService hireSignupService;
 	
 	@RequestMapping("/signup.do")
-	public String signup(HttpSession session, Model model) {
+	public String signup(HttpSession session, Model model
+			,@RequestParam(value = "type", defaultValue = "normal") String type) {
 	    KakaoUserVo kakaoUser = (KakaoUserVo) session.getAttribute("kakaoUser");
+	    
+	    // 일반 회원가입으로 온 경우 카카오 세션 제거
+	    if (!"kakao".equals(type)) {
+	        session.removeAttribute("kakaoUser");
+	        kakaoUser = null;
+	    }
 	    
 	    if(kakaoUser != null) {
 	        model.addAttribute("kakaoUser", kakaoUser); //카카오사용자 정보 vo
@@ -39,6 +47,8 @@ public class HireSignupController {
 	        model.addAttribute("isKakao", false);
 	        model.addAttribute("loginType", "NORMAL");
 	    }
+	    // 현재 연도 추가
+	    model.addAttribute("currentYear", java.time.LocalDate.now().getYear());
 	    
 	    return path + "signup";
 	}
