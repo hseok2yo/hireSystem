@@ -1,7 +1,9 @@
 package hireSystem.service;
 
 import java.io.IOException;
+import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import hireSystem.vo.HireUserVo;
@@ -27,7 +29,7 @@ public interface HireSignupService {
 	 * @param userNum 조회할 유저pk번호
 	 * @return 유저정보 단건조회
 	 */
-	public HireUserVo selectHireUserInfo(int userNum);
+	public EgovMap selectHireUserInfo(int userNum);
 
-	public String updateUserPhoto(MultipartFile file, int userNum) throws IOException;
+	public Map<String, Object> updateUserPhoto(MultipartFile file, MultipartFile original, int userNum) throws IOException;
 }

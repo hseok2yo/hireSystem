@@ -57,10 +57,25 @@ public class HireUserVo {
 	/** 만나이*/
 	private int age;
 	
-	/** 대표이미지 파일명*/
+	/** 대표이미지 크롭용 파일명*/
 	private String userPhotoName;
+	
+	/** 대표이미지 원본 파일명*/
+	private String userPhotoOriginalname;
 	
 	/** 대표이미지 경로*/
 	private String userPhotoPath;
+	
+	
+	
+	/** 사진경로 */
+	private String userPhotoUrl;
+	
+	/** 이력서 id*/
+	private int resumeId;
+	
+	/** */
+	
+	
 	
 }

@@ -23,7 +23,7 @@ function openCropModal() {
         cropper = new Cropper(img, {
             aspectRatio: 100 / 140,
             preview: '#preview',
-            viewMode: 1,
+            viewMode: 3,
         });
     }
 }
@@ -78,6 +78,14 @@ function submitCrop() {
 	cropper.getCroppedCanvas({ width: 100, height: 140 }).toBlob(function(blob) {
 		const formData = new FormData();
 		formData.append('upload', blob, 'profile.jpg');
+		
+		const originalFile = document.getElementById('photoFile').files[0];
+		
+		// 파일 새로 선택했을 때만 원본 추가
+        if (originalFile) {
+            formData.append('original', originalFile);
+			console.log("originalL" + originalFile);
+        }
 
 		fetch('/hireSystem/resume/image/uploadPhoto.do', {
 			method: 'POST',
@@ -87,6 +95,10 @@ function submitCrop() {
 			.then(data => {
 				if (data.success) {
 					document.querySelector('.photo-box img').src = data.url;
+					// 파일 새로 선택했을 때만 cropImage src 업데이트
+					if (data.originalUrl) { //data.url 넣는이유가 기존유저들 만약 원본파일저장안하고 크롭본만 되어있으면 에러방지하려고
+						document.getElementById('cropImage').src = data.originalUrl || data.url;;
+					}
 					cancelCrop();
 				} else {
 					alert(data.message); // 서버에서 보낸 메시지

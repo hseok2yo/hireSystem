@@ -9,28 +9,37 @@ import org.springframework.stereotype.Service;
 
 import hireSystem.service.HireResumeService;
 import hireSystem.service.dao.HireResumeDao;
+import hireSystem.service.dao.HireSignupDao;
+import hireSystem.vo.HireResumeVo;
 
 @Service("hireResumeService")
 public class HireResumeServiceImpl  extends EgovAbstractServiceImpl implements HireResumeService{
-	
+
 	@Resource(name = "hireResumeDao")
 	private HireResumeDao hireResumeDao;
-	
+
 	@Resource(name = "propertiesService")
 	private EgovPropertyService propertiesService;
 
-	@Override
-	public EgovMap selectResumeUserInfo(int loginUserNum) {
-		
-		
-		EgovMap map = hireResumeDao.selectResumeUserInfo(loginUserNum);
+	@Resource(name = "hireSignupDao")
+	private HireSignupDao hireSignupDao;
 
-		
+	@Override
+	public EgovMap selectHireUserInfo(int loginUserNum) {
+
+		EgovMap map = hireSignupDao.selectHireUserInfo(loginUserNum);
+
+
 		if (map.get("userPhotoName") != null) {
 		    String url = propertiesService.getString("resume.store.url") + (String) map.get("userPhotoName");
-		    map.put("userPhotoUrl", url);  // userPhotoName 덮어쓰지 말고 새 키로 추가
+		    map.put("userPhotoUrl", url);
 		}
-		
+
+	    if (map.get("userPhotoOriginalname") != null) {
+	        String originalUrl = propertiesService.getString("resume.store.url") + map.get("userPhotoOriginalname");
+	        map.put("userPhotoOriginalName", originalUrl);
+	    }
+
 		return map;
 	}
 
@@ -38,5 +47,17 @@ public class HireResumeServiceImpl  extends EgovAbstractServiceImpl implements H
 	public int insertEmptyResume(int loginUserNum) {
 		return hireResumeDao.insertEmptyResume(loginUserNum);
 	}
-	
+
+	@Override
+	public int insertBasicResume(HireResumeVo vo) {
+		return hireResumeDao.insertBasicResume(vo);
+	}
+
+	@Override
+	public int updateBasicResume(HireResumeVo vo) {
+
+		return hireResumeDao.updateBasicResume(vo);
+	}
+
+
 }

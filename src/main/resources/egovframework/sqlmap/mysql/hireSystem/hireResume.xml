@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hireResumeDao">
-	
+
 	<!-- 이력서 기본정보 조회 -->
 	<select id="selectResumeUserInfo" parameterType="int" resultType="egovMap">
-		SELECT 
+		SELECT
 			R.RESUME_ID,
 			COALESCE(U.USER_NUM, R.USER_NUM)      AS USER_NUM,
 			R.TITLE,
-			COALESCE(R.NAME,     U.USER_NM)      AS NAME,
+			COALESCE(R.USER_NM,     U.USER_NM)      AS USER_NM,
 			DATE_FORMAT(COALESCE(R.BIRTH_DATE, U.BIRTH_DATE), '%Y-%m-%d') AS BIRTH_DATE,
 			R.GENDER,
-			COALESCE(R.PHONE,    U.USER_PHONE)   AS PHONE,
-			COALESCE(R.EMAIL,    U.USER_EMAIL)   AS EMAIL,
+			COALESCE(R.USER_PHONE,    U.USER_PHONE)   AS USER_PHONE,
+			COALESCE(R.USER_EMAIL,    U.USER_EMAIL)   AS USER_EMAIL,
 			R.ADDRESS_FIRST,
 			R.ADDRESS_SECOND,
 			U.USER_PHOTO_NAME,
@@ -22,11 +22,11 @@
 		    U.USER_MEMBER_TYPE,
 		    TIMESTAMPDIFF(YEAR, U.BIRTH_DATE, CURDATE()) AS AGE
 		FROM HIRE_USER U
-		LEFT JOIN RESUME R 
+		LEFT JOIN RESUME R
 			ON U.USER_NUM = R.USER_NUM
 		WHERE U.USER_NUM = #{userNum}
 	</select>
-	
+
 	<!-- 이력서  임시resume생성 -->
 	<insert id="insertEmptyResume" parameterType="int">
 		INSERT INTO RESUME
@@ -37,8 +37,59 @@
 			) VALUES
 			(
 				#{userNum}
-				,NOW()	
-				,'Y'		
+				,NOW()
+				,'Y'
 			)
 	</insert>
+
+	<!-- 이력서 기본정보 등록 -->
+	<insert id="insertBasicResume" parameterType="hireResumeVo">
+		INSERT INTO RESUME
+			(
+				  USER_NUM
+				, TITLE
+				, USER_NM
+				, BIRTH_DATE
+				, GENDER
+				, USER_PHONE
+				, USER_EMAIL
+				, ADDRESS_FIRST
+				, ADDRESS_SECOND
+				, CREATED_AT
+			) VALUES
+			(
+				  #{userNum}
+				, #{title}
+				, #{userNm}
+				, #{birthDate}
+				, #{gender}
+				, #{userPhone}
+				, #{userEmail}
+				, #{addressFirst}
+				, #{addressSecond}
+				, NOW()
+			)
+			<selectKey keyProperty="resumeId" resultType="int" order="AFTER">
+		        SELECT LAST_INSERT_ID()
+		    </selectKey>
+	</insert>
+
+	<!-- 기본정보 업뎃 -->
+	<update id="updateBasicResume" parameterType="hireResumeVo">
+		UPDATE RESUME
+		<set>
+		    <if test="title != null">TITLE = #{title},</if>
+		    <if test="userNm != null">USER_NM = #{userNm},</if>
+		    <if test="birthDate != null">BIRTH_DATE = #{birthDate},</if>
+		    <if test="gender != null">GENDER = #{gender},</if>
+		    <if test="userPhone != null">USER_PHONE = #{userPhone},</if>
+		    <if test="userEmail != null">USER_EMAIL = #{userEmail},</if>
+		    <if test="addressFirst != null">ADDRESS_FIRST = #{addressFirst},</if>
+		    <if test="addressSecond != null">ADDRESS_SECOND = #{addressSecond},</if>
+		    <if test="isMain != null">IS_MAIN = #{isMain},</if>
+		    UPDATED_AT = NOW()
+		</set>
+		WHERE
+			RESUME_ID = #{resumeId}
+	</update>
 </mapper>

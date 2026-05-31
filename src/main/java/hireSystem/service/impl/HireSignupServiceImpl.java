@@ -13,6 +13,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,33 +130,55 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 	}
 
 	@Override
-	public HireUserVo selectHireUserInfo(int userNum) {
+	public EgovMap selectHireUserInfo(int userNum) {
 		return hireDao.selectHireUserInfo(userNum);
 	}
 
 	@Override
-	public String updateUserPhoto(MultipartFile file, int userNum) throws IOException {
+	public Map<String, Object> updateUserPhoto(MultipartFile file, MultipartFile original, int userNum) throws IOException {
 		String uploadPath = propertiesService.getString("resume.store.path");
 	    String storeUrl   = propertiesService.getString("resume.store.url");
-
+	    
+	    // 크롭본 저장
 	    String filename = commonFileService.saveFile(file, uploadPath);
 
 	    // 기존 파일명 조회
-	    HireUserVo hireUserVo = hireDao.selectHireUserInfo(userNum);
-	    String oldFileName = hireUserVo.getUserPhotoName();
-	    String oldFilePath = hireUserVo.getUserPhotoPath();
+	    EgovMap hireUserMap = hireDao.selectHireUserInfo(userNum);
+	    String oldFilePath = (String) hireUserMap.get("userPhotoPath");
+	    String oldFileName = (String) hireUserMap.get("userPhotoName");
+	    String oldOriginalFileName = (String) hireUserMap.get("userPhotoOriginalname");
+	    
+	    // 기존 크롭본 삭제
 	    if(oldFileName != null && oldFilePath != null) {
-	    	commonFileService.deleteFile(oldFilePath, oldFileName);
+	        commonFileService.deleteFile(oldFilePath, oldFileName);
 	    }
+	    
+		// 원본 처리
+		String originalName;
+		if (original != null && !original.isEmpty()) {
+			// 새 파일 선택 → 원본 새로 저장, 기존 원본 삭제
+			originalName = commonFileService.saveFile(original, uploadPath);
+			if (oldOriginalFileName != null && oldFilePath != null) {
+				commonFileService.deleteFile(oldFilePath, oldOriginalFileName);
+			}
+		} else {
+			// 파일 새로 선택 안 함 → 기존 원본 유지
+			originalName = oldOriginalFileName;
+		}
 	    
 	    Map<String, Object> updateMap = new HashMap<>();
 	    updateMap.put("userNum", userNum);
 	    updateMap.put("userPhotoName", filename);
 	    updateMap.put("userPhotoPath", uploadPath);
+	    updateMap.put("userPhotoOriginalname", originalName);
 
 	    hireMapper.updateUserPhoto(updateMap);
-
-	    return storeUrl + filename; // 뷰에서 쓸 URL 반환
+	    
+	    Map<String, Object> resultMap = new HashMap<>();
+	    resultMap.put("url", storeUrl + filename);
+	    resultMap.put("originalUrl", originalName != null ? storeUrl + originalName : null);
+	    
+	    return resultMap; // 뷰에서 쓸 URL 반환
 	}
 	
 	

@@ -75,7 +75,7 @@
 	</insert>
 		
 	<!-- 회원정보 단건조회 -->
-	<select id="selectHireUserInfo" parameterType="int" resultType="hireUserVo">
+	<select id="selectHireUserInfo" parameterType="int" resultType="egovMap">
 	    SELECT
 	        USER_NUM
 	       , USER_ID
@@ -84,13 +84,14 @@
 	       , USER_NM
 	       , USER_PHONE
 	       , USER_MEMBER_TYPE
+	       , USER_PHOTO_ORIGINALNAME
 	       , USER_PHOTO_NAME
 		   , USER_PHOTO_PATH
 	       , KAKAO_ID
 	       , LOGIN_TYPE
 	       , DATE_FORMAT(BIRTH_DATE, '%Y-%m-%d') AS BIRTH_DATE
 	       , TIMESTAMPDIFF(YEAR, BIRTH_DATE, CURDATE()) AS AGE
-	       , REG_DT
+	       , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT  -- 추가
 	    FROM HIRE_USER
 	    WHERE USER_NUM = #{userNum}
 	</select>

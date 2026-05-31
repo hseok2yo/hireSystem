@@ -15,6 +15,7 @@
 		UPDATE HIRE_USER SET
 			USER_PHOTO_NAME = #{userPhotoName}
 			, USER_PHOTO_PATH = #{userPhotoPath}
+			, USER_PHOTO_ORIGINALNAME = #{userPhotoOriginalname}
 		WHERE
 			USER_NUM = #{userNum}
 	

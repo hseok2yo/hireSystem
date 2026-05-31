@@ -121,6 +121,6 @@
     </main>
 
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/footer.jsp"></jsp:include>
-    <script defer src="<c:url value='/js/hireSystem/resumeMain.js' />"></script>
+    <script defer src="/js/hireSystem/resume/resumeMain.js"></script>
 </body>
 </html>

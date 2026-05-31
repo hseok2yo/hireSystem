@@ -2,9 +2,8 @@ package hireSystem.service.dao;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
-
-import com.mysql.cj.Session;
 
 import hireSystem.common.HireSystemAbstractMapper;
 import hireSystem.vo.HireUserVo;
@@ -53,7 +52,7 @@ public class HireSignupDao extends HireSystemAbstractMapper {
 	 * @param userNum 유저usernum pk값
 	 * @return 유저전체정보
 	 */
-	public HireUserVo selectHireUserInfo(int userNum) {
+	public EgovMap selectHireUserInfo(int userNum) {
 		return selectOne("hireSignupDao.selectHireUserInfo", userNum);
 	}
 

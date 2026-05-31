@@ -13,15 +13,15 @@
 <body>
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/header.jsp"></jsp:include>
 	<jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/resume/resumeCropModal.jsp"></jsp:include>
-	
+
 	<script src="/js/hireSystem/resume/resumeCommon.js"></script>
 	<script src="/js/hireSystem/resume/resumeBasic.js"></script>
-	
+
 	<form id="resumeForm">
 		<!-- 공통 hidden -->
-	    <input type="hidden" name="resumeId" value="${userInfo.resumeId}">
-	    <input type="hidden" name="userNum" value="${userInfo.userNum}">
-	
+	    <input type="hidden" id="resumeId" name="resumeId" value="${userInfo.resumeId}">
+	    <input type="hidden" id="userNum" name="userNum" value="${userInfo.userNum}">
+
 	    <div class="resume-page">
 	        <div class="resume-layout">
 	            <div class="resume-left">
@@ -35,8 +35,10 @@
 	                        <div class="basic-info-view" id="basicInfoView">
 	                            <div class="basic-info-view-header">
 	                                <div>
-	                                    <h3>${userInfo.name }</h3>
-	                                    <p>${userInfo.birthDate.substring(0, 4)}년 (${userInfo.age}세)</p>
+	                                    <h3>${userInfo.userNm }</h3>
+	                                    <c:if test="${not empty userInfo.birthDate}">
+										    <p>${userInfo.birthDate.substring(0, 4)}년 (${userInfo.age}세)</p>
+										</c:if>
 	                                </div>
 	                                <button type="button" class="icon-btn edit-basic-info" aria-label="수정">
 	                                    <i class="fas fa-pencil-alt"></i>
@@ -49,11 +51,11 @@
 	                                </div>
 	                                <div class="summary-item">
 	                                    <i class="fas fa-envelope"></i>
-	                                    <span>${userInfo.email }</span>
+	                                    <span>${userInfo.userEmail }</span>
 	                                </div>
 	                                <div class="summary-item">
 	                                    <i class="fas fa-mobile-alt"></i>
-	                                    <span>${userInfo.phone }</span>
+	                                    <span>${userInfo.userPhone }</span>
 	                                </div>
 	                                <div class="summary-item">
 	                                    <i class="fas fa-map-marker-alt"></i>
@@ -61,13 +63,13 @@
 	                                </div>
 	                            </div>
 	                        </div>
-								
+
 							<!-- 기본정보 숨겨진부분(수정페이지) -->
 	                        <div class="basic-info-edit hidden" id="basicInfoEdit">
 	                            <div class="basic-info-form">
 	                                <div class="form-row form-row-wide">
 	                                    <label>이름 <span>*</span></label>
-	                                    <input type="text" name="name" value="${userInfo.name}">
+	                                    <input type="text" name="userNm" value="${userInfo.userNm}">
 	                                </div>
 	                                <div class="form-row-group">
 	                                    <div class="form-row">
@@ -86,7 +88,7 @@
 	                                <div class="form-row form-row-with-button">
 	                                    <label>이메일 <span>*</span></label>
 	                                    <div class="contact-row">
-	                                        <input type="text" name="email" value="${userInfo.email }" readonly>
+	                                        <input type="text" name="userEmail" value="${userInfo.userEmail }" readonly>
 	                                        <button type="button" class="btn-secondary">인증</button>
 	                                        <button type="button" class="btn-outline">수정</button>
 	                                    </div>
@@ -94,7 +96,7 @@
 	                                <div class="form-row form-row-with-button">
 	                                    <label>휴대폰 <span>*</span></label>
 	                                    <div class="contact-row">
-	                                        <input type="text" name="phone" value="${userInfo.phone }">
+	                                        <input type="text" name="userPhone" value="${userInfo.userPhone }">
 	                                        <button type="button" class="btn-secondary">인증</button>
 	                                        <button type="button" class="btn-outline">수정</button>
 	                                    </div>
@@ -115,7 +117,7 @@
 	                                </div>
 	                            </div>
 	                        </div>
-	
+
 	                        <div class="basic-info-photo">
 	                            <div class="photo-box">
 	                                <img src="${userInfo.userPhotoUrl }">
@@ -124,7 +126,7 @@
 	                        </div>
 	                    </div>
 	                </div>
-	
+
 	                <div class="resume-body">
 	                    <main class="resume-content">
 	                        <section class="section-card section-summary">
@@ -137,7 +139,7 @@
 	                            </div>
 	                            <div class="section-note">ChatGPT API 기반으로 커리어소개 생성하고 나의 이력서를 어필해보세요!</div>
 	                        </section>
-	
+
 	                        <section class="section-card section-career" id="career">
 	                            <div class="section-header">
 	                                <div>
@@ -166,7 +168,7 @@
 	                                </div>
 	                            </article>
 	                        </section>
-	
+
 	                        <section class="section-card section-education" id="education">
 	                            <div class="section-header">
 	                                <div>
@@ -194,7 +196,7 @@
 	                                <p class="education-major">문과계열</p>
 	                            </article>
 	                        </section>
-	
+
 	                        <section class="section-card section-skill" id="skills">
 	                            <div class="section-header">
 	                                <div>
@@ -224,7 +226,7 @@
 	                                <span>Nexacro</span>
 	                            </div>
 	                        </section>
-	
+
 	                        <section class="section-card section-experience" id="experience">
 	                            <div class="section-header">
 	                                <div>
@@ -235,7 +237,7 @@
 	                                    <button type="button" class="btn-text">+ 추가</button>
 	                                </div>
 	                            </div>
-	
+
 	                            <article class="experience-entry">
 	                                <div class="experience-top">
 	                                    <strong>그린컴퓨터아카데미</strong>
@@ -248,7 +250,7 @@
 	                                    <li>공공데이터를 활용한 창의적 서비스 적용 및 데이터 융합</li>
 	                                </ul>
 	                            </article>
-	
+
 	                            <article class="experience-entry">
 	                                <div class="experience-top">
 	                                    <strong>지아이티아카데미 부산</strong>
@@ -261,7 +263,7 @@
 	                                    <li>서류 및 교재정리</li>
 	                                </ul>
 	                            </article>
-	
+
 	                            <article class="experience-entry">
 	                                <div class="experience-top">
 	                                    <strong>부산양정인력개발센터</strong>
@@ -277,7 +279,7 @@
 	                    </main>
 	                </div>
 	            </div>
-	
+
 	            <aside class="resume-sidebar">
 	                <section class="completion-card">
 	                    <div class="completion-header">
@@ -290,7 +292,7 @@
 	                    <p>윤형석 회원님의 이력서가 완성됐어요!</p>
 	                    <button type="button" class="coach-btn primary">AI 이력서 코칭 결과 보기</button>
 	                </section>
-	
+
 	                <section class="sidebar-menu">
 	                    <h3>My Career</h3>
 	                    <ul class="sidebar-menu-list">
@@ -308,7 +310,7 @@
 	                </section>
 	            </aside>
 	        </div>
-	
+
 	        <div class="resume-actions">
 	            <button type="button" class="btn-outline">취소</button>
 	            <button type="button" class="btn-primary submit-complete">작성완료</button>

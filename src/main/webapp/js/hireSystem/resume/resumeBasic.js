@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
         saveButton.addEventListener('click', function(e) {
             e.preventDefault();
             //서버저장 로직
-			var formData = buildFormData('basicInfoEdit'); // 섹션 안 input/select/textarea 자동 수집 
+			var formData = buildFormData('basicInfoEdit'); // 섹션 안 input/select/textarea 자동 수집
 			fetch('/hireSystem/resume/saveBasicResume.do', {
 				method: 'POST',
 				body: formData
@@ -40,12 +40,21 @@ document.addEventListener('DOMContentLoaded', function() {
 				.then(response => response.json())
 				.then(data => {
 					console.log(data);
+					if(data.result) {
+						// insert였으면 resumeId를 hidden 필드 등에 세팅
+				        if(data.resumeId) {
+				            document.getElementById("resumeId").value = data.resumeId;
+				        }
+					}
+					alert(data.message);
 					showViewMode(viewBlock, editBlock, photoEditButton);
+					updateBasicInfoView(); //보여주는 view도 데이터수정
 				})
 				.catch(error => {
 					console.error(error);
+					alert("오류가 발생했습니다. 다시 시도해주세요.");
 				});
-			
+
 
         });
     }
@@ -84,5 +93,19 @@ function showEditMode(viewBlock, editBlock, photoEditButton) {
     if (photoEditButton) photoEditButton.classList.remove('hidden');
 }
 
+function updateBasicInfoView() {
+    const form = document.getElementById("resumeForm");
+    const getValue = (name) => form.querySelector(`[name='${name}']`).value;
+
+    document.querySelector("#basicInfoView h3").textContent = getValue("userNm");
+    document.querySelector("#basicInfoView .summary-item:nth-child(2) span").textContent = getValue("userEmail");
+    document.querySelector("#basicInfoView .summary-item:nth-child(3) span").textContent = getValue("userPhone");
+    document.querySelector("#basicInfoView .summary-item:nth-child(4) span").textContent = getValue("addressFirst") + " " + getValue("addressSecond");
+
+    const birthDate = getValue("birthDate");
+    if(birthDate) {
+        document.querySelector("#basicInfoView p").textContent = birthDate.substring(0, 4) + "년";
+    }
+}
 
 

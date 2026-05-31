@@ -21,8 +21,8 @@
 				<div id="cropPlaceholder"
 					${not empty userInfo.userPhotoUrl ? 'style="display:none"' : ''}>
 					편집할 사진을 등록해주세요</div>
-				<img id="cropImage" src="${userInfo.userPhotoUrl}"
-					style="${not empty userInfo.userPhotoUrl ? '' : 'display:none'}">
+				<img id="cropImage" src="${userInfo.userPhotoOriginalName}"
+					style="${not empty userInfo.userPhotoOriginalName ? '' : 'display:none'}">
 			</div>
 			<span class="crop-arrow">›</span>
             <div class="crop-right">
