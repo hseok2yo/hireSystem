@@ -38,15 +38,17 @@ button {
 
 .icon-btn {
     border: none;
-    background: #eef2ff;
-    color: var(--primary);
-    width: 38px;
-    height: 38px;
-    border-radius: 999px;
+    background: transparent;
+    color: #cbd5e1;
+    width: 32px;
+    height: 32px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    border-radius: 6px;
     cursor: pointer;
+    transition: all 0.15s;
+    font-size: 16px;
 }
 
 .icon-btn i {
@@ -532,6 +534,136 @@ button {
     margin-top: 18px;
 }
 
+.career-add-form {
+    padding: 22px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    margin-bottom: 18px;
+}
+
+.career-add-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.company-row {
+    grid-column: 1 / -1;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-row-full {
+    grid-column: 1 / -1;
+}
+
+.form-row-half {
+    grid-column: span 6;
+}
+
+.form-row-quarter {
+    grid-column: span 4;
+}
+
+.current-job-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.company-input-wrap {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.company-input-wrap input {
+    flex: 1;
+}
+
+.company-input-wrap .icon-btn {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    background: #fff;
+    color: #334155;
+}
+
+.career-add-grid input,
+.career-add-grid textarea {
+    width: 100%;
+    min-height: 44px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    background: #fcfcfd;
+}
+
+.career-add-grid textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+.career-add-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #d1d5db;
+    border-radius: 999px;
+    transition: .2s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .2s;
+}
+
+.switch input:checked + .slider {
+    background-color: #2563eb;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
 .coach-btn {
     border: 1px solid transparent;
     background: #eef2ff;
@@ -540,6 +672,99 @@ button {
     border-radius: 999px;
     cursor: pointer;
     font-weight: 700;
+}
+
+.career-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.career-info {
+    flex: 1;
+}
+
+.career-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.career-info strong {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.career-info strong::after {
+    content: '|';
+    margin-left: 8px;
+    color: #cbd5e1;
+    font-weight: normal;
+}
+
+.career-info p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 4px 0 0 0;
+}
+
+.career-period {
+    font-size: 13px;
+    color: #94a3b8;
+    display: inline;
+}
+
+.career-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.icon-btn {
+    border: none;
+    background: transparent;
+    color: #cbd5e1;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 16px;
+}
+
+.icon-btn:hover {
+    background: #f1f5f9;
+}
+
+.btn-edit-career {
+    color: #94a3b8;
+}
+
+.btn-edit-career:hover {
+    color: #3b82f6;
+    background: #dbeafe;
+}
+
+.btn-delete-career {
+    color: #94a3b8;
+}
+
+.btn-delete-career:hover {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.career-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
 .section-skill .skill-tags {
@@ -894,3 +1119,6 @@ button {
     }
 }
 
+#basicFormElem {
+    display: contents;
+}

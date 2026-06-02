@@ -1,6 +1,5 @@
 package hireSystem.vo;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 import lombok.Data;
@@ -46,6 +45,12 @@ public class HireResumeVo {
 
     /** 대표이력서 설정*/
     private String isMain;
+
+    private int offset;
+    private int page;
+	private int pageSize;
+	private String searchSort;
+
 
 
 }

@@ -2,31 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="hireResumeDao">
 
-	<!-- 이력서 기본정보 조회 -->
-	<select id="selectResumeUserInfo" parameterType="int" resultType="egovMap">
-		SELECT
-			R.RESUME_ID,
-			COALESCE(U.USER_NUM, R.USER_NUM)      AS USER_NUM,
-			R.TITLE,
-			COALESCE(R.USER_NM,     U.USER_NM)      AS USER_NM,
-			DATE_FORMAT(COALESCE(R.BIRTH_DATE, U.BIRTH_DATE), '%Y-%m-%d') AS BIRTH_DATE,
-			R.GENDER,
-			COALESCE(R.USER_PHONE,    U.USER_PHONE)   AS USER_PHONE,
-			COALESCE(R.USER_EMAIL,    U.USER_EMAIL)   AS USER_EMAIL,
-			R.ADDRESS_FIRST,
-			R.ADDRESS_SECOND,
-			U.USER_PHOTO_NAME,
-		    U.USER_PHOTO_PATH,
-		    U.USER_ID,
-		    U.KAKAO_ID,
-		    U.USER_MEMBER_TYPE,
-		    TIMESTAMPDIFF(YEAR, U.BIRTH_DATE, CURDATE()) AS AGE
-		FROM HIRE_USER U
-		LEFT JOIN RESUME R
-			ON U.USER_NUM = R.USER_NUM
-		WHERE U.USER_NUM = #{userNum}
-	</select>
-
 	<!-- 이력서  임시resume생성 -->
 	<insert id="insertEmptyResume" parameterType="int">
 		INSERT INTO RESUME
@@ -48,25 +23,11 @@
 			(
 				  USER_NUM
 				, TITLE
-				, USER_NM
-				, BIRTH_DATE
-				, GENDER
-				, USER_PHONE
-				, USER_EMAIL
-				, ADDRESS_FIRST
-				, ADDRESS_SECOND
 				, CREATED_AT
 			) VALUES
 			(
 				  #{userNum}
 				, #{title}
-				, #{userNm}
-				, #{birthDate}
-				, #{gender}
-				, #{userPhone}
-				, #{userEmail}
-				, #{addressFirst}
-				, #{addressSecond}
 				, NOW()
 			)
 			<selectKey keyProperty="resumeId" resultType="int" order="AFTER">
@@ -74,22 +35,145 @@
 		    </selectKey>
 	</insert>
 
-	<!-- 기본정보 업뎃 -->
+	<!-- 이력서정보 업뎃 -->
 	<update id="updateBasicResume" parameterType="hireResumeVo">
 		UPDATE RESUME
 		<set>
 		    <if test="title != null">TITLE = #{title},</if>
-		    <if test="userNm != null">USER_NM = #{userNm},</if>
-		    <if test="birthDate != null">BIRTH_DATE = #{birthDate},</if>
-		    <if test="gender != null">GENDER = #{gender},</if>
-		    <if test="userPhone != null">USER_PHONE = #{userPhone},</if>
-		    <if test="userEmail != null">USER_EMAIL = #{userEmail},</if>
-		    <if test="addressFirst != null">ADDRESS_FIRST = #{addressFirst},</if>
-		    <if test="addressSecond != null">ADDRESS_SECOND = #{addressSecond},</if>
 		    <if test="isMain != null">IS_MAIN = #{isMain},</if>
 		    UPDATED_AT = NOW()
 		</set>
 		WHERE
 			RESUME_ID = #{resumeId}
 	</update>
+
+	<!-- 대표이력서 조회 -->
+	<select id="selectResumeMainInfo" parameterType="int" resultType="hireResumeVo">
+		SELECT
+			  RESUME_ID
+			, USER_NUM
+			, TITLE
+			, CREATED_AT
+			, UPDATED_AT
+			, IS_MAIN
+		FROM RESUME
+		WHERE
+			USER_NUM = #{userNum}
+			AND IS_MAIN = 'Y'
+	</select>
+
+	<!-- 서브이력서 조회 -->
+	<select id="selectResumeSubInfo" parameterType="hireResumeVo" resultType="hireResumeVo">
+		SELECT
+			  RESUME_ID
+			, USER_NUM
+			, TITLE
+			, CREATED_AT
+			, UPDATED_AT
+			, IS_MAIN
+		FROM RESUME
+		WHERE
+			USER_NUM = #{userNum}
+			AND IS_MAIN = 'N'
+		<choose>
+		    <when test="searchSort == 'recent'">
+		        ORDER BY UPDATED_AT DESC
+		    </when>
+
+		    <when test="searchSort == 'name'">
+		        ORDER BY TITLE ASC
+		    </when>
+
+		    <otherwise>
+		        ORDER BY UPDATED_AT DESC
+		    </otherwise>
+		</choose>
+		LIMIT #{offset},#{pageSize}
+	</select>
+
+	<!-- 서브 이력서 총 개수 -->
+	<select id="selectSubTotalCount" parameterType="hireResumeVo" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM RESUME
+		WHERE
+			USER_NUM = #{userNum}
+			AND IS_MAIN = 'N'
+	</select>
+
+	<!-- 경력사항 -->
+	<select id="selectCareerInfo" parameterType="int" resultType="hireCareerVo">
+		SELECT
+			  CAREER_ID
+			, RESUME_ID
+			, COMPANY_NAME
+			, START_DATE
+			, END_DATE
+			, CURRENT_YN
+			, JOB_TITLE
+			, DEPARTMENT
+			, POSITION_NAME
+			, DUTIES
+		FROM HIRE_CAREER
+		WHERE
+			RESUME_ID = #{resumeId}
+		ORDER BY
+			CASE
+		        WHEN CURRENT_YN = 'Y' THEN 0
+		        ELSE 1
+		    END,
+		    END_DATE DESC
+	</select>
+
+	<!-- 경력 수정 -->
+	<update id="updateCareer" parameterType="hireCareerVo">
+		UPDATE HIRE_CAREER
+		<set>
+			<if test="companyName  != null">COMPANY_NAME   = #{companyName},</if>
+			<if test="startDate    != null">START_DATE     = #{startDate},</if>
+			<if test="endDate      != null">END_DATE       = #{endDate},</if>
+			<if test="currentYn    != null">CURRENT_YN     = #{currentYn},</if>
+			<if test="jobTitle     != null">JOB_TITLE      = #{jobTitle},</if>
+			<if test="department   != null">DEPARTMENT     = #{department},</if>
+			<if test="positionName != null">POSITION_NAME  = #{positionName},</if>
+			<if test="duties       != null">DUTIES         = #{duties},</if>
+			UPD_DT = NOW()
+		</set>
+		WHERE
+			CAREER_ID = #{careerId}
+		AND RESUME_ID = #{resumeId}
+	</update>
+
+	<!-- 경력사항 저장 -->
+	<insert id="insertCareer" parameterType="hireCareerVo">
+	    INSERT INTO HIRE_CAREER (
+	         RESUME_ID
+	        , COMPANY_NAME
+	        , START_DATE
+	        , END_DATE
+	        , CURRENT_YN
+	        , JOB_TITLE
+	        , DEPARTMENT
+	        , POSITION_NAME
+	        , DUTIES
+	        , REG_DT
+	    ) VALUES (
+	         #{resumeId}
+	        , #{companyName}
+	        , #{startDate}
+	        , #{endDate}
+	        , #{currentYn}
+	        , #{jobTitle}
+	        , #{department}
+	        , #{positionName}
+	        , #{duties}
+	        , NOW()
+	    )
+	</insert>
+
+	<delete id="deleteCareer" parameterType="int">
+	    DELETE FROM HIRE_CAREER
+	    WHERE
+	    	CAREER_ID = #{careerId}
+	</delete>
 </mapper>

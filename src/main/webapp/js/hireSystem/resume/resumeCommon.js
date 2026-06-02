@@ -1,36 +1,12 @@
+var RESUME_CTX = {}; //공통hidden 전역변수 저장소
+
 // 사이드바 토글
 document.addEventListener('DOMContentLoaded', function() {
-	
+	RESUME_CTX.resumeId = document.getElementById('resumeId').value;
+    RESUME_CTX.userNum = document.getElementById('userNum').value;
+
     initSidebarToggle();// 사이드바 토글
 });
-
-
-// 섹션 안의 input 긁어서 FormData 만들기
-function buildFormData(sectionId) {
-    var formData = new FormData();
-    var hidden   = getResumeHidden();
-
-    // 공통 hidden 자동으로 추가
-    formData.append('resumeId', hidden.resumeId);
-    formData.append('userNum',  hidden.userNum);
-
-    // 섹션 안 input/select/textarea 자동 수집
-    var section = document.getElementById(sectionId);
-    section.querySelectorAll('input, select, textarea').forEach(function(el) {
-        if (el.name) formData.append(el.name, el.value);
-    });
-
-    return formData;
-}
-
-
-// resumeId, userNum 공통으로 읽어오기
-function getResumeHidden() {
-    return {
-        resumeId : document.querySelector('input[name="resumeId"]').value,
-        userNum  : document.querySelector('input[name="userNum"]').value
-    };
-}
 
 
 // =============================================

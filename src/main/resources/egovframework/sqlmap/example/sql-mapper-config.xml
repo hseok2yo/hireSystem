@@ -2,19 +2,19 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-	
+
 	<settings>
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
-    
+
     <typeAliases>
 		<typeAlias alias="egovMap" type="org.egovframe.rte.psl.dataaccess.util.EgovMap"/>
 		<typeAlias alias="searchVO" type="egovframework.example.sample.service.SampleDefaultVO"/>
 		<typeAlias alias="sampleVO" type="egovframework.example.sample.service.SampleVO"/>
-		
+
 		<typeAlias alias="postPracticeVo" type="practice.vo.PostPracticeVo"/>
-		
-		
+
+
 		<!-- hireSugnUp -->
 		<typeAlias alias="hireUserVo" type="hireSystem.vo.HireUserVo"/>
 		<typeAlias alias="userAgreeDefVo" type="hireSystem.vo.UserAgreeDefVo"/>
@@ -22,10 +22,11 @@
 		<typeAlias alias="kakaoUserVo" type="hireSystem.vo.KakaoUserVo"/>
 		<typeAlias alias="boardWriteVo" type="hireSystem.vo.BoardWriteVo"/>
 		<typeAlias alias="hireResumeVo" type="hireSystem.vo.HireResumeVo"/>
-		
-		
-		
-		
-		
+		<typeAlias alias="hireCareerVo" type="hireSystem.vo.HireCareerVo"/>
+
+
+
+
+
     </typeAliases>
 </configuration>

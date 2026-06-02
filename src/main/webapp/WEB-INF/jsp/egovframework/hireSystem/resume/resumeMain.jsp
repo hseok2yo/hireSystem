@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이력서 관리 | 최고의 인재를 만나다</title>
-    <link rel="stylesheet" href="<c:url value='/css/hireSystem/resumeMain.css' />">
+    <link rel="stylesheet" href="/css/hireSystem/resumeMain.css">
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="/js/hireSystem/resume/resumeMain.js"></script>
 </head>
 <body>
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/header.jsp"></jsp:include>
@@ -28,99 +32,134 @@
         <section class="representative-section">
             <div class="section-header">
                 <h2 class="section-title">대표 이력서</h2>
-                <span class="rep-guide">사람인처럼 최상단 고정 노출</span>
+                <span class="rep-guide"></span>
             </div>
 
             <article class="representative-card" id="representativeCard">
                 <div class="rep-left">
                     <span class="rep-badge">대표</span>
-                    <h3 id="repTitle">백엔드 개발자 이력서</h3>
-                    <p id="repUpdated">마지막 수정: 2026.05.28</p>
+                    <h3 id="repTitle">${mainResume.title }</h3>
+
+                    <p id="repUpdated">마지막 수정: <fmt:formatDate value="${mainResume.updatedAt}" pattern="yyyy-MM-dd HH:mm"/></p>
                 </div>
                 <div class="rep-right">
-                    <span><i class="fas fa-eye"></i> <span id="repViews">15회</span></span>
-                </div>
+                    <span><i class="fas fa-eye"></i> <span id="repViews"></span></span>
+					<%-- 점3개 메뉴 --%>
+					<div class="more-wrap">
+						<button type="button" class="more-btn" aria-label="더보기">
+							<i class="fas fa-ellipsis-v"></i>
+						</button>
+						<div class="more-menu">
+							<button type="button" class="menu-item action-edit"
+								data-num="${mainResume.resumeId}">이력서 수정</button>
+							<button type="button" class="menu-item action-pdf"
+								data-num="${mainResume.resumeId}">PDF 다운로드</button>
+							<button type="button" class="menu-item action-copy"
+								data-num="${mainResume.resumeId}">이력서 복사</button>
+							<button type="button" class="menu-item action-delete"
+								data-num="${mainResume.resumeId}">이력서 삭제</button>
+						</div>
+					</div>
+				</div>
             </article>
         </section>
 
+		<%-- 서브이력서 목록 --%>
         <section class="saved-resumes">
             <div class="section-header">
                 <h2 class="section-title">내 이력서</h2>
                 <div class="list-options">
-                    <select class="sort-select" id="sortSelect">
-                        <option value="recent">최신순</option>
-                        <option value="name">이름순</option>
-                        <option value="view">열람순</option>
-                    </select>
-                </div>
+					<select class="sort-select" id="sortSelect">
+						<option value="recent"
+							${param.searchSort == 'recent' ? 'selected' : ''}>최신순</option>
+
+						<option value="name"
+							${param.searchSort == 'name' ? 'selected' : ''}>이름순</option>
+					</select>
+				</div>
             </div>
 
             <div class="resume-grid">
-                <article class="resume-card is-representative" data-resume-id="1" data-title="백엔드 개발자 이력서" data-updated="2026.05.28" data-views="15회">
-                    <div class="card-header">
-                        <span class="completion-status">작성중 85%</span>
-                        <div class="more-wrap">
-                            <button type="button" class="more-btn" aria-label="더보기">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <div class="more-menu">
-                                <button type="button" class="menu-item action-representative">대표이력서 설정</button>
-                                <button type="button" class="menu-item action-pdf">PDF 다운로드</button>
-                                <button type="button" class="menu-item action-copy">이력서 복사</button>
-                                <button type="button" class="menu-item action-delete">이력서 삭제</button>
-                            </div>
+                <c:choose>
+                    <c:when test="${not empty subResume}">
+                        <c:forEach var="resume" items="${subResume.list}">
+                            <article class="resume-card" data-resume-num="${resume.resumeId}">
+                                <div class="card-header">
+                                    <span class="completion-status">%</span>
+                                    <div class="more-wrap">
+                                        <button type="button" class="more-btn" aria-label="더보기">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <div class="more-menu">
+                                            <button type="button" class="menu-item action-representative" data-num="${resume.resumeId}">대표이력서 설정</button>
+											<button type="button" class="menu-item action-edit" data-num="${resume.resumeId}">이력서 수정</button>
+											<button type="button" class="menu-item action-pdf" data-num="${resume.resumeId}">PDF 다운로드</button>
+                                            <button type="button" class="menu-item action-copy" data-num="${resume.resumeId}">이력서 복사</button>
+                                            <button type="button" class="menu-item action-delete" data-num="${resume.resumeId}">이력서 삭제</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <h3>${resume.title}</h3>
+                                    <p class="update-date">마지막 수정: <fmt:formatDate value="${resume.updatedAt}" pattern="yyyy-MM-dd"/></p>
+                                    <div class="progress-bar">
+                                        <div class="progress" style="width: %"></div>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <span class="view-count"><i class="fas fa-eye"></i>  회</span>
+                                </div>
+                            </article>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="empty-list">
+                            <p>등록된 이력서가 없습니다.</p>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <h3>백엔드 개발자 이력서</h3>
-                        <p class="update-date">마지막 수정: 2026.05.28</p>
-                        <div class="progress-bar"><div class="progress" style="width: 85%"></div></div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="view-count"><i class="fas fa-eye"></i> 15회</span>
-                    </div>
-                </article>
-
-                <article class="resume-card" data-resume-id="2" data-title="프론트엔드 포트폴리오 이력서" data-updated="2026.05.20" data-views="33회">
-                    <div class="card-header">
-                        <span class="completion-status">완성 100%</span>
-                        <div class="more-wrap">
-                            <button type="button" class="more-btn" aria-label="더보기">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                            <div class="more-menu">
-                                <button type="button" class="menu-item action-representative">대표이력서 설정</button>
-                                <button type="button" class="menu-item action-pdf">PDF 다운로드</button>
-                                <button type="button" class="menu-item action-copy">이력서 복사</button>
-                                <button type="button" class="menu-item action-delete">이력서 삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h3>프론트엔드 포트폴리오 이력서</h3>
-                        <p class="update-date">마지막 수정: 2026.05.20</p>
-                        <div class="progress-bar"><div class="progress" style="width: 100%"></div></div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="view-count"><i class="fas fa-eye"></i> 33회</span>
-                    </div>
-                </article>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
-            <div class="pagination">
-                <button type="button" class="page-btn prev" disabled><i class="fas fa-chevron-left"></i></button>
-                <div class="page-numbers">
-                    <button type="button" class="page-btn active">1</button>
-                    <button type="button" class="page-btn">2</button>
-                    <button type="button" class="page-btn">3</button>
-                    <button type="button" class="page-btn">4</button>
-                </div>
-                <button type="button" class="page-btn next"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </section>
+			<form id="searchForm" action="/hireSystem/resume/resumeMain.do">
+				<input id="page" type="hidden" name="page">
+				<input id="searchSort" type="hidden" name="searchSort" value="${param.searchSort }">
+			</form>
+			<div class="pagination">
+				<c:if test="${subResume.currentPage > 1}">
+					<a href="#" onclick="goPage(1); return false;">◁◁</a>
+				</c:if>
+				<c:if test="${subResume.startPage > 1}">
+					<a href="#"
+						onclick="goPage(${subResume.startPage-1}); return false;">◁</a>
+				</c:if>
+
+				<c:forEach begin="${subResume.startPage}" end="${subResume.endPage}"
+					var="i">
+					<c:choose>
+						<c:when test="${i == subResume.currentPage}">
+							<span class="current-page">${i}</span>
+						</c:when>
+						<c:otherwise>
+							<a href="#" onclick="goPage(${i}); return false;">${i}</a>
+						</c:otherwise>
+					</c:choose>
+
+				</c:forEach>
+
+				<c:if test="${subResume.endPage < subResume.totalPage}">
+					<a href="#"
+						onclick="goPage(${subResume.endPage + 1}); return false;">▶</a>
+				</c:if>
+
+				<c:if test="${subResume.currentPage < subResume.totalPage}">
+					<a href="#" onclick="goPage(${subResume.totalPage}); return false;">▶▶</a>
+				</c:if>
+
+			</div>
+		</section>
     </main>
 
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/footer.jsp"></jsp:include>
-    <script defer src="/js/hireSystem/resume/resumeMain.js"></script>
+
 </body>
 </html>

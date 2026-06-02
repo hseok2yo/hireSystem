@@ -24,52 +24,53 @@ import hireSystem.service.HireSignupService;
 import hireSystem.service.dao.HireResumeDao;
 import hireSystem.service.dao.HireSignupDao;
 import hireSystem.service.mapper.HireSignUpMapper;
+import hireSystem.vo.HireResumeVo;
 import hireSystem.vo.HireUserVo;
 import hireSystem.vo.UserAgreeDefVo;
 import hireSystem.vo.UserAgreementVo;
 
 @Service("hireSignupService")
 public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements HireSignupService{
-	
+
 	@Resource(name = "hireSignupDao")
 	private HireSignupDao hireDao;
-	
+
 	@Resource(name = "hireResumeDao")
 	private HireResumeDao hireResumeDao;
-	
+
 	@Autowired
 	private HireSignUpMapper hireMapper;
-	
+
 	@Resource(name = "propertiesService")
 	private EgovPropertyService propertiesService;
-	
+
 	@Resource(name = "commonFileService")
 	private CommonFileService commonFileService;
-	
+
 	@Override
 	public int checkDuplicationID(String id) {
 //		return hireDao.checkDuplicationID(id);
 		return hireMapper.checkDuplicationID(id);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Transactional("hireSystemTxManager")
 	@Override
 	public boolean registMember(HireUserVo hireUserVo) {
-		
+
 		int results = 0;
 		//1. 회원정보 등록
 		hireUserVo.setUserPw(StringEscapeUtils.unescapeHtml4(hireUserVo.getUserPw()));
 		results = hireDao.insertUserInfo(hireUserVo); //등록한 회원번호 받아옴
-		
+
 		hireResumeDao.insertEmptyResume(hireUserVo.getUserNum()); //이력서 최소1개 있기 위해서 임시이력서 테이블 생성
-		
+
 		if (results <= 0) {
 	        return false;
 	    }
-		
+
 		//2.회원 약권정보 저장
-		int agreeInsertCnt = InsertUserAgreeData(hireUserVo, hireUserVo.getUserNum()); 
+		int agreeInsertCnt = InsertUserAgreeData(hireUserVo, hireUserVo.getUserNum());
 		if (agreeInsertCnt <= 0) {
 			return false;
 		}
@@ -77,25 +78,25 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 //	    if (true) {
 //	        throw new RuntimeException("트랜잭션 롤백 테스트");
 //	    }
-		
+
 		return true;
 	}
 
 	private int InsertUserAgreeData(HireUserVo hireUserVo, int getInsertUserNum) {
 		int successNo = 0;
-		
+
 		//회원이 체크한 약관동의 체크박스 값들
 		List<String> agreementsList = hireUserVo.getAgreements();
-		
+
 		// Set으로 변환 contains()는 해시로 바로 찾음
 		Set<String> checkedSet = new LinkedHashSet<>(agreementsList);
-		
+
 		//등록할 유저약관정보 저징리스트
 		List<UserAgreementVo> userAgreeInfo = new ArrayList<>();
-		
+
 		//DB에 있는 약관동의 리스트 조회
 		List<UserAgreeDefVo> agreeList = hireDao.selectAgreeList();
-	
+
 		/** 회원이 동의한 값, 동의하지 않은 값 Y, N으로 구분해서 값 세팅 후 DB에 저장*/
 		for(UserAgreeDefVo vo : agreeList) {
 		    String code = vo.getAgreeCd();
@@ -110,14 +111,14 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 		       // System.out.println(code + " = N");  // 체크 안됨
 		    }
 		}
-		
+
 		//insert하는부분 부터 시작
 		if (!userAgreeInfo.isEmpty()) {
 			successNo = hireDao.insertUserAgreement(userAgreeInfo);
 		}
-		
+
 		return successNo;
-		
+
 	}
 
 	private UserAgreementVo SettingUserAgreeValue(int getInsertUserNum, String code, String value) {
@@ -138,7 +139,7 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 	public Map<String, Object> updateUserPhoto(MultipartFile file, MultipartFile original, int userNum) throws IOException {
 		String uploadPath = propertiesService.getString("resume.store.path");
 	    String storeUrl   = propertiesService.getString("resume.store.url");
-	    
+
 	    // 크롭본 저장
 	    String filename = commonFileService.saveFile(file, uploadPath);
 
@@ -147,12 +148,12 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 	    String oldFilePath = (String) hireUserMap.get("userPhotoPath");
 	    String oldFileName = (String) hireUserMap.get("userPhotoName");
 	    String oldOriginalFileName = (String) hireUserMap.get("userPhotoOriginalname");
-	    
+
 	    // 기존 크롭본 삭제
 	    if(oldFileName != null && oldFilePath != null) {
 	        commonFileService.deleteFile(oldFilePath, oldFileName);
 	    }
-	    
+
 		// 원본 처리
 		String originalName;
 		if (original != null && !original.isEmpty()) {
@@ -165,7 +166,7 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 			// 파일 새로 선택 안 함 → 기존 원본 유지
 			originalName = oldOriginalFileName;
 		}
-	    
+
 	    Map<String, Object> updateMap = new HashMap<>();
 	    updateMap.put("userNum", userNum);
 	    updateMap.put("userPhotoName", filename);
@@ -173,17 +174,23 @@ public class HireSignupServiceImpl extends EgovAbstractServiceImpl implements Hi
 	    updateMap.put("userPhotoOriginalname", originalName);
 
 	    hireMapper.updateUserPhoto(updateMap);
-	    
+
 	    Map<String, Object> resultMap = new HashMap<>();
 	    resultMap.put("url", storeUrl + filename);
 	    resultMap.put("originalUrl", originalName != null ? storeUrl + originalName : null);
-	    
+
 	    return resultMap; // 뷰에서 쓸 URL 반환
 	}
-	
-	
-	
+
+	@Override
+	public int updateBasicHireUserInfo(HireUserVo vo) {
+
+		return 0;
+	}
 
 
-	
+
+
+
+
 }

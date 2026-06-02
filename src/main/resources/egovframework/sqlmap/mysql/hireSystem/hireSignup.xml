@@ -3,12 +3,12 @@
 <mapper namespace="hireSignupDao">
 	<!-- 아이디 중복체크 -->
 	<select id="checkDuplicationID" parameterType="String" resultType="int">
-		SELECT 
+		SELECT
 			 COUNT(*)
 		FROM HIRE_USER
 		WHERE USER_ID = #{id}
 	</select>
-	
+
 	<!-- 유저정보 등록 -->
 	<insert id="insertUserInfo" parameterType="hireUserVo"
 	useGeneratedKeys="true" keyProperty="userNum">
@@ -30,7 +30,7 @@
 			,#{userPw}
 			,#{userNm}
 			,#{userPhone}
-			,#{userMemberType} 
+			,#{userMemberType}
 			,NOW()
 			,#{kakaoId}
 			,#{loginType}
@@ -39,12 +39,12 @@
 <!-- 			<selectKey keyProperty="userNum" resultType="int" order="AFTER"> -->
 <!-- 			SELECT LAST_INSERT_ID() -->
 <!-- 		</selectKey> -->
-	
+
 	</insert>
-	
+
 	<!-- 약관동의 리스트 -->
 	<select id="selectAgreeList" resultType="userAgreeDefVo">
-		SELECT 
+		SELECT
 			  AGREE_CD
 			, AGREE_NM
 			, REQUIRED_YN
@@ -52,8 +52,8 @@
 			, REG_DT
 		FROM USER_AGREE_DEF
 	</select>
-		
-	<!-- 회원약관동의 정보 저장 -->	
+
+	<!-- 회원약관동의 정보 저장 -->
 	<insert id="insertUserAgreement" parameterType="java.util.List">
 		INSERT INTO USER_AGREEMENT (
 			  USER_NUM
@@ -71,9 +71,9 @@
 			, #{item.pages}
 		)
 		</foreach>
-		
+
 	</insert>
-		
+
 	<!-- 회원정보 단건조회 -->
 	<select id="selectHireUserInfo" parameterType="int" resultType="egovMap">
 	    SELECT
@@ -92,8 +92,26 @@
 	       , DATE_FORMAT(BIRTH_DATE, '%Y-%m-%d') AS BIRTH_DATE
 	       , TIMESTAMPDIFF(YEAR, BIRTH_DATE, CURDATE()) AS AGE
 	       , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT  -- 추가
+	       , GENDER
+	       , ADDRESS_FIRST
+	       , ADDRESS_SECOND
 	    FROM HIRE_USER
 	    WHERE USER_NUM = #{userNum}
 	</select>
-			
+
+	<!-- 회원정보 업뎃 -->
+	<update id="updateBasicHireUserInfo" parameterType="hireUserVo">
+		UPDATE HIRE_USER
+	    <set>
+	        USER_NM = #{userNm},
+	        GENDER = #{gender},
+	        BIRTH_DATE = #{birthDate},
+	        USER_EMAIL = #{userEmail},
+	        USER_PHONE = #{userPhone},
+	        ADDRESS_FIRST = #{addressFirst},
+	        ADDRESS_SECOND = #{addressSecond}
+	    </set>
+	    WHERE USER_NUM = #{userNum}
+	</update>
+
 </mapper>

@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 메뉴 항목 이벤트 실행
     initMenuItem();
+
+	//검색조건
+	searchSort();
+
+	//이력서 수정
+	editResumeForm();
+
 });
 
 
@@ -36,6 +43,38 @@ function resumeForm() {
     });
 }
 
+//이력서 수정버튼
+function editResumeForm() {
+	document.querySelectorAll('.action-edit').forEach(function(btn) {
+
+		btn.addEventListener('click', function() {
+
+			const resumeId = this.dataset.num;
+
+			location.href =
+				'/hireSystem/resume/edit.do?resumeId=' + resumeId;
+
+		});
+
+	});
+}
+
+
+function goPage(page) {
+	document.querySelector('input[name="page"]').value = page;
+    document.getElementById('searchForm').submit();
+
+}
+
+function searchSort() {
+	document.querySelector('#sortSelect').addEventListener('change', function() {
+
+		document.querySelector('[name="searchSort"]').value = this.value;
+		document.querySelector('[name="page"]').value = 1;
+
+		document.getElementById('searchForm').submit();
+	});
+}
 
 // =========================
 // 더보기 버튼 이벤트

@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     var viewBlock       = document.getElementById('basicInfoView');		//기본정보 show폼
-    var editBlock       = document.getElementById('basicInfoEdit');		//숨겨진 기본정보 수정페이지
+    var editBlock       = document.getElementById('basicForm');		//숨겨진 기본정보 수정페이지
     var photoEditButton = document.querySelector('.photo-edit-btn');	//사진수정
     var editButton      = document.querySelector('.edit-basic-info');	//기본정보 수정
     var cancelButton    = document.querySelector('.cancel-basic-info'); //기본정보 취소
@@ -27,12 +27,16 @@ document.addEventListener('DOMContentLoaded', function() {
             showViewMode(viewBlock, editBlock, photoEditButton);
         });
     }
+
 	// 기본정보 저장
     if (saveButton) {
         saveButton.addEventListener('click', function(e) {
             e.preventDefault();
             //서버저장 로직
-			var formData = buildFormData('basicInfoEdit'); // 섹션 안 input/select/textarea 자동 수집
+			var formData = new FormData(document.getElementById('basicFormElem'));
+			formData.append('resumeId', RESUME_CTX.resumeId);
+			formData.append('userNum',  RESUME_CTX.userNum);
+
 			fetch('/hireSystem/resume/saveBasicResume.do', {
 				method: 'POST',
 				body: formData
@@ -94,7 +98,7 @@ function showEditMode(viewBlock, editBlock, photoEditButton) {
 }
 
 function updateBasicInfoView() {
-    const form = document.getElementById("resumeForm");
+    const form = document.getElementById("basicFormElem");
     const getValue = (name) => form.querySelector(`[name='${name}']`).value;
 
     document.querySelector("#basicInfoView h3").textContent = getValue("userNm");

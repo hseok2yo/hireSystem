@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,15 +17,18 @@
 
 	<script src="/js/hireSystem/resume/resumeCommon.js"></script>
 	<script src="/js/hireSystem/resume/resumeBasic.js"></script>
+<!-- 	<script src="/js/hireSystem/resume/resumeCareer22.js"></script> -->
+	<script src="/js/hireSystem/resume/resumeCareer.js"></script>
 
-	<form id="resumeForm">
 		<!-- 공통 hidden -->
-	    <input type="hidden" id="resumeId" name="resumeId" value="${userInfo.resumeId}">
-	    <input type="hidden" id="userNum" name="userNum" value="${userInfo.userNum}">
+	    <input type="hidden" id="resumeId" name="resumeId" value="${commonResumeId}">
+		<input type="hidden" id="userNum"  name="userNum"  value="${commonUserNum}">
 
 	    <div class="resume-page">
 	        <div class="resume-layout">
 	            <div class="resume-left">
+
+	            	<!--1. 기본정보 form -->
 	                <div class="section-card section-basic-info">
 	                    <div class="basic-top">
 	                        <div>
@@ -65,59 +69,60 @@
 	                        </div>
 
 							<!-- 기본정보 숨겨진부분(수정페이지) -->
-	                        <div class="basic-info-edit hidden" id="basicInfoEdit">
-	                            <div class="basic-info-form">
-	                                <div class="form-row form-row-wide">
-	                                    <label>이름 <span>*</span></label>
-	                                    <input type="text" name="userNm" value="${userInfo.userNm}">
-	                                </div>
-	                                <div class="form-row-group">
-	                                    <div class="form-row">
-	                                        <label>성별</label>
-	                                        <select name="gender">
-											    <option value="">선택</option>
-											    <option value="M" ${userInfo.gender == 'M' ? 'selected' : ''}>남</option>
-											    <option value="F" ${userInfo.gender == 'F' ? 'selected' : ''}>여</option>
-											</select>
-	                                    </div>
-	                                    <div class="form-row">
-	                                        <label>생년월일 <span>*</span></label>
-	                                        <input type="text" name="birthDate" value="${userInfo.birthDate }">
-	                                    </div>
-	                                </div>
-	                                <div class="form-row form-row-with-button">
-	                                    <label>이메일 <span>*</span></label>
-	                                    <div class="contact-row">
-	                                        <input type="text" name="userEmail" value="${userInfo.userEmail }" readonly>
-	                                        <button type="button" class="btn-secondary">인증</button>
-	                                        <button type="button" class="btn-outline">수정</button>
-	                                    </div>
-	                                </div>
-	                                <div class="form-row form-row-with-button">
-	                                    <label>휴대폰 <span>*</span></label>
-	                                    <div class="contact-row">
-	                                        <input type="text" name="userPhone" value="${userInfo.userPhone }">
-	                                        <button type="button" class="btn-secondary">인증</button>
-	                                        <button type="button" class="btn-outline">수정</button>
-	                                    </div>
-	                                </div>
-	                                <div class="form-row-group">
-	                                    <div class="form-row">
-	                                        <label>주소 <span>*</span></label>
-	                                        <input type="text" name="addressFirst" value="${userInfo.addressFirst }">
-	                                    </div>
-	                                    <div class="form-row">
-	                                        <label>상세주소</label>
-	                                        <input type="text" name="addressSecond"  value="${userInfo.addressSecond }">
-	                                    </div>
-	                                </div>
-	                                <div class="form-actions">
-	                                    <button type="button" class="btn-outline cancel-basic-info">취소</button>
-	                                    <button type="button" class="btn-outline save-basic-info">저장</button>
-	                                </div>
-	                            </div>
-	                        </div>
-
+							<form id="basicFormElem">
+		                        <div class="basic-info-edit hidden" id="basicForm">
+		                            <div class="basic-info-form">
+		                                <div class="form-row form-row-wide">
+		                                    <label>이름 <span>*</span></label>
+		                                    <input type="text" name="userNm" value="${userInfo.userNm}">
+		                                </div>
+		                                <div class="form-row-group">
+		                                    <div class="form-row">
+		                                        <label>성별</label>
+		                                        <select name="gender">
+												    <option value="">선택</option>
+												    <option value="M" ${userInfo.gender == 'M' ? 'selected' : ''}>남</option>
+												    <option value="F" ${userInfo.gender == 'F' ? 'selected' : ''}>여</option>
+												</select>
+		                                    </div>
+		                                    <div class="form-row">
+		                                        <label>생년월일 <span>*</span></label>
+		                                        <input type="text" name="birthDate" value="${userInfo.birthDate }">
+		                                    </div>
+		                                </div>
+		                                <div class="form-row form-row-with-button">
+		                                    <label>이메일 <span>*</span></label>
+		                                    <div class="contact-row">
+		                                        <input type="text" name="userEmail" value="${userInfo.userEmail }" readonly>
+		                                        <button type="button" class="btn-secondary">인증</button>
+		                                        <button type="button" class="btn-outline">수정</button>
+		                                    </div>
+		                                </div>
+		                                <div class="form-row form-row-with-button">
+		                                    <label>휴대폰 <span>*</span></label>
+		                                    <div class="contact-row">
+		                                        <input type="text" name="userPhone" value="${userInfo.userPhone }">
+		                                        <button type="button" class="btn-secondary">인증</button>
+		                                        <button type="button" class="btn-outline">수정</button>
+		                                    </div>
+		                                </div>
+		                                <div class="form-row-group">
+		                                    <div class="form-row">
+		                                        <label>주소 <span>*</span></label>
+		                                        <input type="text" name="addressFirst" value="${userInfo.addressFirst }">
+		                                    </div>
+		                                    <div class="form-row">
+		                                        <label>상세주소</label>
+		                                        <input type="text" name="addressSecond"  value="${userInfo.addressSecond }">
+		                                    </div>
+		                                </div>
+		                                <div class="form-actions">
+		                                    <button type="button" class="btn-outline cancel-basic-info">취소</button>
+		                                    <button type="button" class="btn-outline save-basic-info">저장</button>
+		                                </div>
+		                            </div>
+		                        </div>
+							</form>
 	                        <div class="basic-info-photo">
 	                            <div class="photo-box">
 	                                <img src="${userInfo.userPhotoUrl }">
@@ -127,9 +132,12 @@
 	                    </div>
 	                </div>
 
+
 	                <div class="resume-body">
 	                    <main class="resume-content">
-	                        <section class="section-card section-summary">
+
+	                    	<!-- 커리어 -->
+	                        <section class="section-card section-summary" style="display:none;">
 	                            <div class="section-header">
 	                                <div>
 	                                    <h2>MY Career</h2>
@@ -140,35 +148,110 @@
 	                            <div class="section-note">ChatGPT API 기반으로 커리어소개 생성하고 나의 이력서를 어필해보세요!</div>
 	                        </section>
 
+							<!-- 경력사항 -->
 	                        <section class="section-card section-career" id="career">
 	                            <div class="section-header">
 	                                <div>
 	                                    <h2>경력 <span class="required">필수</span></h2>
-	                                    <p>총 경력 1년 6개월</p>
+	                                    <p>총 경력 ${totalCareer }</p>
 	                                </div>
-	                                <div class="section-actions">
-	                                    <button type="button" class="btn-text">+ 인증 경력 불러오기</button>
-	                                    <button type="button" class="btn-text">+ 추가</button>
+                              		 <div class="section-actions">
+	                                    <button type="button" class="btn-text career-add-btn">+ 추가</button>
 	                                </div>
 	                            </div>
-	                            <article class="career-entry">
-	                                <div class="career-top">
-	                                    <div>
-	                                        <strong>(주)유시스</strong>
-	                                        <p>웹개발 · 시스템개발SI 사원/매니저 2년차</p>
-	                                    </div>
-	                                    <span class="career-period">2023.10 ~ 2025.03 · 1년 6개월</span>
-	                                </div>
-	                                <ul class="career-list">
-	                                    <li>부산교통공사 인사시스템 개발 (2023.12 ~ 2024.11)</li>
-	                                    <li>[기술스택] : Java, Spring MVC, eGovFramework, Nexacro, Oracle, MyBatis</li>
-	                                </ul>
-	                                <div class="career-footer">
-	                                    <button type="button" class="coach-btn"><i class="fas fa-magic"></i> AI 코칭 결과 확인</button>
-	                                </div>
-	                            </article>
+	                            <!-- 경력 추가form -->
+	                            <form id="careerForm">
+		                            <article class="career-entry career-add-form hidden" id="careerAddForm">
+		                                <div class="career-add-grid">
+		                                    <div class="form-row form-row-full company-row">
+		                                        <label>회사명 <span>*</span></label>
+		                                        <div class="company-input-wrap">
+		                                            <input type="text" name="companyName" placeholder="회사명을 입력하세요">
+		                                            <button type="button" class="icon-btn search-company" aria-label="회사 검색"><i class="fas fa-search"></i></button>
+		                                        </div>
+		                                    </div>
+		                                    <div class="form-row form-row-quarter">
+		                                        <label>입사년월 <span>*</span></label>
+		                                        <input type="date" name="startDate">
+		                                    </div>
+		                                    <div class="form-row form-row-quarter">
+		                                        <label>퇴사년월</label>
+		                                        <input type="date" name="endDate">
+		                                    </div>
+		                                    <div class="form-row form-row-quarter current-job-row">
+		                                        <label>재직중</label>
+		                                        <label class="switch"><input type="checkbox" name="currentYn"><span class="slider"></span></label>
+		                                    </div>
+		                                    <div class="form-row form-row-full">
+		                                        <label>직무 <span>*</span></label>
+		                                        <input type="text" name="jobTitle" placeholder="직무를 입력하세요">
+		                                    </div>
+		                                    <div class="form-row form-row-half">
+		                                        <label>근무부서</label>
+		                                        <input type="text" name="department" placeholder="근무부서를 입력하세요">
+		                                    </div>
+		                                    <div class="form-row form-row-half">
+		                                        <label>직급/직책</label>
+		                                        <input type="text" name="positionName" placeholder="직급/직책을 입력하세요">
+		                                    </div>
+		                                    <div class="form-row form-row-full">
+		                                        <label>담당업무</label>
+		                                        <textarea name="duties" rows="4" placeholder="담당업무를 입력해주세요.\n- 진행한 업무를 더 적기 보다는 경력사항 별로 중요한 내용만 엄선해서 작성하는 것이 중요합니다!\n- 담당한 업무 내용을 요약해서 작성해보세요!\n- 경력별 프로젝트 내용을 적을 경우, 역할/팀구성/기여도/성과를 기준으로 요약해서 작성해보세요!"></textarea>
+		                                    </div>
+		                                    <div class="form-actions career-add-actions">
+		                                        <button type="button" class="btn-outline cancel-career-add">취소</button>
+		                                        <button type="button" class="btn-primary save-career-add">저장</button>
+		                                    </div>
+		                                </div>
+		                            </article>
+								</form>
+								<!-- 백에서 조회 후 foreach -->
+								<div class="career-list-wrapper" id="careerListWrapper">
+									<c:forEach items="${careerInfo}" var="career">
+									    <article
+										    class="career-entry"
+										    data-career-id="${career.careerId}"
+										    data-company-name="${career.companyName}"
+										    data-start-date="<fmt:formatDate value='${career.startDate}' pattern='yyyy-MM-dd'/>"
+										    data-end-date="<fmt:formatDate value='${career.endDate}' pattern='yyyy-MM-dd'/>"
+										    data-current-yn="${career.currentYn}"
+										    data-job-title="${career.jobTitle}"
+										    data-department="${career.department}"
+										    data-position-name="${career.positionName}"
+										    data-duties="${career.duties}">
+									        <div class="career-top">
+									            <div class="career-info">
+									                <div class="career-header">
+									                    <strong>${career.companyName}</strong>
+									                    <span class="career-period">
+									                        <fmt:formatDate value="${career.startDate}" pattern="yyyy-MM-dd"/>
+									                        ~
+									                        <c:choose>
+									                            <c:when test="${career.currentYn eq 'Y'}">재직중</c:when>
+									                            <c:otherwise>
+									                                <fmt:formatDate value="${career.endDate}" pattern="yyyy-MM-dd"/>
+									                            </c:otherwise>
+									                        </c:choose>
+									                        · ${career.duration}
+									                    </span>
+									                </div>
+									                <p>${career.jobTitle} · ${career.department} ${career.positionName}</p>
+									            </div>
+									            <!-- career-info 닫고 career-top 안에 나란히 -->
+									            <div class="career-actions">
+									                <button type="button" class="icon-btn btn-edit-career" aria-label="수정"><i class="fas fa-pencil-alt"></i></button>
+									                <button type="button" class="icon-btn btn-delete-career" aria-label="삭제"><i class="fas fa-trash-alt"></i></button>
+									            </div>
+									        </div>
+									        <ul class="career-list">
+									            <li>${career.duties}</li>
+									        </ul>
+									    </article>
+									</c:forEach>
+	                            </div>
 	                        </section>
 
+							<!-- 학력사항 -->
 	                        <section class="section-card section-education" id="education">
 	                            <div class="section-header">
 	                                <div>
@@ -316,7 +399,6 @@
 	            <button type="button" class="btn-primary submit-complete">작성완료</button>
 	        </div>
 	    </div>
-    </form>
 
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/footer.jsp"></jsp:include>
 </body>
