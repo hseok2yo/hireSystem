@@ -18,171 +18,173 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import hireSystem.service.HireActivityService;
+import hireSystem.service.HireCareerService;
+import hireSystem.service.HireCertificationService;
+import hireSystem.service.HireEducationService;
 import hireSystem.service.HireResumeService;
+import hireSystem.service.HireResumeSkillService;
 import hireSystem.service.HireSignupService;
+import hireSystem.vo.HireActivityVo;
 import hireSystem.vo.HireCareerVo;
+import hireSystem.vo.HireCertificationVo;
+import hireSystem.vo.HireEducationVo;
 import hireSystem.vo.HireResumeVo;
+import hireSystem.vo.HireSkillVo;
 import hireSystem.vo.HireUserVo;
 
 @Controller
 @RequestMapping("/hireSystem/resume")
 public class HireResumeController {
 
-	private final String path = "hireSystem/resume/";
+    private final String path = "hireSystem/resume/";
 
-	@Resource(name = "hireSignupService")
-	private HireSignupService hireSignupService;
+    @Resource(name = "hireSignupService")
+    private HireSignupService hireSignupService;
 
-	@Resource(name = "hireResumeService")
-	private HireResumeService hireResumeService;
+    @Resource(name = "hireResumeService")
+    private HireResumeService hireResumeService;
 
+    @Resource(name = "hireCareerService")
+    private HireCareerService hireCareerService;
 
-	@RequestMapping("/resumeMain.do")
-	public String resumeMain(@RequestParam(defaultValue = "1") int page
-			,@RequestParam(defaultValue = "recent") String searchSort
-			,HttpSession session, Model model) {
-		// 세션에서 로그인 회원번호 가져오기
-	    int loginUserNum = (int) session.getAttribute("loginUserNum");
-	    EgovMap map = new EgovMap();
-	    map.put("page", page);
-	    map.put("searchSort", searchSort);
-	    map.put("loginUserNum", loginUserNum);
-	    //대표이력서
-	    model.addAttribute("mainResume", hireResumeService.selectResumeMainInfo(map));
-	    //서브이력서
-	    model.addAttribute("subResume", hireResumeService.selectResumeSubInfo(map));
+    @Resource(name = "hireEducationService")
+    private HireEducationService hireEducationService;
 
-		return path + "resumeMain";
-	}
+    @Resource(name = "hireResumeSkillService")
+    private HireResumeSkillService hireResumeSkillService;
 
-	//이력서 신규등록
-	@RequestMapping("/resumeForm.do")
-	public String resumeForm(HttpSession session, Model model) {
-		// 세션에서 로그인 회원번호 가져오기
-	    int loginUserNum = (int) session.getAttribute("loginUserNum");
+    @Resource(name = "hireActivityService")
+    private HireActivityService hireActivityService;
 
-	    //공통사항
-	    model.addAttribute("commonUserNum", loginUserNum);
-
-	    //유저정보(기본정보)
-	    model.addAttribute("userInfo", hireResumeService.selectHireUserInfo(loginUserNum));
+    @Resource(name = "hireCertificationService")
+    private HireCertificationService hireCertificationService;
 
 
-		return path + "resumeForm";
-	}
+    // ---------------------------------------------------------------
+    // 이력서 메인 목록
+    // ---------------------------------------------------------------
 
-	/**
-	 * 프로필 이미지 변경
-	 * @param file 크롭된 이미지 파일
-	 * @param original 원본 이미지 파일 (새 파일 선택 시에만 전달, 없으면 기존 원본 유지)
-	 * @param session 유저 세션 정보
-	 * @return 크롭본 URL, 원본 URL
-	 * @throws IOException
-	 */
-	@PostMapping("/image/uploadPhoto.do")
-	@ResponseBody
-	public Map<String, Object> uploadPhoto(
-	        @RequestParam("upload") MultipartFile file,
-	        @RequestParam(value="original", required=false) MultipartFile original,
-	        HttpSession session) throws IOException {
+    @RequestMapping("/resumeMain.do")
+    public String resumeMain(
+            @RequestParam(defaultValue = "1")      int    page,
+            @RequestParam(defaultValue = "recent") String searchSort,
+            HttpSession session, Model model) {
 
-	    int loginUserNum = (int) session.getAttribute("loginUserNum");
+        int loginUserNum = (int) session.getAttribute("loginUserNum");
+        EgovMap map = new EgovMap();
+        map.put("page",        page);
+        map.put("searchSort",  searchSort);
+        map.put("loginUserNum", loginUserNum);
 
-	    Map<String, Object> result = new HashMap<>();
-	    try {
-	    	Map<String, Object> photoResult = hireSignupService.updateUserPhoto(file, original, loginUserNum);
-	        result.put("success", true);
-	        result.put("url", photoResult.get("url"));
-	        result.put("originalUrl", photoResult.get("originalUrl"));
-	    } catch (Exception e) {
-	        result.put("success", false);
-	        result.put("message", "파일 업로드에 실패했습니다.");
-	    }
+        model.addAttribute("mainResume", hireResumeService.selectResumeMainInfo(map));
+        model.addAttribute("subResume",  hireResumeService.selectResumeSubInfo(map));
 
-	    return result;
-	}
+        return path + "resumeMain";
+    }
 
-	@PostMapping("/saveBasicResume.do")
-	@ResponseBody
-	public Map<String, Object> saveBasicResume(
-			@ModelAttribute HireUserVo hireVo
-			,@ModelAttribute HireResumeVo vo) {
-		Map<String, Object> resultMap = new HashMap<>();
+    // ---------------------------------------------------------------
+    // 이력서 신규 등록 폼
+    // ---------------------------------------------------------------
 
-		int result = hireResumeService.saveBasicResume(hireVo, vo);
+    @RequestMapping("/resumeForm.do")
+    public String resumeForm(HttpSession session, Model model) {
+        int loginUserNum = (int) session.getAttribute("loginUserNum");
 
-		if(result > 0) {
-			resultMap.put("result", true);
-			resultMap.put("message", "저장완료");
-			resultMap.put("resumeId", vo.getResumeId()); // insert는 생성된 id 반환
-		}else {
-			resultMap.put("result", false);
-			resultMap.put("message", "저장실패");
-		}
+        model.addAttribute("commonUserNum", loginUserNum);
+        model.addAttribute("userInfo", hireResumeService.selectHireUserInfo(loginUserNum));
 
+        return path + "resumeForm";
+    }
 
-		return resultMap;
+    // ---------------------------------------------------------------
+    // 프로필 이미지 업로드
+    // ---------------------------------------------------------------
 
-	}
-	/**
-	 * 수정페이지
-	 * @param resumeId
-	 * @param session
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("/edit.do")
-	public String edit(@RequestParam int resumeId
-			,HttpSession session
-			, Model model
-			) {
-		int loginUserNum = (int) session.getAttribute("loginUserNum");
+    @PostMapping("/image/uploadPhoto.do")
+    @ResponseBody
+    public Map<String, Object> uploadPhoto(
+            @RequestParam("upload")                    MultipartFile file,
+            @RequestParam(value = "original", required = false) MultipartFile original,
+            HttpSession session) throws IOException {
 
-		//공통사항
-		model.addAttribute("commonUserNum", loginUserNum);
-		model.addAttribute("commonResumeId", resumeId);
+        int loginUserNum = (int) session.getAttribute("loginUserNum");
+        Map<String, Object> result = new HashMap<>();
+        try {
+            Map<String, Object> photoResult = hireSignupService.updateUserPhoto(file, original, loginUserNum);
+            result.put("success",     true);
+            result.put("url",         photoResult.get("url"));
+            result.put("originalUrl", photoResult.get("originalUrl"));
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "파일 업로드에 실패했습니다.");
+        }
+        return result;
+    }
 
-		//1.(기본정보)
-		model.addAttribute("userInfo", hireResumeService.selectHireUserInfo(loginUserNum));
+    // ---------------------------------------------------------------
+    // 이력서 기본정보 저장
+    // ---------------------------------------------------------------
 
-		//2.경력사항
-		List<HireCareerVo> careerList = hireResumeService.selectCareerInfo(resumeId);
-		model.addAttribute("careerInfo", careerList); //경력리스트
-		//총경력
-		model.addAttribute("totalCareer",hireResumeService.calculateTotalCareer(careerList));
-		return path + "resumeForm";
-	}
+    @PostMapping("/saveBasicResume.do")
+    @ResponseBody
+    public Map<String, Object> saveBasicResume(
+            @ModelAttribute HireUserVo  hireVo,
+            @ModelAttribute HireResumeVo vo) {
 
-	@RequestMapping("/careerSave.do")
-	@ResponseBody
-	public Map<String, Object> careerSave(HireCareerVo careerVo, HttpSession session) {
-	    Map<String, Object> result = new HashMap<>();
-	    try {
-	        int loginUserNum = (int) session.getAttribute("loginUserNum");
-	        hireResumeService.saveCareer(careerVo, loginUserNum);
-	        result.put("resumeId", careerVo.getResumeId());
-	        result.put("result", true);
-	        result.put("message", "저장완료~");
-	    } catch (Exception e) {
-	        result.put("result", false);
-	        result.put("message", e.getMessage());
-	    }
-	    return result;
-	}
+        Map<String, Object> resultMap = new HashMap<>();
+        int result = hireResumeService.saveBasicResume(hireVo, vo);
 
-	@RequestMapping("/careerDelete.do")
-	@ResponseBody
-	public Map<String, Object> careerDelete(@RequestParam int careerId) {
-	    Map<String, Object> result = new HashMap<>();
-	    try {
-	        hireResumeService.deleteCareer(careerId);
-	        result.put("result", true);
-	        result.put("message", "삭제되었습니다.");
-	    } catch (Exception e) {
-	        result.put("result", false);
-	        result.put("message", e.getMessage());
-	    }
-	    return result;
-	}
+        if (result > 0) {
+            resultMap.put("result",   true);
+            resultMap.put("message",  "저장완료");
+            resultMap.put("resumeId", vo.getResumeId());
+        } else {
+            resultMap.put("result",  false);
+            resultMap.put("message", "저장실패");
+        }
+        return resultMap;
+    }
 
+    // ---------------------------------------------------------------
+    // 이력서 수정 페이지
+    // ---------------------------------------------------------------
+
+    @RequestMapping("/edit.do")
+    public String edit(
+            @RequestParam int resumeId,
+            HttpSession session,
+            Model model) {
+
+        int loginUserNum = (int) session.getAttribute("loginUserNum");
+
+        model.addAttribute("commonUserNum",  loginUserNum);
+        model.addAttribute("commonResumeId", resumeId);
+
+        // 1. 기본정보
+        model.addAttribute("userInfo", hireResumeService.selectHireUserInfo(loginUserNum));
+
+        // 2. 경력사항 (HireCareerService 사용)
+        List<HireCareerVo> careerList = hireCareerService.selectCareerInfo(resumeId);
+        model.addAttribute("careerInfo",   careerList);
+        model.addAttribute("totalCareer",  hireCareerService.calculateTotalCareer(careerList));
+
+        // 3. 학력사항 (HireEducationService 사용)
+        List<HireEducationVo> educationList = hireEducationService.selectEducationInfo(resumeId);
+        model.addAttribute("educationInfo", educationList);
+
+        // 4. 스킬
+        List<HireSkillVo> skillList = hireResumeSkillService.selectSkillInfo(resumeId);
+        model.addAttribute("skillInfo", skillList);
+
+        // 5. 경험/활동/교육
+        List<HireActivityVo> activityList = hireActivityService.selectActivityList(resumeId);
+        model.addAttribute("activityList", activityList);
+
+        // 6. 자격/어학/수상
+        List<HireCertificationVo> certificationList = hireCertificationService.selectCertificationInfo(resumeId);
+        model.addAttribute("certificationInfo", certificationList);
+
+        return path + "resumeForm";
+    }
 }

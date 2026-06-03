@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireCareerDao">
+
+    <!-- 경력 목록 조회 (재직중 우선, 종료일 내림차순) -->
+    <select id="selectCareerInfo" parameterType="int" resultType="hireCareerVo">
+        SELECT
+              CAREER_ID
+            , RESUME_ID
+            , COMPANY_NAME
+            , START_DATE
+            , END_DATE
+            , CURRENT_YN
+            , JOB_TITLE
+            , DEPARTMENT
+            , POSITION_NAME
+            , DUTIES
+        FROM HIRE_CAREER
+        WHERE
+            RESUME_ID = #{resumeId}
+        ORDER BY
+            CASE
+                WHEN CURRENT_YN = 'Y' THEN 0
+                ELSE 1
+            END,
+            END_DATE DESC
+    </select>
+
+    <!-- 경력 등록 -->
+    <insert id="insertCareer" parameterType="hireCareerVo">
+        INSERT INTO HIRE_CAREER (
+              RESUME_ID
+            , COMPANY_NAME
+            , START_DATE
+            , END_DATE
+            , CURRENT_YN
+            , JOB_TITLE
+            , DEPARTMENT
+            , POSITION_NAME
+            , DUTIES
+            , REG_DT
+        ) VALUES (
+              #{resumeId}
+            , #{companyName}
+            , #{startDate}
+            , #{endDate}
+            , #{currentYn}
+            , #{jobTitle}
+            , #{department}
+            , #{positionName}
+            , #{duties}
+            , NOW()
+        )
+        <selectKey keyProperty="careerId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 경력 수정 -->
+    <update id="updateCareer" parameterType="hireCareerVo">
+        UPDATE HIRE_CAREER
+        <set>
+            <if test="companyName  != null">COMPANY_NAME   = #{companyName},</if>
+            <if test="startDate    != null">START_DATE     = #{startDate},</if>
+            <if test="endDate      != null">END_DATE       = #{endDate},</if>
+            <if test="currentYn    != null">CURRENT_YN     = #{currentYn},</if>
+            <if test="jobTitle     != null">JOB_TITLE      = #{jobTitle},</if>
+            <if test="department   != null">DEPARTMENT     = #{department},</if>
+            <if test="positionName != null">POSITION_NAME  = #{positionName},</if>
+            <if test="duties       != null">DUTIES         = #{duties},</if>
+            UPD_DT = NOW()
+        </set>
+        WHERE
+            CAREER_ID = #{careerId}
+        AND RESUME_ID = #{resumeId}
+    </update>
+
+    <!-- 경력 삭제 -->
+    <delete id="deleteCareer" parameterType="int">
+        DELETE FROM HIRE_CAREER
+        WHERE
+            CAREER_ID = #{careerId}
+    </delete>
+
+</mapper>

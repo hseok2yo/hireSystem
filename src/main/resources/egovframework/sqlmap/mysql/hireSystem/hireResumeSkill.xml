@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace ="hireResumeSkillDao">
+	<!-- ===================== 스킬 ===================== -->
+
+    <!-- 스킬 목록 조회 -->
+    <select id="selectSkillInfo" parameterType="int" resultType="hireSkillVo">
+        SELECT
+              SKILL_ID
+            , RESUME_ID
+            , SKILL_NAME
+        FROM HIRE_SKILL
+        WHERE
+            RESUME_ID = #{resumeId}
+        ORDER BY
+            SKILL_ID ASC
+    </select>
+
+    <!-- 스킬 단건 등록 -->
+    <insert id="insertSkill" parameterType="hireSkillVo">
+        INSERT INTO HIRE_SKILL (
+              RESUME_ID
+            , SKILL_NAME
+            , REG_DT
+        ) VALUES (
+              #{resumeId}
+            , #{skillName}
+            , NOW()
+        )
+        <selectKey keyProperty="skillId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 스킬 단건 삭제 -->
+    <delete id="deleteSkill" parameterType="int">
+        DELETE FROM HIRE_SKILL
+        WHERE
+            SKILL_ID = #{skillId}
+    </delete>
+
+    <!-- 스킬 전체 삭제 후 재등록용 (선택적 사용) -->
+    <delete id="deleteAllSkill" parameterType="int">
+        DELETE FROM HIRE_SKILL
+        WHERE
+            RESUME_ID = #{resumeId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+/* =====================================================
+   자격/어학/수상 섹션 (section-certification)
+   경력사항의 section-career 스타일을 그대로 계승
+   ===================================================== */
+
+/* 섹션 카드 기본 – resumeForm.css의 .section-card 상속 */
+.section-certification {
+    padding: 28px;
+}
+
+/* 자격 항목 카드 */
+.certification-entry {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    gap: 12px;
+}
+
+.certification-entry:last-child {
+    border-bottom: none;
+}
+
+/* 입력 폼 상태 */
+.certification-add-form {
+    background: #f8fafc;
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 8px;
+}
+
+/* 상단 영역: 정보 + 액션 버튼 나란히 */
+.certification-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+/* 자격 정보 영역 */
+.certification-info {
+    flex: 1;
+    min-width: 0;
+}
+
+/* 자격증명 + 취득일 행 */
+.certification-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.certification-header strong {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* 발행기관 · 번호 · 점수 줄 */
+.certification-detail {
+    margin: 0;
+    font-size: 14px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.cert-divider {
+    color: #cbd5e1;
+    margin: 0 2px;
+}
+
+/* 수정/삭제 버튼 그룹 – career-actions 재사용 */
+
+/* 빈 목록 안내 */
+.section-empty {
+    padding: 32px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* =====================================================
+   반응형
+   ===================================================== */
+@media (max-width: 640px) {
+    .certification-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .certification-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+
+    .cert-divider {
+        display: none;
+    }
+}

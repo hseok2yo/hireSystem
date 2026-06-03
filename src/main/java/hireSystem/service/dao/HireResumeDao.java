@@ -2,11 +2,11 @@ package hireSystem.service.dao;
 
 import java.util.List;
 
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 import hireSystem.common.HireSystemAbstractMapper;
 import hireSystem.vo.HireCareerVo;
+import hireSystem.vo.HireEducationVo;
 import hireSystem.vo.HireResumeVo;
 
 @Repository("hireResumeDao")
@@ -39,21 +39,7 @@ public class HireResumeDao extends HireSystemAbstractMapper{
 		return selectOne("hireResumeDao.selectSubTotalCount", vo);
 	}
 
-	public List<HireCareerVo> selectCareerInfo(int resumeId) {
-		return selectList("hireResumeDao.selectCareerInfo", resumeId);
-	}
 
-	public int updateCareer(HireCareerVo careerVo) {
-		return update("hireResumeDao.updateCareer", careerVo);
-	}
-
-	public int insertCareer(HireCareerVo careerVo) {
-		return insert("hireResumeDao.insertCareer", careerVo);
-	}
-
-	public int deleteCareer(int careerId) {
-		return insert("hireResumeDao.deleteCareer", careerId);
-	}
 
 
 

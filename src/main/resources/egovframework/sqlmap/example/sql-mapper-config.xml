@@ -23,6 +23,10 @@
 		<typeAlias alias="boardWriteVo" type="hireSystem.vo.BoardWriteVo"/>
 		<typeAlias alias="hireResumeVo" type="hireSystem.vo.HireResumeVo"/>
 		<typeAlias alias="hireCareerVo" type="hireSystem.vo.HireCareerVo"/>
+		<typeAlias alias="hireEducationVo" type="hireSystem.vo.HireEducationVo"/>
+		<typeAlias alias="hireSkillVo"     type="hireSystem.vo.HireSkillVo"/>
+		<typeAlias alias="hireActivityVo" type="hireSystem.vo.HireActivityVo"/>
+		<typeAlias alias="hireCertificationVo" type="hireSystem.vo.HireCertificationVo"/>
 
 
 

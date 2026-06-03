@@ -1,0 +1,254 @@
+@charset "UTF-8";
+
+/* =============================================
+   경험/활동/교육 (activity)
+   스크린샷 이미지1(폼) / 이미지2(뷰) 기준
+   ============================================= */
+
+/* ── 섹션 헤더 ──────────────────────────────── */
+
+
+.section-card.section-activity .section-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.section-card.section-activity .section-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* ── 뷰: 목록 wrapper ──────────────────────── */
+
+.activity-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* ── 뷰: 개별 카드 (이미지2 기준) ────────────
+   - 기관명 | 기간 한 줄
+   - 활동내용 두 번째 줄
+   ─────────────────────────────────────────── */
+
+.activity-entry {
+    padding: 18px 22px;
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: border-color 0.15s;
+}
+
+.activity-entry:hover {
+    border-color: #bfdbfe;
+}
+
+/* 상단 행: 기관명+기간 / 아이콘 버튼 */
+.activity-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.activity-info {
+    flex: 1;
+}
+
+/* 기관명 + 기간 인라인 */
+.activity-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.activity-info .activity-org {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.activity-info .activity-type-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #eef2ff;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.activity-period {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* 활동내용 */
+.activity-content {
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.7;
+    margin: 0;
+    white-space: pre-line;
+}
+
+/* 수정/삭제 버튼 묶음 */
+.activity-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.btn-edit-activity {
+    color: #94a3b8;
+}
+.btn-edit-activity:hover {
+    color: #3b82f6;
+    background: #dbeafe;
+}
+.btn-delete-activity {
+    color: #94a3b8;
+}
+.btn-delete-activity:hover {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+/* ── 폼: 추가/수정 (이미지1 기준) ──────────── */
+
+.activity-add-form {
+    padding: 24px;
+    border-radius: 18px;
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+    margin-bottom: 20px;
+}
+
+/* 폼 그리드: 12컬럼 기반 */
+.activity-add-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* 컬럼 스팬 헬퍼 */
+.activity-add-grid .form-row-full    { grid-column: 1 / -1; }
+.activity-add-grid .form-row-half    { grid-column: span 6; }
+.activity-add-grid .form-row-quarter { grid-column: span 4; }
+
+/* 활동구분 select */
+.activity-add-grid select {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 14px;
+    background: #fcfcfd;
+    color: #111827;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2394a3b8' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+}
+
+.activity-add-grid select:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.3);
+}
+
+/* input, textarea */
+.activity-add-grid input[type="text"],
+.activity-add-grid input[type="date"] {
+    width: 100%;
+    height: 44px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 0 14px;
+    font-size: 14px;
+    background: #fcfcfd;
+    color: #111827;
+}
+
+.activity-add-grid textarea {
+    width: 100%;
+    min-height: 140px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 14px;
+    background: #fcfcfd;
+    color: #111827;
+    resize: vertical;
+    line-height: 1.7;
+}
+
+.activity-add-grid input:focus,
+.activity-add-grid textarea:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.3);
+}
+
+/* 글자수 카운터 (이미지1 하단 "총 글자수 0자 / 0 byte | 공백제외 0자 / 0 byte") */
+.activity-char-count {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: -8px;
+}
+
+.activity-char-count span + span::before {
+    content: '|';
+    margin-right: 16px;
+    color: #d1d5db;
+}
+
+/* 진행중 토글 행 */
+.activity-add-grid .current-job-row {
+    grid-column: span 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 2px;
+}
+
+.activity-add-grid .current-job-row label:first-child {
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+/* 폼 액션 버튼 */
+.activity-add-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+/* ── 반응형 ──────────────────────────────────── */
+
+@media (max-width: 720px) {
+    .activity-add-grid .form-row-half,
+    .activity-add-grid .form-row-quarter,
+    .activity-add-grid .current-job-row {
+        grid-column: 1 / -1;
+    }
+}

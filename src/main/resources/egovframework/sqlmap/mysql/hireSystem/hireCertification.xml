@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireCertificationDao">
+
+    <!-- 자격사항 목록 조회 (취득일 내림차순) -->
+    <select id="selectCertificationInfo" parameterType="int" resultType="hireCertificationVo">
+        SELECT
+              CERTIFICATION_ID
+            , RESUME_ID
+            , CERT_NAME
+            , ISSUER
+            , ACQUIRED_DATE
+            , CERT_NUMBER
+            , SCORE
+        FROM HIRE_CERTIFICATION
+        WHERE
+            RESUME_ID = #{resumeId}
+        ORDER BY
+            ACQUIRED_DATE DESC
+    </select>
+
+    <!-- 자격사항 등록 -->
+    <insert id="insertCertification" parameterType="hireCertificationVo">
+        INSERT INTO HIRE_CERTIFICATION (
+              RESUME_ID
+            , CERT_NAME
+            , ISSUER
+            , ACQUIRED_DATE
+            , CERT_NUMBER
+            , SCORE
+            , REG_DT
+        ) VALUES (
+              #{resumeId}
+            , #{certName}
+            , #{issuer}
+            , #{acquiredDate}
+            , #{certNumber}
+            , #{score}
+            , NOW()
+        )
+        <selectKey keyProperty="certificationId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 자격사항 수정 -->
+    <update id="updateCertification" parameterType="hireCertificationVo">
+        UPDATE HIRE_CERTIFICATION
+        <set>
+            <if test="certName      != null">CERT_NAME      = #{certName},</if>
+            <if test="issuer        != null">ISSUER         = #{issuer},</if>
+            <if test="acquiredDate  != null">ACQUIRED_DATE  = #{acquiredDate},</if>
+            <if test="certNumber    != null">CERT_NUMBER    = #{certNumber},</if>
+            <if test="score         != null">SCORE          = #{score},</if>
+            UPD_DT = NOW()
+        </set>
+        WHERE
+            CERTIFICATION_ID = #{certificationId}
+        AND RESUME_ID        = #{resumeId}
+    </update>
+
+    <!-- 자격사항 삭제 -->
+    <delete id="deleteCertification" parameterType="int">
+        DELETE FROM HIRE_CERTIFICATION
+        WHERE
+            CERTIFICATION_ID = #{certificationId}
+    </delete>
+
+</mapper>

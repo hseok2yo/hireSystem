@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireActivityDao">
+
+    <!-- 경험/활동/교육 목록 조회 (등록일 내림차순) -->
+    <select id="selectActivityList" parameterType="int" resultType="hireActivityVo">
+        SELECT
+              ACTIVITY_ID
+            , RESUME_ID
+            , ACTIVITY_TYPE
+            , ORG_NAME
+            , START_DATE
+            , END_DATE
+            , CURRENT_YN
+            , CONTENT
+        FROM HIRE_ACTIVITY
+        WHERE
+            RESUME_ID = #{resumeId}
+        ORDER BY
+            REG_DT DESC
+    </select>
+
+    <!-- 경험/활동/교육 등록 -->
+    <insert id="insertActivity" parameterType="hireActivityVo">
+        INSERT INTO HIRE_ACTIVITY (
+              RESUME_ID
+            , ACTIVITY_TYPE
+            , ORG_NAME
+            , START_DATE
+            , END_DATE
+            , CURRENT_YN
+            , CONTENT
+            , REG_DT
+        ) VALUES (
+              #{resumeId}
+            , #{activityType}
+            , #{orgName}
+            , #{startDate}
+            , #{endDate}
+            , #{currentYn}
+            , #{content}
+            , NOW()
+        )
+        <selectKey keyProperty="activityId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 경험/활동/교육 수정 -->
+    <update id="updateActivity" parameterType="hireActivityVo">
+        UPDATE HIRE_ACTIVITY
+        <set>
+            <if test="activityType != null">ACTIVITY_TYPE = #{activityType},</if>
+            <if test="orgName      != null">ORG_NAME      = #{orgName},</if>
+            <if test="startDate    != null">START_DATE    = #{startDate},</if>
+            <if test="endDate      != null">END_DATE      = #{endDate},</if>
+            <if test="currentYn    != null">CURRENT_YN    = #{currentYn},</if>
+            <if test="content      != null">CONTENT       = #{content},</if>
+            UPD_DT = NOW()
+        </set>
+        WHERE
+            ACTIVITY_ID = #{activityId}
+        AND RESUME_ID   = #{resumeId}
+    </update>
+
+    <!-- 경험/활동/교육 삭제 -->
+    <delete id="deleteActivity" parameterType="int">
+        DELETE FROM HIRE_ACTIVITY
+        WHERE
+            ACTIVITY_ID = #{activityId}
+    </delete>
+
+</mapper>
