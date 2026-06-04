@@ -26,17 +26,16 @@
 			</div>
 			<div class="basic-info-summary">
 				<div class="summary-item">
-					<i class="fas fa-eye-slash"></i> <span>가려진 정보 보기</span>
+				    <i class="fas fa-eye-slash"></i> <span>가려진 정보 보기</span>
 				</div>
-				<div class="summary-item">
-					<i class="fas fa-envelope"></i> <span>${userInfo.userEmail }</span>
+				<div class="summary-item" data-field="userEmail">       <%-- 추가 --%>
+				    <i class="fas fa-envelope"></i> <span>${userInfo.userEmail}</span>
 				</div>
-				<div class="summary-item">
-					<i class="fas fa-mobile-alt"></i> <span>${userInfo.userPhone }</span>
+				<div class="summary-item" data-field="userPhone">       <%-- 추가 --%>
+				    <i class="fas fa-mobile-alt"></i> <span>${userInfo.userPhone}</span>
 				</div>
-				<div class="summary-item">
-					<i class="fas fa-map-marker-alt"></i> <span>${userInfo.addressFirst}
-						${userInfo.addressSecond}</span>
+				<div class="summary-item" data-field="userAddress">     <%-- 추가 --%>
+				    <i class="fas fa-map-marker-alt"></i> <span>${userInfo.addressFirst} ${userInfo.addressSecond}</span>
 				</div>
 			</div>
 		</div>

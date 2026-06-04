@@ -101,15 +101,22 @@ function updateBasicInfoView() {
     const form = document.getElementById("basicFormElem");
     const getValue = (name) => form.querySelector(`[name='${name}']`).value;
 
+    // 이름/생년 (구조 단순해서 그대로 유지)
     document.querySelector("#basicInfoView h3").textContent = getValue("userNm");
-    document.querySelector("#basicInfoView .summary-item:nth-child(2) span").textContent = getValue("userEmail");
-    document.querySelector("#basicInfoView .summary-item:nth-child(3) span").textContent = getValue("userPhone");
-    document.querySelector("#basicInfoView .summary-item:nth-child(4) span").textContent = getValue("addressFirst") + " " + getValue("addressSecond");
-
     const birthDate = getValue("birthDate");
-    if(birthDate) {
+    if (birthDate) {
         document.querySelector("#basicInfoView p").textContent = birthDate.substring(0, 4) + "년";
     }
-}
 
+    // data-field로 매핑 (nth-child 제거)
+    const fieldMap = {
+        "userEmail":   getValue("userEmail"),
+        "userPhone":   getValue("userPhone"),
+        "userAddress": getValue("addressFirst") + " " + getValue("addressSecond")
+    };
+    Object.keys(fieldMap).forEach(function(field) {
+        var el = document.querySelector("#basicInfoView [data-field='" + field + "'] span");
+        if (el) el.textContent = fieldMap[field];
+    });
+}
 

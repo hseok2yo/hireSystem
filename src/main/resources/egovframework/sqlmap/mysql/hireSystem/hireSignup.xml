@@ -75,28 +75,33 @@
 	</insert>
 
 	<!-- 회원정보 단건조회 -->
-	<select id="selectHireUserInfo" parameterType="int" resultType="egovMap">
-	    SELECT
-	        USER_NUM
-	       , USER_ID
-	       , USER_EMAIL
-	       , USER_PW
-	       , USER_NM
-	       , USER_PHONE
-	       , USER_MEMBER_TYPE
-	       , USER_PHOTO_ORIGINALNAME
-	       , USER_PHOTO_NAME
-		   , USER_PHOTO_PATH
-	       , KAKAO_ID
-	       , LOGIN_TYPE
-	       , DATE_FORMAT(BIRTH_DATE, '%Y-%m-%d') AS BIRTH_DATE
-	       , TIMESTAMPDIFF(YEAR, BIRTH_DATE, CURDATE()) AS AGE
-	       , DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT  -- 추가
-	       , GENDER
-	       , ADDRESS_FIRST
-	       , ADDRESS_SECOND
-	    FROM HIRE_USER
-	    WHERE USER_NUM = #{userNum}
+	<select id="selectHireUserInfo" parameterType="map" resultType="egovMap">
+	     SELECT
+	         h.USER_NUM
+	       , h.USER_ID
+	       , h.USER_EMAIL
+	       , h.USER_PW
+	       , h.USER_NM
+	       , h.USER_PHONE
+	       , h.USER_MEMBER_TYPE
+	       , h.USER_PHOTO_ORIGINALNAME
+	       , h.USER_PHOTO_NAME
+		   , h.USER_PHOTO_PATH
+	       , h.KAKAO_ID
+	       , h.LOGIN_TYPE
+	       , DATE_FORMAT(h.BIRTH_DATE, '%Y-%m-%d') AS BIRTH_DATE
+	       , TIMESTAMPDIFF(YEAR, h.BIRTH_DATE, CURDATE()) AS AGE
+	       , DATE_FORMAT(h.REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT  -- 추가
+	       , h.GENDER
+	       , h.ADDRESS_FIRST
+	       , h.ADDRESS_SECOND
+	       , R.TITLE
+	    FROM
+	    	HIRE_USER h
+	    LEFT JOIN RESUME R on
+    		R.RESUME_ID = #{resumeId}
+    		AND R.USER_NUM =h.USER_NUM
+	    WHERE h.USER_NUM = #{userNum}
 	</select>
 
 	<!-- 회원정보 업뎃 -->

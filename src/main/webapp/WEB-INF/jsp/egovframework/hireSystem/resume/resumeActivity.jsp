@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"   prefix="fmt" %>
 
-<section class="section-card section-activity" id="activity">
+<section class="section-card section-activity hidden" id="activity">
 
     <%-- 헤더 --%>
     <div class="section-header">

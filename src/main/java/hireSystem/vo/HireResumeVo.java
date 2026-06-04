@@ -38,7 +38,7 @@ public class HireResumeVo {
     private String addressSecond;
 
     /** 등록일시 */
-    private Date createdAt;
+    private String createdAt;
 
     /** 수정일시 */
     private Date updatedAt;
@@ -50,6 +50,8 @@ public class HireResumeVo {
     private int page;
 	private int pageSize;
 	private String searchSort;
+
+	private String sectionVisible;
 
 
 

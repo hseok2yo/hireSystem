@@ -27,7 +27,8 @@
 		<typeAlias alias="hireSkillVo"     type="hireSystem.vo.HireSkillVo"/>
 		<typeAlias alias="hireActivityVo" type="hireSystem.vo.HireActivityVo"/>
 		<typeAlias alias="hireCertificationVo" type="hireSystem.vo.HireCertificationVo"/>
-
+		<typeAlias alias="hireCoverLetterVo" type="hireSystem.vo.HireCoverLetterVo"/>
+		<typeAlias alias="hirePortfolioVo" type="hireSystem.vo.HirePortfolioVo"/>
 
 
 

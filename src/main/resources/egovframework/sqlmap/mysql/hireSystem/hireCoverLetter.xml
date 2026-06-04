@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireCoverLetterDao">
+
+    <!-- 자기소개서 항목 목록 조회 (sortOrder 오름차순) -->
+    <select id="selectCoverLetterList" parameterType="int" resultType="hireCoverLetterVo">
+        SELECT
+              CL_ID
+            , RESUME_ID
+            , CL_TITLE
+            , CL_CONTENT
+            , SORT_ORDER
+            , REG_DT
+            , UPD_DT
+        FROM HIRE_COVERLETTER
+        WHERE
+            RESUME_ID = #{resumeId}
+        ORDER BY
+            SORT_ORDER ASC,
+            CL_ID      ASC
+    </select>
+
+    <!-- 자기소개서 항목 등록 -->
+    <insert id="insertCoverLetter" parameterType="hireCoverLetterVo">
+        INSERT INTO HIRE_COVERLETTER (
+              RESUME_ID
+            , CL_TITLE
+            , CL_CONTENT
+            , SORT_ORDER
+            , REG_DT
+        ) VALUES (
+              #{resumeId}
+            , #{clTitle}
+            , #{clContent}
+            , IFNULL(#{sortOrder}, (
+                SELECT IFNULL(MAX(cl.SORT_ORDER), 0) + 1
+                FROM HIRE_COVERLETTER cl
+                WHERE cl.RESUME_ID = #{resumeId}
+              ))
+            , NOW()
+        )
+        <selectKey keyProperty="clId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 자기소개서 항목 수정 -->
+    <update id="updateCoverLetter" parameterType="hireCoverLetterVo">
+        UPDATE HIRE_COVERLETTER
+        <set>
+            <if test="clTitle   != null and clTitle   != ''">CL_TITLE   = #{clTitle},</if>
+            <if test="clContent != null and clContent != ''">CL_CONTENT = #{clContent},</if>
+            <if test="sortOrder != null">SORT_ORDER = #{sortOrder},</if>
+            UPD_DT = NOW()
+        </set>
+        WHERE
+            CL_ID     = #{clId}
+        AND RESUME_ID = #{resumeId}
+    </update>
+
+    <!-- 자기소개서 항목 삭제 -->
+    <delete id="deleteCoverLetter" parameterType="int">
+        DELETE FROM HIRE_COVERLETTER
+        WHERE
+            CL_ID = #{clId}
+    </delete>
+
+</mapper>

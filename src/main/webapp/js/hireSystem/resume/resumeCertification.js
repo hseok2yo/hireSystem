@@ -52,12 +52,14 @@ function initResumeCertification() {
 
 /** 폼 열기 */
 function showCertificationAddForm(certAddForm, certListWrapper) {
+	setDirty('자격/어학/수상');
     certAddForm.classList.remove('hidden');
     certListWrapper.classList.add('hidden');
 }
 
 /** 폼 닫기 + 초기화 */
 function hideCertificationAddForm(certAddForm, certListWrapper) {
+	clearDirty(); //섹션 열린거 체크초기화
     certAddForm.classList.add('hidden');
     certListWrapper.classList.remove('hidden');
     resetCertificationForm(certAddForm);
@@ -99,6 +101,7 @@ function saveCertificationEntry(certForm, certAddForm, certListWrapper) {
     .then(function(data) {
         if (data.result) {
             alert(data.message);
+			sessionStorage.setItem('scrollTo', '#certification');
             location.href = '/hireSystem/resume/edit.do?resumeId=' + data.resumeId;
         } else {
             alert(data.message || '저장에 실패했습니다.');

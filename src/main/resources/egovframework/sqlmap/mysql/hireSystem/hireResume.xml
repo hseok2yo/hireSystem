@@ -101,5 +101,24 @@
 			AND IS_MAIN = 'N'
 	</select>
 
+	<update id="updateResume" parameterType="hireSystem.vo.HireResumeVo">
+	    UPDATE RESUME SET
+	    	  TITLE = #{title}
+	    	, SECTION_VISIBLE = #{sectionVisible}
+	    	, UPDATED_AT = NOW()
+	    WHERE RESUME_ID = #{resumeId}
+	</update>
+
+	<!-- 제목조회 -->
+	<select id="selectResume" parameterType="map" resultType="egovMap">
+		SELECT
+			RESUME_ID,
+	        TITLE,
+	        SECTION_VISIBLE
+		FROM RESUME
+		WHERE
+			RESUME_ID = #{resumeId}
+	</select>
+
 
 </mapper>

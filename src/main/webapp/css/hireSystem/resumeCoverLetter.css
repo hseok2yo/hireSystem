@@ -1,0 +1,184 @@
+@charset "UTF-8";
+
+/* =============================================
+   자기소개서 섹션
+   ============================================= */
+
+/* 목록 래퍼 */
+.cover-letter-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 항목 카드 (목록 + 폼 공통) */
+.cover-letter-entry {
+    border-radius: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 20px 22px;
+    transition: border-color 0.15s;
+}
+
+.cover-letter-entry:hover {
+    border-color: #bfdbfe;
+}
+
+/* 폼 카드 */
+.cover-letter-add-form {
+    background: #fff;
+    border: 1px solid #bfdbfe;
+}
+
+/* ── 폼 그리드 ── */
+.cover-letter-add-grid {
+    display: grid;
+    gap: 18px;
+}
+
+/* 폼 버튼 줄 */
+.cover-letter-add-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 6px;
+}
+
+/* 텍스트에어리어 + 글자수 래퍼 */
+.cover-letter-textarea-wrap {
+    position: relative;
+}
+
+.cover-letter-textarea-wrap textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 160px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: #111827;
+    line-height: 1.7;
+    background: #fff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.cover-letter-textarea-wrap textarea:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.3);
+}
+
+.cover-letter-textarea-wrap textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* 글자수 카운트 */
+.cover-letter-char-count {
+    text-align: right;
+    font-size: 12px;
+    color: #9ca3af;
+    margin-top: 6px;
+}
+
+.cover-letter-char-count .cl-current-count {
+    font-weight: 600;
+    color: #374151;
+}
+
+.cover-letter-char-count.over-limit .cl-current-count {
+    color: #ef4444;
+}
+
+/* ── 목록 카드 상단 ── */
+.cover-letter-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.cover-letter-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cover-letter-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 번호 뱃지 */
+.cover-letter-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #eef2ff;
+    color: #1d4ed8;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.cover-letter-header strong {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* 본문 */
+.cover-letter-body p {
+    margin: 0;
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    /* 3줄까지만 미리보기 (접힌 상태) */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* 펼쳐진 상태 */
+.cover-letter-entry.expanded .cover-letter-body p {
+    -webkit-line-clamp: unset;
+    overflow: visible;
+}
+
+/* 더보기 버튼 */
+.cover-letter-toggle-btn {
+    background: none;
+    border: none;
+    color: #1d4ed8;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 0 0;
+    display: block;
+}
+
+.cover-letter-toggle-btn:hover {
+    text-decoration: underline;
+}
+
+/* 수정/삭제 버튼 */
+.cover-letter-actions {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.btn-edit-cover-letter       { color: #94a3b8; }
+.btn-edit-cover-letter:hover  { color: #3b82f6; background: #dbeafe; }
+
+.btn-delete-cover-letter       { color: #94a3b8; }
+.btn-delete-cover-letter:hover { color: #ef4444; background: #fee2e2; }

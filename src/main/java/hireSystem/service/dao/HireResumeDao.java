@@ -1,7 +1,9 @@
 package hireSystem.service.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 import hireSystem.common.HireSystemAbstractMapper;
@@ -37,6 +39,16 @@ public class HireResumeDao extends HireSystemAbstractMapper{
 	public int selectSubTotalCount(HireResumeVo vo) {
 
 		return selectOne("hireResumeDao.selectSubTotalCount", vo);
+	}
+
+	public int updateResume(HireResumeVo vo) {
+		return update("hireResumeDao.updateResume", vo);
+	}
+
+
+	public EgovMap selectResume(EgovMap map) {
+
+		return selectOne("hireResumeDao.selectResume", map);
 	}
 
 

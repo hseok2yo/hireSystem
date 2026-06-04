@@ -63,11 +63,13 @@ function initResumeActivity() {
 /* ── 폼 열기 / 닫기 ──────────────────────────────────────── */
 
 function showActivityAddForm(activityAddForm, activityListWrapper) {
+	setDirty('경험/활동/교육');
     activityAddForm.classList.remove('hidden');
     activityListWrapper.classList.add('hidden');
 }
 
 function hideActivityAddForm(activityAddForm, activityListWrapper) {
+	clearDirty(); //섹션 열린거 체크초기화
     activityAddForm.classList.add('hidden');
     activityListWrapper.classList.remove('hidden');
     resetActivityForm(activityAddForm);
@@ -107,6 +109,7 @@ function saveActivityEntry(activityForm, activityAddForm, activityListWrapper) {
     .then(function (data) {
         if (data.result) {
             alert(data.message);
+			sessionStorage.setItem('scrollTo', '#activity');  // ← 추가
             location.href = '/hireSystem/resume/edit.do?resumeId=' + data.resumeId;
         } else {
             alert(data.message || '저장에 실패했습니다.');

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hirePortfolioDao">
+
+	<select id="selectPortfolioList" parameterType="int" resultType="hirePortfolioVo">
+	    SELECT
+	    	*
+	    FROM
+	    	RESUME_PORTFOLIO
+	    WHERE
+	    	RESUME_ID = #{resumeId}
+	    ORDER BY REG_DATE DESC
+	</select>
+
+	<select id="selectPortfolio" parameterType="int" resultType="hirePortfolioVo">
+		SELECT
+			*
+		FROM
+			RESUME_PORTFOLIO
+		WHERE
+			PORTFOLIO_ID = #{portfolioId}
+	</select>
+    <insert id="insertPortfolio" parameterType="hirePortfolioVo">
+	    INSERT INTO RESUME_PORTFOLIO
+	    (
+	        RESUME_ID
+	        , FILE_CATEGORY
+	        , FILE_TYPE
+	        , ORIGINAL_NAME
+	        , SAVED_NAME
+	        , SAVED_PATH
+	        , FILE_SIZE
+	        , PORTFOLIO_URL
+	        , REG_DATE
+	    ) VALUES (
+	        #{resumeId}
+	        , #{fileCategory}
+	        , #{fileType}
+	        , #{originalName}
+	        , #{savedName}
+	        , #{savedPath}
+	        , #{fileSize}
+	        , #{portfolioUrl}
+	        , NOW()
+	    )
+	</insert>
+
+    <update id="updatePortfolio" parameterType="hirePortfolioVo">
+        UPDATE RESUME_PORTFOLIO SET
+            FILE_CATEGORY = #{fileCategory},
+            FILE_TYPE     = #{fileType},
+            PORTFOLIO_URL = #{portfolioUrl},
+            MOD_DATE      = NOW()
+            <if test="originalName != null and originalName != ''">
+            , ORIGINAL_NAME = #{originalName}
+            , SAVED_NAME    = #{savedName}
+            , SAVED_PATH    = #{savedPath}
+            , FILE_SIZE     = #{fileSize}
+            </if>
+        WHERE PORTFOLIO_ID = #{portfolioId}
+    </update>
+
+    <delete id="deletePortfolio" parameterType="int">
+        DELETE FROM RESUME_PORTFOLIO
+        WHERE PORTFOLIO_ID = #{portfolioId}
+    </delete>
+
+</mapper>

@@ -1,5 +1,6 @@
 package hireSystem.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
 
+import hireSystem.common.CommonUtil;
 import hireSystem.common.PagingUtil;
 import hireSystem.service.HireResumeService;
 import hireSystem.service.dao.HireResumeDao;
@@ -28,6 +30,9 @@ public class HireResumeServiceImpl extends EgovAbstractServiceImpl implements Hi
 
     @Resource(name = "hireSignupDao")
     private HireSignupDao hireSignupDao;
+
+    @Resource(name = "commonUtil")
+    private CommonUtil commonUtil;
 
     @Override
     public EgovMap selectHireUserInfo(int loginUserNum) {
@@ -103,4 +108,20 @@ public class HireResumeServiceImpl extends EgovAbstractServiceImpl implements Hi
             return hireResumeDao.updateBasicResume(vo);
         }
     }
+
+    @Override
+    public int saveResume(HireResumeVo vo, int loginUserNum) {
+    	int resumeId = commonUtil.getOrCreateResumeId(vo.getResumeId(), loginUserNum);
+        vo.setResumeId(resumeId);
+        int result = hireResumeDao.updateResume(vo);
+        return result;
+    }
+
+	@Override
+	public EgovMap selectResume(int resumeId) {
+		EgovMap map = new EgovMap();
+		map.put("resumeId", resumeId);
+		return hireResumeDao.selectResume(map);
+	}
+
 }

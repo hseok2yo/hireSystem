@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
-<section class="section-card section-certification" id="certification">
+<section class="section-card section-certification hidden" id="certification">
     <div class="section-header">
         <div>
             <h2>자격/어학/수상</h2>

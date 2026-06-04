@@ -61,12 +61,14 @@ function initResumeCareer() {
 
 /** 폼 열기 */
 function showCareerAddForm(careerAddForm, careerListWrapper) {
+	setDirty('경력사항'); //폼 열린거 체크용
     careerAddForm.classList.remove('hidden');
     careerListWrapper.classList.add('hidden');
 }
 
 /** 폼 닫기 + 초기화 */
 function hideCareerAddForm(careerAddForm, careerListWrapper) {
+	clearDirty(); //섹션 열린거 체크초기화
     careerAddForm.classList.add('hidden');
     careerListWrapper.classList.remove('hidden');
     resetCareerForm(careerAddForm);
@@ -104,7 +106,9 @@ function saveCareerEntry(careerForm, careerAddForm, careerListWrapper) {
     .then(function(data) {
         if (data.result) {
             alert(data.message);
+			sessionStorage.setItem('scrollTo', '#career');  // ← 앵커 대신
             location.href = '/hireSystem/resume/edit.do?resumeId=' + data.resumeId;
+
 			//location.reload();
         } else {
             alert(data.message || '저장에 실패했습니다.');
@@ -138,6 +142,7 @@ function handleCareerEdit(btn, careerForm, careerAddForm, careerListWrapper) {
     var endDateInput = careerAddForm.querySelector('[name="endDate"]');
     checkbox.checked     = article.dataset.currentYn === 'Y';
     endDateInput.disabled = checkbox.checked;
+
 
     showCareerAddForm(careerAddForm, careerListWrapper);
 }

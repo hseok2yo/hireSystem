@@ -44,4 +44,8 @@ public interface HireResumeService {
      * 유저 기본정보 + 이력서 기본정보 저장 (복합 저장)
      */
     public int saveBasicResume(HireUserVo hireVo, HireResumeVo vo);
+
+	public int saveResume(HireResumeVo vo, int loginUserNum);
+
+	public EgovMap selectResume(int resumeId);
 }

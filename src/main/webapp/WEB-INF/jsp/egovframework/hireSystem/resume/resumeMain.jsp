@@ -85,7 +85,7 @@
                         <c:forEach var="resume" items="${subResume.list}">
                             <article class="resume-card" data-resume-num="${resume.resumeId}">
                                 <div class="card-header">
-                                    <span class="completion-status">%</span>
+                                    <span class="completion-status"> </span>
                                     <div class="more-wrap">
                                         <button type="button" class="more-btn" aria-label="더보기">
                                             <i class="fas fa-ellipsis-v"></i>
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h3>${resume.title}</h3>
+                                    <h3>${empty resume.title ? '이력서 미완성' : resume.title}</h3>
                                     <p class="update-date">마지막 수정: <fmt:formatDate value="${resume.updatedAt}" pattern="yyyy-MM-dd"/></p>
                                     <div class="progress-bar">
                                         <div class="progress" style="width: %"></div>

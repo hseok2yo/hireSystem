@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/css/hireSystem/resumeForm.css">
     <link rel="stylesheet" href="/css/hireSystem/resumeActivity.css">
     <link rel="stylesheet" href="/css/hireSystem/resumeCertification.css">
+    <link rel="stylesheet" href="/css/hireSystem/resumePortfolio.css">
+    <link rel="stylesheet" href="/css/hireSystem/resumeCoverLetter.css">
 </head>
 <body>
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/header.jsp"></jsp:include>
@@ -27,11 +29,14 @@
 	<script src="/js/hireSystem/resume/resumeSkill.js"></script>
 	<script src="/js/hireSystem/resume/resumeActivity.js"></script>
 	<script src="/js/hireSystem/resume/resumeCertification.js"></script>
+	<script src="/js/hireSystem/resume/resumePortfolio.js"></script>
+	<script src="/js/hireSystem/resume/resumeCoverLetter.js"></script>
 
 
 		<!-- 공통 hidden -->
 	    <input type="hidden" id="resumeId" name="resumeId" value="${commonResumeId}">
 		<input type="hidden" id="userNum"  name="userNum"  value="${commonUserNum}">
+		<input type="hidden" id="sectionVisible" value="${resume.sectionVisible}">
 
 	    <div class="resume-page">
 	        <div class="resume-layout">
@@ -70,6 +75,11 @@
 							<%-- ===================== 자격/어학/수상 섹션 ===================== --%>
 							 <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/resume/resumeCertification.jsp"/>
 
+							<%-- ===================== 포트폴리오/기타문서 섹션 ===================== --%>
+    						<jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/resume/resumePortfolio.jsp"/>
+
+    						<%-- ===================== 자기소개서 섹션 ===================== --%>
+    						<jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/resume/resumeCoverLetter.jsp"/>
 	                    </main>
 	                </div>
 	            </div>
@@ -90,23 +100,34 @@
 	                <section class="sidebar-menu">
 	                    <h3>My Career</h3>
 	                    <ul class="sidebar-menu-list">
-	                        <li><button type="button" class="sidebar-toggle expanded" data-target="#career"><span>경력</span><i class="fas fa-minus"></i></button></li>
-	                        <li><button type="button" class="sidebar-toggle expanded" data-target="#education"><span>학력</span><i class="fas fa-minus"></i></button></li>
-	                        <li><button type="button" class="sidebar-toggle expanded" data-target="#skills"><span>스킬</span><i class="fas fa-minus"></i></button></li>
-	                        <li><button type="button" class="sidebar-toggle expanded" data-target="#activity"><span>경험/활동/교육</span><i class="fas fa-minus"></i></button></li>
-	                        <li><button type="button" class="sidebar-toggle expanded" data-target="#certification"><span>자격/어학/수상</span><i class="fas fa-minus"></i></button></li>
-	                        <li><button type="button" class="sidebar-toggle" data-target=""><span>포트폴리오 및 기타문서</span><i class="fas fa-plus"></i></button></li>
-	                        <li><button type="button" class="sidebar-toggle" data-target=""><span>자기소개서</span><i class="fas fa-plus"></i></button></li>
+	                        <li><button type="button" class="sidebar-toggle" data-target="#career">        <span>경력</span>               <i class="fas"></i></button></li>
+							<li><button type="button" class="sidebar-toggle" data-target="#education">     <span>학력</span>               <i class="fas"></i></button></li>
+							<li><button type="button" class="sidebar-toggle" data-target="#skills">        <span>스킬</span>               <i class="fas"></i></button></li>
+							<li><button type="button" class="sidebar-toggle" data-target="#activity">      <span>경험/활동/교육</span>     <i class="fas"></i></button></li>
+							<li><button type="button" class="sidebar-toggle" data-target="#certification"> <span>자격/어학/수상</span>     <i class="fas"></i></button></li>
+							<li><button type="button" class="sidebar-toggle" data-target="#portfolio">     <span>포트폴리오 및 기타문서</span><i class="fas"></i></button></li>
+							<li><button type="button" class="sidebar-toggle" data-target="#coverLetter">   <span>자기소개서</span>         <i class="fas"></i></button></li>
 	                    </ul>
 	                </section>
 	            </aside>
 	        </div>
 
-	        <div class="resume-actions">
-	            <button type="button" class="btn-outline">취소</button>
-	            <button type="button" class="btn-primary submit-complete">작성완료</button>
-	        </div>
+<!-- 	        <div class="resume-actions"> -->
+<!-- 	            <button type="button" class="btn-outline">취소</button> -->
+<!-- 	            <button type="button" class="btn-primary submit-complete">작성완료</button> -->
+<!-- 	        </div> -->
 	    </div>
+	    <div class="resume-bottom-bar">
+		    <div class="resume-title-wrap">
+		        <label>이력서 제목</label>
+		        <input type="text" id="title" value="${resume.title}">
+		    </div>
+		    <div class="resume-bottom-btns">
+<!-- 		        <button type="button" id="previewBtn">이력서 미리보기</button> -->
+		        <button type="button" id="completeBtn">작성완료</button>
+		    </div>
+		</div>
+		<div style="height:64px;"></div>
 
     <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/templete/footer.jsp"></jsp:include>
 </body>

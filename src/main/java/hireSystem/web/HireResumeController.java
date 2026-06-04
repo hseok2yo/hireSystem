@@ -21,14 +21,18 @@ import org.springframework.web.multipart.MultipartFile;
 import hireSystem.service.HireActivityService;
 import hireSystem.service.HireCareerService;
 import hireSystem.service.HireCertificationService;
+import hireSystem.service.HireCoverLetterService;
 import hireSystem.service.HireEducationService;
+import hireSystem.service.HirePortfolioService;
 import hireSystem.service.HireResumeService;
 import hireSystem.service.HireResumeSkillService;
 import hireSystem.service.HireSignupService;
 import hireSystem.vo.HireActivityVo;
 import hireSystem.vo.HireCareerVo;
 import hireSystem.vo.HireCertificationVo;
+import hireSystem.vo.HireCoverLetterVo;
 import hireSystem.vo.HireEducationVo;
+import hireSystem.vo.HirePortfolioVo;
 import hireSystem.vo.HireResumeVo;
 import hireSystem.vo.HireSkillVo;
 import hireSystem.vo.HireUserVo;
@@ -59,6 +63,12 @@ public class HireResumeController {
 
     @Resource(name = "hireCertificationService")
     private HireCertificationService hireCertificationService;
+
+    @Resource(name = "hireCoverLetterService")
+    private HireCoverLetterService hireCoverLetterService;
+
+    @Resource(name = "hirePortfolioService")
+    private HirePortfolioService hirePortfolioService;
 
 
     // ---------------------------------------------------------------
@@ -158,11 +168,14 @@ public class HireResumeController {
 
         int loginUserNum = (int) session.getAttribute("loginUserNum");
 
+        //공통부분
         model.addAttribute("commonUserNum",  loginUserNum);
         model.addAttribute("commonResumeId", resumeId);
 
         // 1. 기본정보
         model.addAttribute("userInfo", hireResumeService.selectHireUserInfo(loginUserNum));
+        // 이력서정보
+        model.addAttribute("resume", hireResumeService.selectResume(resumeId));
 
         // 2. 경력사항 (HireCareerService 사용)
         List<HireCareerVo> careerList = hireCareerService.selectCareerInfo(resumeId);
@@ -185,6 +198,29 @@ public class HireResumeController {
         List<HireCertificationVo> certificationList = hireCertificationService.selectCertificationInfo(resumeId);
         model.addAttribute("certificationInfo", certificationList);
 
+        // 6. 포트폴리오
+        List<HirePortfolioVo> portfolioList = hirePortfolioService.selectPortfolioList(resumeId);
+        model.addAttribute("portfolioList", portfolioList);
+
+        // 7. 자기소개서
+        List<HireCoverLetterVo> coverLetterList = hireCoverLetterService.selectCoverLetterList(resumeId);
+        model.addAttribute("coverLetterList", coverLetterList);
+
         return path + "resumeForm";
+    }
+
+    @RequestMapping("/resumeSave.do")
+    @ResponseBody
+    public Map<String, Object> resumeTitleSave(HireResumeVo vo, HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        try {
+            int loginUserNum = (int) session.getAttribute("loginUserNum");
+            hireResumeService.saveResume(vo, loginUserNum);
+            result.put("result", true);
+        } catch (Exception e) {
+            result.put("result", false);
+            result.put("message", e.getMessage());
+        }
+        return result;
     }
 }

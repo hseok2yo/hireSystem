@@ -61,12 +61,14 @@ function initResumeEducation() {
 
 /** 폼 열기 */
 function showEducationAddForm(educationAddForm, educationListWrapper) {
+	setDirty('학력');
     educationAddForm.classList.remove('hidden');
     educationListWrapper.classList.add('hidden');
 }
 
 /** 폼 닫기 + 초기화 */
 function hideEducationAddForm(educationAddForm, educationListWrapper) {
+	clearDirty(); //섹션 열린거 체크초기화
     educationAddForm.classList.add('hidden');
     educationListWrapper.classList.remove('hidden');
     resetEducationForm(educationAddForm);
@@ -104,6 +106,7 @@ function saveEducationEntry(educationForm, educationAddForm, educationListWrappe
     .then(function(data) {
         if (data.result) {
             alert(data.message);
+			sessionStorage.setItem('scrollTo', '#education');  // ← 추가
             location.href = '/hireSystem/resume/edit.do?resumeId=' + data.resumeId;
         } else {
             alert(data.message || '저장에 실패했습니다.');

@@ -1,7 +1,10 @@
 package hireSystem.common;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -10,15 +13,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import hireSystem.service.dao.HirePortfolioDao;
+import hireSystem.vo.HirePortfolioVo;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service("commonFileService")
 public class CommonFileService {
-	
+
+	@Resource(name = "hirePortfolioDao")
+    private HirePortfolioDao hirePortfolioDao;
+
 	/**
 	 * @param file 저장할 파일
 	 * @param savePath 저장경로
@@ -29,15 +40,15 @@ public class CommonFileService {
         String originalName = file.getOriginalFilename()
                                   .replaceAll("[^a-zA-Z0-9가-힣._-]", "_");
         String filename = UUID.randomUUID() + "_" + originalName;
-        
+
         File dir = new File(savePath);
         if (!dir.exists()) dir.mkdirs();
-        
+
         Files.write(Paths.get(savePath + filename), file.getBytes());
         log.info("[CommonFileService] 파일 저장 완료: {}", filename);
         return filename;
     }
-	
+
 	// 파일 단건 삭제
     public boolean deleteFile(String savePath, String filename) {
         File file = new File(savePath + filename);
@@ -62,7 +73,7 @@ public class CommonFileService {
         }
         log.info("[CommonFileService] 파일 삭제 완료");
     }
-    
+
     /**
      * 수정 시 삭제할 파일명, 새로 추가된 파일명 계산만 해줌
      * @param currentFilenames 에디터에 현재 남아있는 파일명
@@ -72,12 +83,12 @@ public class CommonFileService {
     public Map<String, List<String>> diffImages(
             List<String> currentFilenames,
             List<String> storedFilenames) {
-        
+
         log.info("[CommonFileService] diffImages 시작 - 에디터: {}, DB: {}", currentFilenames, storedFilenames);
-        
+
         List<String> toDelete = new ArrayList<>();
         List<String> toAdd    = new ArrayList<>();
-        
+
         if (currentFilenames == null || currentFilenames.isEmpty()) {
             log.info("[CommonFileService] 이미지 전부 삭제된 케이스");
             toDelete.addAll(storedFilenames);
@@ -89,13 +100,42 @@ public class CommonFileService {
                 if (!storedFilenames.contains(f)) toAdd.add(f);
             }
         }
-        
+
         log.info("[CommonFileService] diffImages 결과 - 삭제: {}, 추가: {}", toDelete, toAdd);
-        
+
         Map<String, List<String>> result = new HashMap<>();
         result.put("toDelete", toDelete);
         result.put("toAdd", toAdd);
         return result;
     }
-	
+
+    public void download(String type, int id, HttpServletResponse response) throws Exception {
+
+        String savedPath, savedName, originalName;
+
+        if ("portfolio".equals(type)) {
+            HirePortfolioVo vo = hirePortfolioDao.selectPortfolio(id);
+            savedPath    = vo.getSavedPath();
+            savedName    = vo.getSavedName();
+            originalName = vo.getOriginalName();
+        } else {
+            return;
+        }
+
+        File file = new File(savedPath + savedName);
+        if (!file.exists()) return;
+
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition",
+            "attachment; filename=\"" + URLEncoder.encode(originalName, "UTF-8") + "\"");
+        response.setContentLengthLong(file.length());
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buf = new byte[4096];
+            int len;
+            while ((len = fis.read(buf)) != -1) os.write(buf, 0, len);
+        }
+    }
+
 }

@@ -1407,3 +1407,83 @@ button {
 .btn-skill-add:hover {
     background: #1e40af;
 }
+
+.resume-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 100;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+}
+
+.resume-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.resume-title-wrap label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555;
+    white-space: nowrap;
+}
+
+.resume-title-wrap input {
+    width: 280px;
+    height: 36px;
+    padding: 0 12px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #222;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.resume-title-wrap input:focus {
+    border-color: #316aff;
+}
+
+.resume-bottom-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.resume-bottom-btns button {
+    height: 36px;
+    padding: 0 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+#previewBtn {
+    background: #fff;
+    border: 1px solid #316aff;
+    color: #316aff;
+}
+
+#previewBtn:hover {
+    background: #f0f4ff;
+}
+
+#completeBtn {
+    background: #316aff;
+    border: 1px solid #316aff;
+    color: #fff;
+}
+
+#completeBtn:hover {
+    background: #1a55e8;
+}
