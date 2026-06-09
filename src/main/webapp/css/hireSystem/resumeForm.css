@@ -310,6 +310,29 @@ button {
     font-size: 14px;
 }
 
+.btn-address-search {
+    width: auto !important;
+    height: auto !important;
+    border: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    padding: 0 4px !important;
+    box-shadow: none !important;
+    font-size: 22px !important;
+    color: #1d4ed8 !important;
+    cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.btn-address-search:hover {
+    color: #1e40af !important;
+    transform: scale(1.2);
+}
+
+.btn-address-search:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
 .form-row input[readonly] {
     color: var(--muted);
 }

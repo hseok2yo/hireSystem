@@ -2,6 +2,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"   prefix="fmt" %>
 
+<script src="//t1.kakaocdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/js/hireSystem/resume/kakaoAddress.js"></script>
+
+<!-- <input type="text" id="sample4_postcode" placeholder="우편번호"> -->
+<!-- <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기"><br> -->
+<!-- <input type="text" id="sample4_roadAddress" placeholder="도로명주소"> -->
+<!-- <input type="text" id="sample4_jibunAddress" placeholder="지번주소"> -->
+<!-- <span id="guide" style="color:#999;display:none"></span> -->
+<!-- <input type="text" id="sample4_detailAddress" placeholder="상세주소"> -->
+<!-- <input type="text" id="sample4_extraAddress" placeholder="참고항목"> -->
+
+
 <div class="section-card section-basic-info">
 	<div class="basic-top">
 		<div>
@@ -80,14 +92,20 @@
 						</div>
 					</div>
 					<div class="form-row-group">
-						<div class="form-row">
-							<label>주소 <span>*</span></label> <input type="text"
-								name="addressFirst" value="${userInfo.addressFirst }">
-						</div>
-						<div class="form-row">
-							<label>상세주소</label> <input type="text" name="addressSecond"
-								value="${userInfo.addressSecond }">
-						</div>
+					    <div class="form-row">
+					        <label>주소 <span>*</span></label>
+					        <div style="display:flex; gap:8px; align-items:center;">
+					            <input type="text" name="addressFirst" id="addressFirst"
+					                value="${userInfo.addressFirst}" readonly placeholder="주소를 검색하세요">
+								<button type="button" class="btn-address-search" onclick="execDaumPostcode()">
+								    <i class="fas fa-search"></i>
+								</button>
+					        </div>
+					    </div>
+					    <div class="form-row">
+					        <label>상세주소</label>
+					        <input type="text" name="addressSecond" value="${userInfo.addressSecond}">
+					    </div>
 					</div>
 					<div class="form-actions">
 						<button type="button" class="btn-outline cancel-basic-info">취소</button>
