@@ -48,4 +48,12 @@ public interface HireResumeService {
 	public int saveResume(HireResumeVo vo, int loginUserNum);
 
 	public EgovMap selectResume(int resumeId);
+
+	public boolean deleteResume(Integer resumeId, int loginUserNum);
+
+	/**
+	 * 이력서 복제 (기본정보 + 모든 서브항목)
+	 * @return 새로 생성된 resumeId
+	 */
+	public int duplicateResume(int resumeId, int loginUserNum);
 }

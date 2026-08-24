@@ -113,12 +113,24 @@
 	<select id="selectResume" parameterType="map" resultType="egovMap">
 		SELECT
 			RESUME_ID,
+			USER_NUM,
 	        TITLE,
 	        SECTION_VISIBLE
 		FROM RESUME
 		WHERE
 			RESUME_ID = #{resumeId}
 	</select>
+
+	<!-- 이력서삭제 -->
+	<delete id="deleteResume" parameterType="map">
+		DELETE FROM RESUME
+		WHERE
+			RESUME_ID = #{resumeId}
+		AND USER_NUM = #{loginUserNum}
+
+
+
+	</delete>
 
 
 </mapper>

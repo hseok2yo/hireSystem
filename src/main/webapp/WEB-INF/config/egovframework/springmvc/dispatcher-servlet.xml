@@ -12,12 +12,12 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
     </context:component-scan>
-	
-    
+
+
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
     <property name="maxUploadSize" value="10485760000"/> <!-- 10MB -->
 	</bean>
-    
+
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
     <!-- 쿠키를 이용한 Locale 이용시 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"/> -->
     <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
@@ -50,8 +50,8 @@
             </map>
         </property>
     </bean>
-    
-    
+
+
 	<!-- /For Pagination Tag -->
 	<mvc:annotation-driven>
 	    <mvc:message-converters register-defaults="true">
@@ -60,19 +60,20 @@
 	        <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
 	    </mvc:message-converters>
 	</mvc:annotation-driven>
-	
+
 	<!-- ★로그인이 필요한 페이지들 인터셉트 걸어서 로그인 안되어있으면 로그인페이지로 보내기 -->
 	<mvc:interceptors>
 	    <mvc:interceptor>
 	        <mvc:mapping path="/hireSystem/board/boardWrite.do"/>
 	        <mvc:mapping path="/hireSystem/board/boardInsert.do"/>
+	        <mvc:mapping path="/hireSystem/resume/resumeMain.do"/>
 	        <bean class="hireSystem.common.LoginInterceptor"/>
 	    </mvc:interceptor>
 	</mvc:interceptors>
 	<!-- ★로그인이 필요한 페이지들 인터셉트 걸어서 로그인 안되어있으면 로그인페이지로 보내기 -->
-	
-	
+
+
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
-    
-                   
+
+
 </beans>

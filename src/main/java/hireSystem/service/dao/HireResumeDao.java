@@ -51,6 +51,11 @@ public class HireResumeDao extends HireSystemAbstractMapper{
 		return selectOne("hireResumeDao.selectResume", map);
 	}
 
+	public int deleteResume(Map<String, Object> param) {
+		return delete("hireResumeDao.deleteResume", param);
+	}
+
+
 
 
 

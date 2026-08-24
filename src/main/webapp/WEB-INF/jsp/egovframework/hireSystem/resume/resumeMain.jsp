@@ -57,8 +57,8 @@
 								data-num="${mainResume.resumeId}">PDF 다운로드</button>
 							<button type="button" class="menu-item action-copy"
 								data-num="${mainResume.resumeId}">이력서 복사</button>
-							<button type="button" class="menu-item action-delete"
-								data-num="${mainResume.resumeId}">이력서 삭제</button>
+<!-- 							<button type="button" class="menu-item action-delete" -->
+<%-- 								data-num="${mainResume.resumeId}">이력서 삭제</button> --%>
 						</div>
 					</div>
 				</div>

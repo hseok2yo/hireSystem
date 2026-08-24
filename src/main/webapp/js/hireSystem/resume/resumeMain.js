@@ -141,32 +141,87 @@ function initMenuItem() {
     // 메뉴 항목 목록 가져오기
     document.querySelectorAll(".menu-item").forEach(function(itemBtn) {
 
+
         // 클릭 이벤트 등록
         itemBtn.addEventListener("click", function(e) {
 
             // 이벤트 버블링 방지
             e.stopPropagation();
 
+			const resumeId = itemBtn.dataset.num;
+
+			console.log("resumeId:", resumeId);
+
             // 대표 이력서 설정
-            if (itemBtn.classList.contains("action-representative")) {
+			if (itemBtn.classList.contains("action-representative")) {
 
-                alert("대표 이력서 설정 기능은 백엔드 연동 후 동작합니다.");
+				if (confirm("이 이력서를 대표 이력서로 설정하시겠습니까?")) {
+					alert("대표 이력서 설정 기능은 백엔드 연동 후 동작합니다.");
+				}
 
-            // PDF 다운로드
-            } else if (itemBtn.classList.contains("action-pdf")) {
+				// PDF 다운로드
+			} else if (itemBtn.classList.contains("action-pdf")) {
 
-                alert("PDF 다운로드 기능은 백엔드 연동 후 동작합니다.");
+				if (confirm("이 이력서를 PDF로 다운로드하시겠습니까?")) {
+					alert("PDF 다운로드 기능은 백엔드 연동 후 동작합니다.");
+				}
 
-            // 이력서 복사
-            } else if (itemBtn.classList.contains("action-copy")) {
+				// 이력서 복사
+			} else if (itemBtn.classList.contains("action-copy")) {
 
-                alert("이력서 복사 기능은 백엔드 연동 후 동작합니다.");
+				if (confirm("이 이력서를 복사하시겠습니까?")) {
+					fetch("/hireSystem/resume/duplicate.do", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						body: `resumeId=${encodeURIComponent(resumeId)}`
+					})
+						.then(response => response.json())
+						.then(data => {
 
-            // 이력서 삭제
-            } else if (itemBtn.classList.contains("action-delete")) {
+							if (data.result) {
+								alert("이력서가 복사되었습니다.");
+								location.reload();
+							} else {
+								alert(data.message || "이력서 복사에 실패했습니다.");
+							}
 
-                alert("이력서 삭제 기능은 백엔드 연동 후 동작합니다.");
-            }
+						})
+						.catch(error => {
+							console.error("복사 오류:", error);
+							alert("복사 중 오류가 발생했습니다.");
+						});
+				}
+
+				// 이력서 삭제
+			} else if (itemBtn.classList.contains("action-delete")) {
+
+				if (confirm("이 이력서를 삭제하시겠습니까?")) {
+					fetch("/hireSystem/resume/resumeDelete.do", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						body: `resumeId=${encodeURIComponent(resumeId)}`
+					})
+						.then(response => response.json())
+						.then(data => {
+
+							if (data.result) {
+								alert("이력서가 삭제되었습니다.");
+								location.reload();
+							} else {
+								alert("이력서 삭제에 실패했습니다.");
+							}
+
+						})
+						.catch(error => {
+							console.error("삭제 오류:", error);
+							alert("삭제 중 오류가 발생했습니다.");
+						});
+				}
+			}
 
             // 메뉴 닫기
             var wrap = itemBtn.closest(".more-wrap");

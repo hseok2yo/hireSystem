@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						// insert였으면 resumeId를 hidden 필드 등에 세팅
 				        if(data.resumeId) {
 				            document.getElementById("resumeId").value = data.resumeId;
+							RESUME_CTX.resumeId = data.resumeId;
 				        }
 					}
 					alert(data.message);

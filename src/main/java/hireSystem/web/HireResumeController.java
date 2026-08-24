@@ -36,9 +36,11 @@ import hireSystem.vo.HirePortfolioVo;
 import hireSystem.vo.HireResumeVo;
 import hireSystem.vo.HireSkillVo;
 import hireSystem.vo.HireUserVo;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/hireSystem/resume")
+@Slf4j
 public class HireResumeController {
 
     private final String path = "hireSystem/resume/";
@@ -81,7 +83,7 @@ public class HireResumeController {
             @RequestParam(defaultValue = "recent") String searchSort,
             HttpSession session, Model model) {
 
-        int loginUserNum = (int) session.getAttribute("loginUserNum");
+        Integer loginUserNum = (Integer) session.getAttribute("loginUserNum");
         EgovMap map = new EgovMap();
         map.put("page",        page);
         map.put("searchSort",  searchSort);
@@ -220,6 +222,52 @@ public class HireResumeController {
         } catch (Exception e) {
             result.put("result", false);
             result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
+    @PostMapping("/resumeDelete.do")
+    @ResponseBody
+    public Map<String, Object> resumeDelete(HireResumeVo vo, HttpSession session) {
+    	Map<String, Object> result = new HashMap<>();
+
+    	try {
+            int loginUserNum = (int) session.getAttribute("loginUserNum");
+
+            hireResumeService.deleteResume(vo.getResumeId(), loginUserNum);
+
+            result.put("result", true);
+
+        } catch (Exception e) {
+        	log.error("이력서 삭제 중 오류 발생", e);
+
+            result.put("result", false);
+            result.put("message", e.getMessage());
+        }
+
+    	return result;
+    }
+
+    @PostMapping("/duplicate.do")
+    @ResponseBody
+    public Map<String, Object> duplicateResume(
+            @RequestParam int resumeId,
+            HttpSession session) {
+
+        Map<String, Object> result = new HashMap<>();
+        int loginUserNum = (int) session.getAttribute("loginUserNum");
+
+        try {
+            int newResumeId = hireResumeService.duplicateResume(resumeId, loginUserNum);
+            result.put("result", true);
+            result.put("resumeId", newResumeId);
+        } catch (IllegalArgumentException e) {
+            result.put("result", false);
+            result.put("message", e.getMessage());
+        } catch (Exception e) {
+            log.error("이력서 복제 중 오류 발생", e);
+            result.put("result", false);
+            result.put("message", "복제에 실패했습니다.");
         }
         return result;
     }
