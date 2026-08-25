@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import hireSystem.service.HirePortfolioService;
+import hireSystem.service.HireResumeService;
 import hireSystem.vo.HirePortfolioVo;
 
 @Controller
@@ -21,19 +22,30 @@ public class HirePortfolioController {
 
 	@Resource(name = "hirePortfolioService")
 	private HirePortfolioService hirePortfolioService;
+	@Resource(name = "hireResumeService")
+	private HireResumeService hireResumeService;
 
 	@RequestMapping("/portfolioSave.do")
 	@ResponseBody
 	public Map<String, Object> portfolioSave(
 	        HirePortfolioVo vo,
 	        @RequestParam(value = "portfolioFile", required = false) MultipartFile portfolioFile,
+	        @RequestParam(value = "sectionVisible", required = false) String sectionVisible,
 	        HttpSession session) {
 
 	    Map<String, Object> result = new HashMap<>();
 	    try {
 	        int loginUserNum = (int) session.getAttribute("loginUserNum");
 	        hirePortfolioService.savePortfolio(vo, portfolioFile, loginUserNum);
-	        result.put("resumeId", vo.getResumeId());
+
+	        int resumeId = vo.getResumeId();
+
+	        if (sectionVisible != null) {
+	            String filteredValue = hireResumeService.filterVisibleSections(resumeId, sectionVisible);
+	            hireResumeService.updateSectionVisible(resumeId, filteredValue);
+	        }
+
+	        result.put("resumeId", resumeId);
 	        result.put("result",   true);
 	        result.put("message",  vo.getPortfolioId() != null ? "수정완료" : "저장완료");
 	    } catch (Exception e) {
@@ -45,11 +57,22 @@ public class HirePortfolioController {
 
 	@RequestMapping("/portfolioDelete.do")
 	@ResponseBody
-	public Map<String, Object> portfolioDelete(HirePortfolioVo vo) {
+	public Map<String, Object> portfolioDelete(
+	        HirePortfolioVo vo,
+	        @RequestParam(value = "sectionVisible", required = false) String sectionVisible) {
+
 	    Map<String, Object> result = new HashMap<>();
 	    try {
 	        hirePortfolioService.deletePortfolio(vo.getPortfolioId());
-	        result.put("resumeId", vo.getResumeId());
+
+	        int resumeId = vo.getResumeId();
+
+	        if (sectionVisible != null) {
+	            String filteredValue = hireResumeService.filterVisibleSections(resumeId, sectionVisible);
+	            hireResumeService.updateSectionVisible(resumeId, filteredValue);
+	        }
+
+	        result.put("resumeId", resumeId);
 	        result.put("result",   true);
 	        result.put("message",  "삭제완료");
 	    } catch (Exception e) {

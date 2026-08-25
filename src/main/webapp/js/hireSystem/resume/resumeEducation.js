@@ -90,9 +90,12 @@ function saveEducationEntry(educationForm, educationAddForm, educationListWrappe
 
     var formData = new FormData(educationForm);
 
+    // 신규 이력서 생성 중이면 RESUME_CTX.resumeId가 빈 값일 수 있음.
+    // 그래도 그대로 보내면 백엔드(getOrCreateResumeId)가 resume를 새로 만들어서 처리해줌.
     formData.append('resumeId', RESUME_CTX.resumeId);
     formData.append('userNum',  RESUME_CTX.userNum);
     if (educationId) formData.append('educationId', educationId);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     // currentYn 체크박스 → Y/N 변환
     var checkbox = educationAddForm.querySelector('[name="currentYn"]');
@@ -160,6 +163,7 @@ function handleEducationDelete(btn) {
     formData.append('educationId', educationId);
     formData.append('resumeId',    RESUME_CTX.resumeId);
     formData.append('userNum',     RESUME_CTX.userNum);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     fetch('/hireSystem/resume/educationDelete.do', {
         method: 'POST',

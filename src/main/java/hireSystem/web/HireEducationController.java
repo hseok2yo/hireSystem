@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hireSystem.service.HireEducationService;
+import hireSystem.service.HireResumeService;
 import hireSystem.vo.HireEducationVo;
 
 @Controller
@@ -20,6 +21,8 @@ public class HireEducationController {
 
     @Resource(name = "hireEducationService")
     private HireEducationService hireEducationService;
+    @Resource(name = "hireResumeService")
+    private HireResumeService hireResumeService;
 
     /**
      * 학력 저장 (신규 insert / 기존 update 공통)
@@ -27,12 +30,25 @@ public class HireEducationController {
      */
     @RequestMapping("/educationSave.do")
     @ResponseBody
-    public Map<String, Object> educationSave(HireEducationVo educationVo, HttpSession session) {
+    public Map<String, Object> educationSave(
+            HireEducationVo educationVo,
+            @RequestParam(value = "sectionVisible", required = false) String sectionVisible,
+            HttpSession session) {
+
         Map<String, Object> result = new HashMap<>();
         try {
             int loginUserNum = (int) session.getAttribute("loginUserNum");
             hireEducationService.saveEducation(educationVo, loginUserNum);
-            result.put("resumeId", educationVo.getResumeId());
+
+            int resumeId = educationVo.getResumeId();
+
+            // sectionVisible이 넘어온 경우에만 처리 (신규 생성 등으로 resumeId가 막 생긴 케이스 포함)
+            if (sectionVisible != null) {
+                String filteredValue = hireResumeService.filterVisibleSections(resumeId, sectionVisible);
+                hireResumeService.updateSectionVisible(resumeId, filteredValue);
+            }
+
+            result.put("resumeId", resumeId);
             result.put("result",   true);
             result.put("message",  "저장완료");
         } catch (Exception e) {
@@ -47,10 +63,20 @@ public class HireEducationController {
      */
     @RequestMapping("/educationDelete.do")
     @ResponseBody
-    public Map<String, Object> educationDelete(@RequestParam int educationId) {
+    public Map<String, Object> educationDelete(
+            @RequestParam int educationId,
+            @RequestParam int resumeId,
+            @RequestParam(value = "sectionVisible", required = false) String sectionVisible) {
+
         Map<String, Object> result = new HashMap<>();
         try {
             hireEducationService.deleteEducation(educationId);
+
+            if (sectionVisible != null) {
+                String filteredValue = hireResumeService.filterVisibleSections(resumeId, sectionVisible);
+                hireResumeService.updateSectionVisible(resumeId, filteredValue);
+            }
+
             result.put("result",  true);
             result.put("message", "삭제되었습니다.");
         } catch (Exception e) {

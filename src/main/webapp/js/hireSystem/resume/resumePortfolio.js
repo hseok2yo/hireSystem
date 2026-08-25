@@ -186,6 +186,8 @@ function savePortfolio() {
     }
 
     var formData = new FormData();
+    // 신규 이력서 생성 중이면 RESUME_CTX.resumeId가 빈 값일 수 있음.
+    // 그래도 그대로 보내면 백엔드(getOrCreateResumeId)가 resume를 새로 만들어서 처리해줌.
     formData.append('resumeId',     RESUME_CTX.resumeId);
     formData.append('userNum',      RESUME_CTX.userNum);
     formData.append('fileCategory', fileCategory);
@@ -199,6 +201,7 @@ function savePortfolio() {
     }
 
     if (currentPortfolioId) formData.append('portfolioId', currentPortfolioId);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     var url = '/hireSystem/resume/portfolioSave.do';
 
@@ -228,6 +231,7 @@ function deletePortfolio(article) {
     formData.append('portfolioId', article.dataset.portfolioId);
     formData.append('resumeId',    RESUME_CTX.resumeId);
     formData.append('userNum',     RESUME_CTX.userNum);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     fetch('/hireSystem/resume/portfolioDelete.do', { method: 'POST', body: formData })
         .then(function(res) { return res.json(); })

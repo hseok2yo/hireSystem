@@ -47,12 +47,15 @@ public class HireResumeDao extends HireSystemAbstractMapper{
 
 
 	public EgovMap selectResume(EgovMap map) {
-
 		return selectOne("hireResumeDao.selectResume", map);
 	}
 
 	public int deleteResume(Map<String, Object> param) {
 		return delete("hireResumeDao.deleteResume", param);
+	}
+
+	public int updateSectionVisible(HireResumeVo vo) {
+		return update("hireResumeDao.updateSectionVisible", vo);
 	}
 
 

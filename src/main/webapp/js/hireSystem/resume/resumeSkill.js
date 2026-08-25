@@ -74,7 +74,6 @@ function addSkillTag(skillName, skillTagWrap, skillInput) {
     .then(function(res) { return res.json(); })
     .then(function(data) {
         if (data.result) {
-            // resumeId 없었던 경우 hidden에 세팅
             if (!RESUME_CTX.resumeId && data.resumeId) {
                 RESUME_CTX.resumeId = data.resumeId;
                 document.getElementById('resumeId').value = data.resumeId;

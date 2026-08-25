@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				.then(data => {
 					console.log(data);
 					if(data.result) {
-						// insert였으면 resumeId를 hidden 필드 등에 세팅
 				        if(data.resumeId) {
 				            document.getElementById("resumeId").value = data.resumeId;
 							RESUME_CTX.resumeId = data.resumeId;
@@ -120,4 +119,3 @@ function updateBasicInfoView() {
         if (el) el.textContent = fieldMap[field];
     });
 }
-

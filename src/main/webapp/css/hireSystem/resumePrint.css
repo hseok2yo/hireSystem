@@ -1,0 +1,90 @@
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    color: #222;
+    background: #f4f4f4;
+}
+
+.print-toolbar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 24px;
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.print-toolbar button {
+    padding: 8px 16px;
+    background: #2f6bff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.resume-print-page {
+    max-width: 800px;
+    margin: 24px auto;
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0 0 8px rgba(0,0,0,0.08);
+}
+
+.p-basic {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    border-bottom: 2px solid #222;
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+}
+
+.p-photo {
+    width: 100px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.p-basic-info h1 { margin: 0 0 6px; font-size: 22px; }
+.p-basic-info p { margin: 2px 0; font-size: 13px; color: #555; }
+
+.p-section { margin-bottom: 24px; page-break-inside: avoid; }
+.p-section h2 {
+    font-size: 16px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+}
+.p-sub { font-size: 12px; color: #888; font-weight: normal; }
+
+.p-item { margin-bottom: 14px; page-break-inside: avoid; }
+.p-item-head { display: flex; justify-content: space-between; font-size: 14px; }
+.p-item-sub { font-size: 12px; color: #666; margin-top: 2px; }
+.p-item-body { font-size: 13px; margin-top: 6px; white-space: pre-line; line-height: 1.5; }
+.p-coverletter { white-space: pre-line; }
+
+.p-skill-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.p-skill {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: #eef2ff;
+    border-radius: 12px;
+}
+
+@media print {
+    .print-toolbar { display: none; }
+    body { background: #fff; }
+    .resume-print-page {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        max-width: 100%;
+    }
+    .p-section, .p-item { page-break-inside: avoid; }
+}

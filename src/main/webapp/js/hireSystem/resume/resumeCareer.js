@@ -90,9 +90,12 @@ function saveCareerEntry(careerForm, careerAddForm, careerListWrapper) {
 
     var formData = new FormData(careerForm);
 
+    // 신규 이력서 생성 중이면 RESUME_CTX.resumeId가 빈 값일 수 있음.
+    // 그래도 그대로 보내면 백엔드(getOrCreateResumeId)가 resume를 새로 만들어서 처리해줌.
     formData.append('resumeId', RESUME_CTX.resumeId);
     formData.append('userNum',  RESUME_CTX.userNum);
     if (careerId) formData.append('careerId', careerId);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     // currentYn 체크박스 → Y/N 변환
     var checkbox = careerAddForm.querySelector('[name="currentYn"]');
@@ -108,8 +111,6 @@ function saveCareerEntry(careerForm, careerAddForm, careerListWrapper) {
             alert(data.message);
 			sessionStorage.setItem('scrollTo', '#career');  // ← 앵커 대신
             location.href = '/hireSystem/resume/edit.do?resumeId=' + data.resumeId;
-
-			//location.reload();
         } else {
             alert(data.message || '저장에 실패했습니다.');
         }
@@ -160,6 +161,7 @@ function handleCareerDelete(btn) {
     formData.append('careerId',  careerId);
     formData.append('resumeId',  RESUME_CTX.resumeId);
     formData.append('userNum',   RESUME_CTX.userNum);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     fetch('/hireSystem/resume/careerDelete.do', {
         method: 'POST',

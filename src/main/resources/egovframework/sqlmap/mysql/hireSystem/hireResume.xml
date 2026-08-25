@@ -101,7 +101,7 @@
 			AND IS_MAIN = 'N'
 	</select>
 
-	<update id="updateResume" parameterType="hireSystem.vo.HireResumeVo">
+	<update id="updateResume" parameterType="hireResumeVo">
 	    UPDATE RESUME SET
 	    	  TITLE = #{title}
 	    	, SECTION_VISIBLE = #{sectionVisible}
@@ -128,9 +128,15 @@
 			RESUME_ID = #{resumeId}
 		AND USER_NUM = #{loginUserNum}
 
-
-
 	</delete>
+
+	<!-- 섹션 펼침/접힘 상태만 업데이트 (제목은 건드리지 않음) -->
+	<update id="updateSectionVisible" parameterType="hireResumeVo">
+	    UPDATE RESUME SET
+	    	  SECTION_VISIBLE = #{sectionVisible}
+	    	, UPDATED_AT = NOW()
+	    WHERE RESUME_ID = #{resumeId}
+	</update>
 
 
 </mapper>

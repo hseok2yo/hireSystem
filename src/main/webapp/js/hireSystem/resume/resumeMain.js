@@ -163,7 +163,7 @@ function initMenuItem() {
 			} else if (itemBtn.classList.contains("action-pdf")) {
 
 				if (confirm("이 이력서를 PDF로 다운로드하시겠습니까?")) {
-					alert("PDF 다운로드 기능은 백엔드 연동 후 동작합니다.");
+					window.open('/hireSystem/resume/print.do?resumeId=' + resumeId, '_blank');
 				}
 
 				// 이력서 복사

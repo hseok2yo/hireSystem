@@ -93,9 +93,12 @@ function saveActivityEntry(activityForm, activityAddForm, activityListWrapper) {
     var activityId = activityForm.dataset.activityId || '';
 
     var formData = new FormData(activityForm);
+    // 신규 이력서 생성 중이면 RESUME_CTX.resumeId가 빈 값일 수 있음.
+    // 그래도 그대로 보내면 백엔드(getOrCreateResumeId)가 resume를 새로 만들어서 처리해줌.
     formData.append('resumeId', RESUME_CTX.resumeId);
     formData.append('userNum',  RESUME_CTX.userNum);
     if (activityId) formData.append('activityId', activityId);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     // currentYn 체크박스 → Y/N 변환
     var checkbox = activityAddForm.querySelector('[name="currentYn"]');
@@ -158,6 +161,7 @@ function handleActivityDelete(btn) {
     formData.append('activityId', activityId);
     formData.append('resumeId',   RESUME_CTX.resumeId);
     formData.append('userNum',    RESUME_CTX.userNum);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     fetch('/hireSystem/resume/activityDelete.do', {
         method: 'POST',

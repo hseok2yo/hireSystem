@@ -271,4 +271,35 @@ public class HireResumeController {
         }
         return result;
     }
+
+ // ---------------------------------------------------------------
+    // 이력서 인쇄/PDF용 읽기전용 뷰
+    // ---------------------------------------------------------------
+
+    @RequestMapping("/print.do")
+    public String print(
+            @RequestParam int resumeId,
+            HttpSession session,
+            Model model) {
+
+        int loginUserNum = (int) session.getAttribute("loginUserNum");
+
+        model.addAttribute("userInfo", hireResumeService.selectHireUserInfo(loginUserNum));
+        model.addAttribute("resume", hireResumeService.selectResume(resumeId));
+
+        List<HireCareerVo> careerList = hireCareerService.selectCareerInfo(resumeId);
+        model.addAttribute("careerInfo", careerList);
+        model.addAttribute("totalCareer", hireCareerService.calculateTotalCareer(careerList));
+
+        model.addAttribute("educationInfo", hireEducationService.selectEducationInfo(resumeId));
+        model.addAttribute("skillInfo", hireResumeSkillService.selectSkillInfo(resumeId));
+        model.addAttribute("activityList", hireActivityService.selectActivityList(resumeId));
+        model.addAttribute("certificationInfo", hireCertificationService.selectCertificationInfo(resumeId));
+        model.addAttribute("portfolioList", hirePortfolioService.selectPortfolioList(resumeId));
+        model.addAttribute("coverLetterList", hireCoverLetterService.selectCoverLetterList(resumeId));
+
+        return path + "resumePrint";
+    }
+
+
 }

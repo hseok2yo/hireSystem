@@ -56,4 +56,20 @@ public interface HireResumeService {
 	 * @return 새로 생성된 resumeId
 	 */
 	public int duplicateResume(int resumeId, int loginUserNum);
+
+	/**
+	 * 섹션 펼침/접힘 상태만 저장 (제목 미변경)
+	 */
+	public int updateSectionVisible(int resumeId, String sectionVisible);
+
+	/**
+	 * 옵션 섹션(activity, certification, portfolio, coverLetter) 중
+	 * 실제 DB 데이터가 존재하는 섹션만 걸러서 반환하는 공통 검증 로직.
+	 * updateSectionVisible.do, resumeSave.do 양쪽에서 공통으로 사용한다.
+	 *
+	 * @param resumeId       이력서ID
+	 * @param sectionVisible 클라이언트가 보낸 콤마구분 섹션id 목록 (예: "#activity,#portfolio")
+	 * @return 실제 데이터가 있는 섹션만 남긴 콤마구분 문자열
+	 */
+	public String filterVisibleSections(int resumeId, String sectionVisible);
 }

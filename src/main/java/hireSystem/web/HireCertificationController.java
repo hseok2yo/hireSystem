@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import hireSystem.service.HireCertificationService;
+import hireSystem.service.HireResumeService;
 import hireSystem.vo.HireCertificationVo;
 
 @Controller
@@ -20,6 +21,8 @@ public class HireCertificationController {
 
     @Resource(name = "hireCertificationService")
     private HireCertificationService hireCertificationService;
+    @Resource(name = "hireResumeService")
+    private HireResumeService hireResumeService;
 
     /**
      * 자격사항 저장 (신규 insert / 기존 update 공통)
@@ -27,12 +30,24 @@ public class HireCertificationController {
      */
     @RequestMapping("/certificationSave.do")
     @ResponseBody
-    public Map<String, Object> certificationSave(HireCertificationVo certVo, HttpSession session) {
+    public Map<String, Object> certificationSave(
+            HireCertificationVo certVo,
+            @RequestParam(value = "sectionVisible", required = false) String sectionVisible,
+            HttpSession session) {
+
         Map<String, Object> result = new HashMap<>();
         try {
             int loginUserNum = (int) session.getAttribute("loginUserNum");
             hireCertificationService.saveCertification(certVo, loginUserNum);
-            result.put("resumeId", certVo.getResumeId());
+
+            int resumeId = certVo.getResumeId();
+
+            if (sectionVisible != null) {
+                String filteredValue = hireResumeService.filterVisibleSections(resumeId, sectionVisible);
+                hireResumeService.updateSectionVisible(resumeId, filteredValue);
+            }
+
+            result.put("resumeId", resumeId);
             result.put("result",   true);
             result.put("message",  "저장완료");
         } catch (Exception e) {
@@ -47,10 +62,20 @@ public class HireCertificationController {
      */
     @RequestMapping("/certificationDelete.do")
     @ResponseBody
-    public Map<String, Object> certificationDelete(@RequestParam int certificationId) {
+    public Map<String, Object> certificationDelete(
+            @RequestParam int certificationId,
+            @RequestParam int resumeId,
+            @RequestParam(value = "sectionVisible", required = false) String sectionVisible) {
+
         Map<String, Object> result = new HashMap<>();
         try {
             hireCertificationService.deleteCertification(certificationId);
+
+            if (sectionVisible != null) {
+                String filteredValue = hireResumeService.filterVisibleSections(resumeId, sectionVisible);
+                hireResumeService.updateSectionVisible(resumeId, filteredValue);
+            }
+
             result.put("result",  true);
             result.put("message", "삭제되었습니다.");
         } catch (Exception e) {

@@ -123,7 +123,7 @@
 		        <input type="text" id="title" value="${resume.title}">
 		    </div>
 		    <div class="resume-bottom-btns">
-<!-- 		        <button type="button" id="previewBtn">이력서 미리보기</button> -->
+		        <button type="button" id="previewBtn">이력서 미리보기</button>
 		        <button type="button" id="completeBtn">작성완료</button>
 		    </div>
 		</div>

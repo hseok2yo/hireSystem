@@ -109,11 +109,14 @@ function saveCoverLetterEntry(coverLetterForm, coverLetterAddForm, coverLetterLi
     }
 
     var formData = new FormData();
+    // 신규 이력서 생성 중이면 RESUME_CTX.resumeId가 빈 값일 수 있음.
+    // 그래도 그대로 보내면 백엔드(getOrCreateResumeId)가 resume를 새로 만들어서 처리해줌.
     formData.append('resumeId',  RESUME_CTX.resumeId);
     formData.append('userNum',   RESUME_CTX.userNum);
     formData.append('clTitle',   clTitle);
     formData.append('clContent', clContent);
     if (clId) formData.append('clId', clId);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     var url = '/hireSystem/resume/coverLetterSave.do';
 
@@ -167,6 +170,7 @@ function handleCoverLetterDelete(btn) {
     formData.append('clId',     clId);
     formData.append('resumeId', RESUME_CTX.resumeId);
     formData.append('userNum',  RESUME_CTX.userNum);
+    formData.append('sectionVisible', getVisibleOptionalSections().join(','));
 
     fetch('/hireSystem/resume/coverLetterDelete.do', { method: 'POST', body: formData })
         .then(function(res) { return res.json(); })

@@ -156,8 +156,55 @@ public class HireResumeServiceImpl extends EgovAbstractServiceImpl implements Hi
     public int saveResume(HireResumeVo vo, int loginUserNum) {
     	int resumeId = commonUtil.getOrCreateResumeId(vo.getResumeId(), loginUserNum);
         vo.setResumeId(resumeId);
+
+        // 서버단 검증: 클라이언트가 보낸 sectionVisible 중 실제 데이터가 있는 섹션만 최종 반영
+        String filteredSectionVisible = filterVisibleSections(resumeId, vo.getSectionVisible());
+        vo.setSectionVisible(filteredSectionVisible);
+
         int result = hireResumeDao.updateResume(vo);
         return result;
+    }
+
+    /**
+     * 옵션 섹션(activity, certification, portfolio, coverLetter) 중
+     * 실제 DB 데이터가 존재하는 섹션만 걸러서 반환하는 공통 검증 로직.
+     * updateSectionVisible.do, resumeSave.do 양쪽에서 공통으로 사용한다.
+     */
+    @Override
+    public String filterVisibleSections(int resumeId, String sectionVisible) {
+        if (sectionVisible == null || sectionVisible.isEmpty()) {
+            return "";
+        }
+
+        String[] requested = sectionVisible.split(",");
+        StringBuilder filtered = new StringBuilder();
+
+        for (String targetId : requested) {
+            targetId = targetId.trim();
+            boolean hasData;
+            switch (targetId) {
+                case "#activity":
+                    hasData = !hireActivityDao.selectActivityList(resumeId).isEmpty();
+                    break;
+                case "#certification":
+                    hasData = !hireCertificationDao.selectCertificationInfo(resumeId).isEmpty();
+                    break;
+                case "#portfolio":
+                    hasData = !hirePortfolioDao.selectPortfolioList(resumeId).isEmpty();
+                    break;
+                case "#coverLetter":
+                    hasData = !hireCoverLetterDao.selectCoverLetterList(resumeId).isEmpty();
+                    break;
+                default:
+                    hasData = false;
+            }
+            if (hasData) {
+                if (filtered.length() > 0) filtered.append(",");
+                filtered.append(targetId);
+            }
+        }
+
+        return filtered.toString();
     }
 
 	@Override
@@ -326,6 +373,14 @@ public class HireResumeServiceImpl extends EgovAbstractServiceImpl implements Hi
 		}
 
 		return newResumeId;
+	}
+
+	@Override
+	public int updateSectionVisible(int resumeId, String sectionVisible) {
+		HireResumeVo vo = new HireResumeVo();
+		vo.setResumeId(resumeId);
+		vo.setSectionVisible(sectionVisible);
+		return hireResumeDao.updateSectionVisible(vo);
 	}
 
 }
