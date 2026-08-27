@@ -7,19 +7,19 @@ Spring + eGovFrame 기반의 취업 정보 커뮤니티 웹 서비스입니다.
 
 ### 카카오/일반 회원가입 & 로그인
 
-https://github.com/user-attachments/assets/ab06f21d-acef-4f49-868f-a9db3c8634c5
+[▶ 영상 보기](./hireSystem/kakao_normal_signup_login_compressed.mp4)
 
 ### 게시판
 
-https://github.com/user-attachments/assets/0ac193dc-dcec-4010-834b-9988a36ddbb8
+[▶ 영상 보기](./hireSystem/post_compressed.mp4)
 
 ### 기업정보 페이지
 
-https://github.com/user-attachments/assets/5ce6bd21-33e5-4629-9b36-da442cfe281d
+[▶ 영상 보기](./hireSystem/enterprise_compressed.mp4)
 
 ### 이력서 관리
 
-https://github.com/user-attachments/assets/576b140f-0e59-4ecb-914a-ea7a52782c81
+[▶ 영상 보기](./hireSystem/resume_compressed.mp4)
 
 ---
 
