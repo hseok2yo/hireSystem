@@ -6,20 +6,18 @@ Spring + eGovFrame 기반의 취업 정보 커뮤니티 웹 서비스입니다.
 ---
 
 카카오/일반 회원가입 & 로그인
-
-<video src="https://github.com/사용자명/저장소명/raw/hireSystem/hiresystemVideoCompressed/kakao_normal_signup_login_compressed.mp4" controls width="600"></video>
+https://github.com/user-attachments/assets/01a65725-900e-49b8-83cb-33ffba590eb3
 
 게시판
-
-<video src="https://github.com/사용자명/저장소명/raw/hireSystem/hiresystemVideoCompressed/post_compressed.mp4" controls width="600"></video>
+https://github.com/user-attachments/assets/74085dce-a033-41c3-8be0-7dead26150ff
 
 기업정보 페이지
-
-<video src="https://github.com/사용자명/저장소명/raw/hireSystem/hiresystemVideoCompressed/enterprise_compressed.mp4" controls width="600"></video>
+https://github.com/user-attachments/assets/920b3e9d-b4d6-41f2-ad78-b536dcf00e19
 
 이력서 관리
+https://github.com/user-attachments/assets/0f885bf4-7a56-48f0-a6fc-2b2aaa7e3ce1
 
-<video src="https://github.com/사용자명/저장소명/raw/hireSystem/hiresystemVideoCompressed/resume_compressed.mp4" controls width="600"></video>
+
 ---
 
 ## 🛠 기술 스택
