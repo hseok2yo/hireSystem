@@ -58,6 +58,13 @@ public class HireResumeDao extends HireSystemAbstractMapper{
 		return update("hireResumeDao.updateSectionVisible", vo);
 	}
 
+	public int clearMainResume(int userNum) {
+		return update("hireResumeDao.clearMainResume", userNum);
+	}
+
+	public int setMainResume(Map<String, Object> param) {
+		return update("hireResumeDao.setMainResume", param);
+	}
 
 
 

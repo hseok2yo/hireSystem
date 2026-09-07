@@ -144,6 +144,7 @@
     <script>
         document.getElementById('pdfDownloadBtn').addEventListener('click', function () {
             window.print();
+        	//location.href = '${pageContext.request.contextPath}/hireSystem/resume/printPdf.do?resumeId=${resume.resumeId}';
         });
     </script>
 </body>

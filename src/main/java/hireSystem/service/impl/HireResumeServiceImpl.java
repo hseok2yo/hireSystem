@@ -383,4 +383,32 @@ public class HireResumeServiceImpl extends EgovAbstractServiceImpl implements Hi
 		return hireResumeDao.updateSectionVisible(vo);
 	}
 
+	@Override
+	@Transactional("hireSystemTxManager")
+	public void setMainResume(int resumeId, int loginUserNum) {
+
+		// 0. 소유자 검증 (resumeId는 프론트에서 넘어오므로 반드시 확인)
+		EgovMap map = new EgovMap();
+		map.put("resumeId", resumeId);
+		EgovMap target = hireResumeDao.selectResume(map);
+
+		if (target == null || target.get("userNum") == null
+				|| (int) target.get("userNum") != loginUserNum) {
+			throw new IllegalArgumentException("본인 이력서만 대표이력서로 지정할 수 있습니다.");
+		}
+
+		// 1. 기존 대표이력서 전부 해제
+		hireResumeDao.clearMainResume(loginUserNum);
+
+		// 2. 선택한 이력서를 대표로 지정
+		Map<String, Object> param = new HashMap<>();
+		param.put("resumeId", resumeId);
+		param.put("userNum", loginUserNum);
+		int result = hireResumeDao.setMainResume(param);
+
+		if (result <= 0) {
+			throw new IllegalStateException("대표이력서 지정에 실패했습니다.");
+		}
+	}
+
 }

@@ -166,8 +166,8 @@
                     <p class="card-summary" title="기업소개요약 (coIntroSummaryCont)"><c:out value="${company.coIntroSummaryCont}" /></p>
                     <p class="card-mainbusi" title="주요사업 (mainBusiCont)"><c:out value="${company.mainBusiCont}" /></p>
                     <div class="meta">
-                        <span title="사업자등록번호 (busino)">사업자 <c:out value="${company.busino}" /></span>
-                        <span title="좌표:경도(mapCoorX), 위도(mapCoorY)">위치 <c:out value="${company.mapCoorX}" />, <c:out value="${company.mapCoorY}" /></span>
+                        <span title="사업자등록번호 (busino)">사업자등록번호 <c:out value="${company.busino}" /></span>
+<%--                         <span title="좌표:경도(mapCoorX), 위도(mapCoorY)">위치 <c:out value="${company.mapCoorX}" />, <c:out value="${company.mapCoorY}" /></span> --%>
                     </div>
                     <c:choose>
                         <c:when test="${not empty company.homepg}">

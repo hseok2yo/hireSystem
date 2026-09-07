@@ -12,7 +12,7 @@
 				<h1><a href="/hireSystem/main.do">개발자 채용포털</a></h1>
 			</div>
 			<nav class="main-nav">
-				<a href="jobs.jsp" class="nav-item">채용정보</a>
+				<a href="<c:url value='/hireSystem/recruit/recruitList.do' />" class="nav-item">채용정보</a>
 				<a href="<c:url value='/hireSystem/company/companies.do' />" class="nav-item">기업정보</a>
 				<a href="/hireSystem/resume/resumeMain.do" class="nav-item">이력서관리</a>
 				<a href="/hireSystem/board/boardList.do" class="nav-item">커뮤니티</a>
@@ -32,7 +32,7 @@
 				<script>
 					//머물렀던 당시 페이지 url저장 후 로그인 성공 시 그 페이지로 이동
 					function goToLogin() {
-						
+
 						const currentUrl = window.location.pathname
 								+ window.location.search;
 						const a = encodeURIComponent(currentUrl);

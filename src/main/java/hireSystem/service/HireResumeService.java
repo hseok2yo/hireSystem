@@ -72,4 +72,11 @@ public interface HireResumeService {
 	 * @return 실제 데이터가 있는 섹션만 남긴 콤마구분 문자열
 	 */
 	public String filterVisibleSections(int resumeId, String sectionVisible);
+
+	/**
+	 * 대표이력서 지정
+	 * 기존 대표이력서(IS_MAIN='Y')는 자동으로 해제되고, 지정한 resumeId만 대표로 바뀐다.
+	 * 본인 소유가 아닌 resumeId를 지정하려 하면 예외 발생.
+	 */
+	public void setMainResume(int resumeId, int loginUserNum);
 }

@@ -156,7 +156,28 @@ function initMenuItem() {
 			if (itemBtn.classList.contains("action-representative")) {
 
 				if (confirm("이 이력서를 대표 이력서로 설정하시겠습니까?")) {
-					alert("대표 이력서 설정 기능은 백엔드 연동 후 동작합니다.");
+					fetch("/hireSystem/resume/setMain.do", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/x-www-form-urlencoded"
+						},
+						body: `resumeId=${encodeURIComponent(resumeId)}`
+					})
+						.then(response => response.json())
+						.then(data => {
+
+							if (data.result) {
+								alert("대표 이력서로 설정되었습니다.");
+								location.reload();
+							} else {
+								alert(data.message || "대표이력서 설정에 실패했습니다.");
+							}
+
+						})
+						.catch(error => {
+							console.error("대표이력서 설정 오류:", error);
+							alert("대표이력서 설정 중 오류가 발생했습니다.");
+						});
 				}
 
 				// PDF 다운로드

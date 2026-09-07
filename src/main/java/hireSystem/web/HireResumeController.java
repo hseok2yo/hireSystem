@@ -248,6 +248,29 @@ public class HireResumeController {
     	return result;
     }
 
+    @PostMapping("/setMain.do")
+    @ResponseBody
+    public Map<String, Object> setMainResume(
+            @RequestParam int resumeId,
+            HttpSession session) {
+
+        Map<String, Object> result = new HashMap<>();
+        int loginUserNum = (int) session.getAttribute("loginUserNum");
+
+        try {
+            hireResumeService.setMainResume(resumeId, loginUserNum);
+            result.put("result", true);
+        } catch (IllegalArgumentException e) {
+            result.put("result", false);
+            result.put("message", e.getMessage());
+        } catch (Exception e) {
+            log.error("대표이력서 지정 중 오류 발생", e);
+            result.put("result", false);
+            result.put("message", "대표이력서 지정에 실패했습니다.");
+        }
+        return result;
+    }
+
     @PostMapping("/duplicate.do")
     @ResponseBody
     public Map<String, Object> duplicateResume(
@@ -300,6 +323,7 @@ public class HireResumeController {
 
         return path + "resumePrint";
     }
+
 
 
 }

@@ -138,5 +138,20 @@
 	    WHERE RESUME_ID = #{resumeId}
 	</update>
 
+	<!-- 해당 유저의 기존 대표이력서 전부 해제 -->
+	<update id="clearMainResume" parameterType="int">
+		UPDATE RESUME
+		SET IS_MAIN = 'N', UPDATED_AT = NOW()
+		WHERE USER_NUM = #{userNum}
+		  AND IS_MAIN = 'Y'
+	</update>
+
+	<!-- 선택한 이력서를 대표이력서로 지정 (본인 소유일 때만) -->
+	<update id="setMainResume" parameterType="map">
+		UPDATE RESUME
+		SET IS_MAIN = 'Y', UPDATED_AT = NOW()
+		WHERE RESUME_ID = #{resumeId}
+		  AND USER_NUM = #{userNum}
+	</update>
 
 </mapper>
