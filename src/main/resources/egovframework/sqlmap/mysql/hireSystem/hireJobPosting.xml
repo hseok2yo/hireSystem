@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireJobPostingDao">
+
+    <!-- 일반채용정보 목록 조회 (진행중 우선, 최신 등록순) -->
+    <select id="selectJobPostingList" parameterType="jobPostingSearchVo" resultType="hireJobPostingVo">
+        SELECT
+              JOB_POSTING_ID
+            , COMPANY_USER_NUM
+            , COMPANY_NAME
+            , COMPANY_LOGO_URL
+            , JOB_TITLE
+            , TAGS
+            , WORK_REGION
+            , HIRE_TYPE
+            , RECRUT_SE
+            , ONGOING_YN
+            , DEADLINE_DT
+            , VIEW_CNT
+            , REG_DT
+        FROM HIRE_JOB_POSTING
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (JOB_TITLE LIKE CONCAT('%', #{keyword}, '%')
+                     OR COMPANY_NAME LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="ongoingYn != null and ongoingYn != ''">
+                AND ONGOING_YN = #{ongoingYn}
+            </if>
+            <if test="hireType != null and hireType != ''">
+                AND HIRE_TYPE = #{hireType}
+            </if>
+            <if test="recrutSe != null and recrutSe != ''">
+                AND RECRUT_SE = #{recrutSe}
+            </if>
+            <if test="workRegion != null and workRegion != ''">
+                AND WORK_REGION LIKE CONCAT('%', #{workRegion}, '%')
+            </if>
+        </where>
+        ORDER BY
+            CASE WHEN ONGOING_YN = 'Y' THEN 0 ELSE 1 END,
+            REG_DT DESC
+        LIMIT #{offset}, #{numOfRows}
+    </select>
+
+    <!-- 일반채용정보 총 건수 (목록과 동일한 검색조건) -->
+    <select id="selectJobPostingCount" parameterType="jobPostingSearchVo" resultType="int">
+        SELECT COUNT(*)
+        FROM HIRE_JOB_POSTING
+        <where>
+            <if test="keyword != null and keyword != ''">
+                AND (JOB_TITLE LIKE CONCAT('%', #{keyword}, '%')
+                     OR COMPANY_NAME LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="ongoingYn != null and ongoingYn != ''">
+                AND ONGOING_YN = #{ongoingYn}
+            </if>
+            <if test="hireType != null and hireType != ''">
+                AND HIRE_TYPE = #{hireType}
+            </if>
+            <if test="recrutSe != null and recrutSe != ''">
+                AND RECRUT_SE = #{recrutSe}
+            </if>
+            <if test="workRegion != null and workRegion != ''">
+                AND WORK_REGION LIKE CONCAT('%', #{workRegion}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!-- 일반채용정보 상세 조회 -->
+    <select id="selectJobPostingDetail" parameterType="int" resultType="hireJobPostingVo">
+        SELECT
+              JOB_POSTING_ID
+            , COMPANY_USER_NUM
+            , COMPANY_NAME
+            , COMPANY_LOGO_URL
+            , JOB_TITLE
+            , TAGS
+            , WORK_REGION
+            , HIRE_TYPE
+            , RECRUT_SE
+            , ONGOING_YN
+            , DEADLINE_DT
+            , VIEW_CNT
+            , JOB_DESC
+            , REG_DT
+            , UPD_DT
+        FROM HIRE_JOB_POSTING
+        WHERE JOB_POSTING_ID = #{jobPostingId}
+    </select>
+
+    <!-- 채용공고 등록 (기업회원) -->
+    <insert id="insertJobPosting" parameterType="hireJobPostingVo">
+        INSERT INTO HIRE_JOB_POSTING (
+              COMPANY_USER_NUM
+            , COMPANY_NAME
+            , COMPANY_LOGO_URL
+            , JOB_TITLE
+            , TAGS
+            , WORK_REGION
+            , HIRE_TYPE
+            , RECRUT_SE
+            , ONGOING_YN
+            , DEADLINE_DT
+            , VIEW_CNT
+            , JOB_DESC
+            , REG_DT
+        ) VALUES (
+              #{companyUserNum}
+            , #{companyName}
+            , #{companyLogoUrl}
+            , #{jobTitle}
+            , #{tags}
+            , #{workRegion}
+            , #{hireType}
+            , #{recrutSe}
+            , #{ongoingYn}
+            , #{deadlineDt}
+            , 0
+            , #{jobDesc}
+            , NOW()
+        )
+        <selectKey keyProperty="jobPostingId" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <!-- 조회수 +1 -->
+    <update id="updateViewCount" parameterType="int">
+        UPDATE HIRE_JOB_POSTING
+        SET VIEW_CNT = VIEW_CNT + 1
+        WHERE JOB_POSTING_ID = #{jobPostingId}
+    </update>
+
+</mapper>

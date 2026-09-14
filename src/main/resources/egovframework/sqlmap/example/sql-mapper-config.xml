@@ -30,6 +30,10 @@
 		<typeAlias alias="hireCoverLetterVo" type="hireSystem.vo.HireCoverLetterVo"/>
 		<typeAlias alias="hirePortfolioVo" type="hireSystem.vo.HirePortfolioVo"/>
 
+		<!-- 일반채용정보(자체 DB) -->
+		<typeAlias alias="hireJobPostingVo" type="hireSystem.vo.HireJobPostingVo"/>
+		<typeAlias alias="jobPostingSearchVo" type="hireSystem.vo.JobPostingSearchVo"/>
+
 
 
 

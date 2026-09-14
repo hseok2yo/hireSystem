@@ -32,6 +32,10 @@
             </div>
         </section>
 
+        <jsp:include page="/WEB-INF/jsp/egovframework/hireSystem/job/jobSubTabs.jsp">
+            <jsp:param name="activeTab" value="public" />
+        </jsp:include>
+
         <section class="jobs-filters">
             <div class="filter-sidebar">
 
