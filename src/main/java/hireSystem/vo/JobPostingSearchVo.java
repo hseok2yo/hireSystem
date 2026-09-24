@@ -9,7 +9,7 @@ import lombok.Data;
 public class JobPostingSearchVo {
 
 	private int page = 1;
-	private int numOfRows = 10;
+	private int pageSize = 5;
 
 	private String keyword;    // 직무명/회사명 검색어
 	private String ongoingYn;  // 진행여부 [Y/N]

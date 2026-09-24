@@ -83,6 +83,7 @@ body {
 .jobs-filters {
     display: flex;
     gap: 20px;
+    width: 100%;
     max-width: 1200px;
     margin: 30px auto 0;
     padding: 0 20px;
@@ -736,5 +737,252 @@ body {
     .job-subtab {
         padding: 8px 14px;
         font-size: 13px;
+    }
+}
+
+/* ============================================================
+   상세조건 토글 버튼 (검색창 옆)
+   ============================================================ */
+.search-input-group .detail-toggle-btn {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 8px 20px;
+    background: #fff;
+    border: 1.5px dashed #b7e6f7;
+    border-radius: 8px;
+    color: #0095c7;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.detail-toggle-btn .plus-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.detail-toggle-btn:hover {
+    background: #f0fbff;
+}
+
+.detail-toggle-btn.is-open {
+    background: #eefcff;
+    border-style: solid;
+    border-color: #0095c7;
+}
+
+/* ============================================================
+   상세조건 패널 (검색바 아래, 토글로 열고 닫힘)
+   ============================================================ */
+.detail-filter-panel {
+    display: none;
+    background: #fff;
+    border-bottom: 1px solid #e4e7ec;
+    box-shadow: 0 4px 12px rgba(16, 24, 40, 0.06);
+}
+
+.detail-filter-panel.is-open {
+    display: block;
+}
+
+.detail-filter-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.filter-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f2f4f7;
+}
+
+.filter-row:last-of-type {
+    border-bottom: none;
+}
+
+.filter-row-label {
+    flex: 0 0 90px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #344054;
+}
+
+.filter-row-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid #d0d5dd;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #475467;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.filter-chip input[type="radio"] {
+    accent-color: #00c7b1;
+    margin: 0;
+}
+
+.filter-chip:hover {
+    border-color: #00c7b1;
+}
+
+.filter-chip:has(input:checked) {
+    border-color: #00c7b1;
+    background: #eefcfa;
+    color: #00a896;
+    font-weight: 700;
+}
+
+.filter-row-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-top: 16px;
+}
+
+.filter-row-actions .filter-apply-btn {
+    width: auto;
+    padding: 10px 24px;
+}
+
+.filter-close-btn {
+    padding: 10px 24px;
+    background: #f2f4f7;
+    color: #475467;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.filter-close-btn:hover {
+    background: #e4e7ec;
+}
+
+@media (max-width: 768px) {
+    .search-input-group {
+        flex-wrap: wrap;
+    }
+
+    .detail-filter-inner {
+        padding: 16px;
+    }
+
+    .filter-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .filter-row-label {
+        flex: none;
+    }
+
+    .filter-row-actions {
+        justify-content: stretch;
+    }
+
+    .filter-row-actions button {
+        flex: 1;
+    }
+}
+
+/* ============================================================
+   선택된 필터 칩 바 (사람인 스타일 - jobs-header 아래, jobs-list 위)
+   ============================================================ */
+.selected-filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 0 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px 6px 14px;
+    background: #fff;
+    border: 1px solid #d0d5dd;
+    border-radius: 20px;
+    font-size: 13px;
+    color: #344054;
+}
+
+.filter-tag button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: #f2f4f7;
+    border-radius: 50%;
+    color: #667085;
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.filter-tag button:hover {
+    background: #e4e7ec;
+    color: #344054;
+}
+
+.filter-reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    padding: 6px 4px;
+    background: none;
+    border: none;
+    color: #667085;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.filter-reset-btn:hover {
+    color: #0095c7;
+}
+
+.reset-icon {
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .selected-filters-bar {
+        gap: 6px;
+    }
+
+    .filter-reset-btn {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
     }
 }

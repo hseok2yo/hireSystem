@@ -35,6 +35,8 @@ public class PagingUtil {
 	    result.put("endPage", endPage);       // 페이징 마지막 번호
 	    result.put("totalPage", totalPage);   // 총 페이지 수
 	    result.put("currentPage", page);      // 현재 페이지
+	    result.put("offset", offset); 			//몇 번째 행부터 가져올지 시작 위치
+	    result.put("totalCount", totalCount); //총 게시글 수
 
 	    return result;
 	}

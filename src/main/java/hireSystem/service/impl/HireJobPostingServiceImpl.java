@@ -1,6 +1,6 @@
 package hireSystem.service.impl;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
+import hireSystem.common.PagingUtil;
 import hireSystem.service.HireJobPostingService;
 import hireSystem.service.dao.HireJobPostingDao;
 import hireSystem.vo.HireJobPostingVo;
@@ -27,47 +28,23 @@ public class HireJobPostingServiceImpl extends EgovAbstractServiceImpl implement
 	@Override
 	public Map<String, Object> selectJobPostingList(JobPostingSearchVo searchVo) {
 
-		if (searchVo.getPage() <= 0) searchVo.setPage(1);
-		if (searchVo.getNumOfRows() <= 0) searchVo.setNumOfRows(10);
-		searchVo.setOffset((searchVo.getPage() - 1) * searchVo.getNumOfRows());
+	    if (searchVo.getPage() == 0) searchVo.setPage(1);
+	    int pageSize = searchVo.getPageSize();
+	    int blockSize = 5;
 
-		List<HireJobPostingVo> list = hireJobPostingDao.selectJobPostingList(searchVo);
-		int totalCount = hireJobPostingDao.selectJobPostingCount(searchVo);
+	    // totalCount 먼저 조회
+	    int totalCount = hireJobPostingDao.selectJobPostingCount(searchVo);
 
-		int currentPage = searchVo.getPage();
-		int numOfRows = searchVo.getNumOfRows();
-		int totalPages = (int) Math.ceil((double) totalCount / numOfRows);
-		if (totalPages < 1) totalPages = 1;
+	    // 페이징 계산 (offset 포함)
+	    Map<String, Object> result = PagingUtil.getPaging(searchVo.getPage(), totalCount, pageSize, blockSize);
 
-		int blockStart = ((currentPage - 1) / PAGE_BLOCK_SIZE) * PAGE_BLOCK_SIZE + 1;
-		int blockEnd = Math.min(blockStart + PAGE_BLOCK_SIZE - 1, totalPages);
+	    // offset 세팅 후 목록 조회
+	    searchVo.setOffset((int) result.get("offset"));
+	    List<HireJobPostingVo> selectList = hireJobPostingDao.selectJobPostingList(searchVo);
 
-		log.info("[일반채용정보 목록조회] keyword={}, totalCount={}, currentPage={}/{}",
-				searchVo.getKeyword(), totalCount, currentPage, totalPages);
+	    result.put("list", selectList);
 
-		Map<String, Object> result = new LinkedHashMap<>();
-		result.put("list", list);
-		result.put("totalCount", totalCount);
-		result.put("currentPage", currentPage);
-		result.put("totalPages", totalPages);
-		result.put("blockStart", blockStart);
-		result.put("blockEnd", blockEnd);
-		result.put("numOfRows", numOfRows);
-
-		return result;
+	    return result;
 	}
 
-	@Override
-	public HireJobPostingVo selectJobPostingDetail(int jobPostingId) {
-		hireJobPostingDao.updateViewCount(jobPostingId);
-		return hireJobPostingDao.selectJobPostingDetail(jobPostingId);
-	}
-
-	@Override
-	public int insertJobPosting(HireJobPostingVo jobPostingVo) {
-		if (jobPostingVo.getOngoingYn() == null || jobPostingVo.getOngoingYn().isEmpty()) {
-			jobPostingVo.setOngoingYn("Y");
-		}
-		return hireJobPostingDao.insertJobPosting(jobPostingVo);
-	}
 }

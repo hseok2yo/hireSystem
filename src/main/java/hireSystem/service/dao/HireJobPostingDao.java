@@ -16,23 +16,8 @@ public class HireJobPostingDao extends HireSystemAbstractMapper {
 		return selectList("hireJobPostingDao.selectJobPostingList", searchVo);
 	}
 
-	/** 일반채용정보 총 건수 */
 	public int selectJobPostingCount(JobPostingSearchVo searchVo) {
 		return selectOne("hireJobPostingDao.selectJobPostingCount", searchVo);
 	}
 
-	/** 일반채용정보 상세 조회 */
-	public HireJobPostingVo selectJobPostingDetail(int jobPostingId) {
-		return selectOne("hireJobPostingDao.selectJobPostingDetail", jobPostingId);
-	}
-
-	/** 채용공고 등록 (기업회원) */
-	public int insertJobPosting(HireJobPostingVo jobPostingVo) {
-		return insert("hireJobPostingDao.insertJobPosting", jobPostingVo);
-	}
-
-	/** 조회수 +1 */
-	public int updateViewCount(int jobPostingId) {
-		return update("hireJobPostingDao.updateViewCount", jobPostingId);
-	}
 }

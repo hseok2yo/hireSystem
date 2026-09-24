@@ -14,13 +14,4 @@ public interface HireJobPostingService {
 	 */
 	Map<String, Object> selectJobPostingList(JobPostingSearchVo searchVo);
 
-	/**
-	 * 일반채용정보 상세 조회 (조회수 +1 포함)
-	 */
-	HireJobPostingVo selectJobPostingDetail(int jobPostingId);
-
-	/**
-	 * 채용공고 등록
-	 */
-	int insertJobPosting(HireJobPostingVo jobPostingVo);
 }

@@ -12,7 +12,7 @@
 				<h1><a href="/hireSystem/main.do">개발자 채용포털</a></h1>
 			</div>
 			<nav class="main-nav">
-				<a href="<c:url value='/hireSystem/recruit/recruitList.do' />" class="nav-item">채용정보</a>
+				<a href="<c:url value='/hireSystem/job/normalJob.do' />" class="nav-item">채용정보</a>
 				<a href="<c:url value='/hireSystem/company/companies.do' />" class="nav-item">기업정보</a>
 				<a href="/hireSystem/resume/resumeMain.do" class="nav-item">이력서관리</a>
 				<a href="/hireSystem/board/boardList.do" class="nav-item">커뮤니티</a>

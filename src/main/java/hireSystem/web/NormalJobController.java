@@ -42,28 +42,24 @@ public class NormalJobController {
 	@RequestMapping("/normalJob.do")
 	public String normalJob(@ModelAttribute JobPostingSearchVo searchVo, Model model) {
 
-		log.info("[normalJob.do] START page={}, keyword={}, hireType={}, recrutSe={}, ongoingYn={}",
-				searchVo.getPage(), searchVo.getKeyword(), searchVo.getHireType(),
-				searchVo.getRecrutSe(), searchVo.getOngoingYn());
 
 		Map<String, Object> result = hireJobPostingService.selectJobPostingList(searchVo);
 
+		//리스트
 		model.addAttribute("jobList", result.get("list"));
+
+		//페이징
 		model.addAttribute("totalCount", result.get("totalCount"));
 		model.addAttribute("currentPage", result.get("currentPage"));
-		model.addAttribute("totalPages", result.get("totalPages"));
-		model.addAttribute("blockStart", result.get("blockStart"));
-		model.addAttribute("blockEnd", result.get("blockEnd"));
-		model.addAttribute("numOfRows", result.get("numOfRows"));
+		model.addAttribute("startPage",   result.get("startPage"));
+		model.addAttribute("endPage",     result.get("endPage"));
+		model.addAttribute("totalPage",   result.get("totalPage"));
 
-		// 검색조건 화면 유지용
+		//검색어 및 필터값
 		model.addAttribute("keyword", searchVo.getKeyword());
+		model.addAttribute("ongoingYn", searchVo.getOngoingYn());
 		model.addAttribute("hireType", searchVo.getHireType());
 		model.addAttribute("recrutSe", searchVo.getRecrutSe());
-		model.addAttribute("ongoingYn", searchVo.getOngoingYn());
-		model.addAttribute("workRegion", searchVo.getWorkRegion());
-
-		log.info("[normalJob.do] DONE totalCount={}", result.get("totalCount"));
 
 		return path + "normalJob";
 	}
@@ -74,10 +70,6 @@ public class NormalJobController {
 	@RequestMapping("/normalJobDetail.do")
 	public String normalJobDetail(@RequestParam int jobPostingId, Model model) {
 
-		log.info("[normalJobDetail.do] START jobPostingId={}", jobPostingId);
-
-		HireJobPostingVo job = hireJobPostingService.selectJobPostingDetail(jobPostingId);
-		model.addAttribute("job", job);
 
 		return path + "normalJobDetail";
 	}
