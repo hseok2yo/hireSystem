@@ -66,8 +66,12 @@ public class HireResumeDao extends HireSystemAbstractMapper{
 		return update("hireResumeDao.setMainResume", param);
 	}
 
-
-
-
+	/**
+	 * [지원하기 모달] 로그인 유저의 전체 이력서 목록 (페이징 없음)
+	 * 대표이력서(IS_MAIN='Y')가 먼저 오고, 나머지는 최근 수정순.
+	 */
+	public List<HireResumeVo> selectResumeListAll(int userNum) {
+		return selectList("hireResumeDao.selectResumeListAll", userNum);
+	}
 
 }

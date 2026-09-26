@@ -34,6 +34,9 @@
 		<typeAlias alias="hireJobPostingVo" type="hireSystem.vo.HireJobPostingVo"/>
 		<typeAlias alias="jobPostingSearchVo" type="hireSystem.vo.JobPostingSearchVo"/>
 
+		<!-- 채용공고 지원하기 -->
+		<typeAlias alias="hireApplicationVo" type="hireSystem.vo.HireApplicationVo"/>
+
 
 
 

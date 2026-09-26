@@ -411,4 +411,12 @@ public class HireResumeServiceImpl extends EgovAbstractServiceImpl implements Hi
 		}
 	}
 
+	/**
+	 * [지원하기 모달] 로그인 유저의 전체 이력서 목록 (페이징 없음, 대표이력서 우선 정렬)
+	 */
+	@Override
+	public List<HireResumeVo> selectResumeListAll(int loginUserNum) {
+		return hireResumeDao.selectResumeListAll(loginUserNum);
+	}
+
 }

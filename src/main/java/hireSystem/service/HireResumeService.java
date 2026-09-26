@@ -1,5 +1,6 @@
 package hireSystem.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -79,4 +80,9 @@ public interface HireResumeService {
 	 * 본인 소유가 아닌 resumeId를 지정하려 하면 예외 발생.
 	 */
 	public void setMainResume(int resumeId, int loginUserNum);
+
+	/**
+	 * [지원하기 모달] 로그인 유저의 전체 이력서 목록 (페이징 없음, 대표이력서 우선 정렬)
+	 */
+	public List<HireResumeVo> selectResumeListAll(int loginUserNum);
 }

@@ -69,4 +69,48 @@
 
     </select>
 
+    <!-- 상세페이지 -->
+    <select id="normalJobDetail" parameterType="int" resultType="egovMap">
+    	SELECT
+	        JOB_POSTING_ID,
+	        COMPANY_USER_NUM,
+	        COMPANY_NAME,
+	        COMPANY_LOGO_URL,
+	        JOB_TITLE,
+	        TAGS,
+	        WORK_REGION,
+	        HIRE_TYPE,
+	        RECRUT_SE,
+	        SALARY,
+	        EDU_LEVEL,
+	        RECRUIT_CNT,
+	        ONGOING_YN,
+	        DEADLINE_DT,
+	        PERIOD_SE,
+	        VIEW_CNT,
+	        APPLY_CNT,
+	        JOB_DESC,
+	        JOB_CATEGORY,
+	        DATE_FORMAT(REG_DT, '%Y-%m-%d %H:%i:%s') AS REG_DT,
+	        DATE_FORMAT(UPD_DT, '%Y-%m-%d %H:%i:%s') AS UPD_DT,
+	        DEL_YN
+   		FROM HIRE_JOB_POSTING
+   		WHERE JOB_POSTING_ID = #{jobPostingId}
+    </select>
+
+    <update id="increaseViewCnt" parameterType="int">
+    	UPDATE HIRE_JOB_POSTING
+		SET VIEW_CNT = VIEW_CNT + 1
+		WHERE JOB_POSTING_ID = #{jobPostingId}
+    </update>
+
+    <!-- 지원하기 완료 시 누적 지원자수 +1 -->
+    <update id="increaseApplyCnt" parameterType="int">
+    	UPDATE HIRE_JOB_POSTING
+		SET APPLY_CNT = APPLY_CNT + 1
+		WHERE JOB_POSTING_ID = #{jobPostingId}
+    </update>
+
+
+
 </mapper>

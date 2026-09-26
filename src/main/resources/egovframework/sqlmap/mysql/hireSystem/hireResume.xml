@@ -138,7 +138,7 @@
 	    WHERE RESUME_ID = #{resumeId}
 	</update>
 
-	<!-- 해당 유저의 기존 대표이력서 전부 해제 -->
+	<!-- 해당 유저의 기존 대표이력서 전부 해제 -->
 	<update id="clearMainResume" parameterType="int">
 		UPDATE RESUME
 		SET IS_MAIN = 'N', UPDATED_AT = NOW()
@@ -153,5 +153,21 @@
 		WHERE RESUME_ID = #{resumeId}
 		  AND USER_NUM = #{userNum}
 	</update>
+
+	<!-- [지원하기 모달] 로그인 유저의 전체 이력서 목록 (페이징 없이 전부, 대표이력서 우선) -->
+	<select id="selectResumeListAll" parameterType="int" resultType="hireResumeVo">
+		SELECT
+			  RESUME_ID
+			, USER_NUM
+			, TITLE
+			, CREATED_AT
+			, UPDATED_AT
+			, IS_MAIN
+		FROM RESUME
+		WHERE
+			USER_NUM = #{userNum}
+		ORDER BY
+			IS_MAIN DESC, UPDATED_AT DESC
+	</select>
 
 </mapper>

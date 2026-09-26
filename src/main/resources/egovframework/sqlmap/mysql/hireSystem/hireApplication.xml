@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="hireApplicationDao">
+
+	<!-- 중복 지원 체크: 같은 회원 + 같은 공고 조합이 이미 있는지 -->
+	<select id="countApplication" parameterType="hireApplicationVo" resultType="int">
+		SELECT COUNT(*)
+		FROM HIRE_APPLICATION
+		WHERE JOB_POSTING_ID = #{jobPostingId}
+		  AND USER_NUM = #{userNum}
+	</select>
+
+	<!-- 지원내역 저장 -->
+	<insert id="insertApplication" parameterType="hireApplicationVo">
+		INSERT INTO HIRE_APPLICATION (
+			  JOB_POSTING_ID
+			, USER_NUM
+			, RESUME_ID
+			, APPLY_DT
+			, STATUS
+		) VALUES (
+			  #{jobPostingId}
+			, #{userNum}
+			, #{resumeId}
+			, NOW()
+			, '지원완료'
+		)
+		<selectKey keyProperty="applicationId" resultType="int" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+</mapper>

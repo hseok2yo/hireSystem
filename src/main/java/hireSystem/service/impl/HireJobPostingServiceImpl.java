@@ -1,12 +1,12 @@
 package hireSystem.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
 
 import hireSystem.common.PagingUtil;
@@ -45,6 +45,14 @@ public class HireJobPostingServiceImpl extends EgovAbstractServiceImpl implement
 	    result.put("list", selectList);
 
 	    return result;
+	}
+
+	@Override
+	public EgovMap normalJobDetail(int jobPostingId) {
+
+		hireJobPostingDao.increaseViewCnt(jobPostingId); //조회수 + 1
+
+		return hireJobPostingDao.normalJobDetail(jobPostingId);
 	}
 
 }

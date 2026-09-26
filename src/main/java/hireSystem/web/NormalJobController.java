@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import hireSystem.service.HireJobPostingService;
-import hireSystem.vo.HireJobPostingVo;
 import hireSystem.vo.JobPostingSearchVo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
  * ※ 지금은 목록/상세 조회만 붙어있고, 기업회원 공고 작성 화면 및
  *   지원하기(이력서 매칭/지원내역 저장) 기능은 다음 단계에서 추가한다.
  */
-@Slf4j
 @Controller
 @RequestMapping("/hireSystem/job")
 public class NormalJobController {
@@ -70,7 +68,12 @@ public class NormalJobController {
 	@RequestMapping("/normalJobDetail.do")
 	public String normalJobDetail(@RequestParam int jobPostingId, Model model) {
 
+		model.addAttribute("detailList", hireJobPostingService.normalJobDetail(jobPostingId));
 
 		return path + "normalJobDetail";
 	}
+
+
+
+
 }

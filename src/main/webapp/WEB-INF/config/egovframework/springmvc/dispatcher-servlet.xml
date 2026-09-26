@@ -67,6 +67,7 @@
 	        <mvc:mapping path="/hireSystem/board/boardWrite.do"/>
 	        <mvc:mapping path="/hireSystem/board/boardInsert.do"/>
 	        <mvc:mapping path="/hireSystem/resume/resumeMain.do"/>
+	        <mvc:mapping path="/hireSystem/apply/applyJob.do"/>
 	        <bean class="hireSystem.common.LoginInterceptor"/>
 	    </mvc:interceptor>
 	</mvc:interceptors>

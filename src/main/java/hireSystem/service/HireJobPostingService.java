@@ -2,7 +2,8 @@ package hireSystem.service;
 
 import java.util.Map;
 
-import hireSystem.vo.HireJobPostingVo;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import hireSystem.vo.JobPostingSearchVo;
 
 public interface HireJobPostingService {
@@ -13,5 +14,7 @@ public interface HireJobPostingService {
 	 * @return list(HireJobPostingVo), totalCount, currentPage, totalPages, blockStart, blockEnd, numOfRows
 	 */
 	Map<String, Object> selectJobPostingList(JobPostingSearchVo searchVo);
+
+	EgovMap normalJobDetail(int jobPostingId);
 
 }

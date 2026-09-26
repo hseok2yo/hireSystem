@@ -1,7 +1,9 @@
 package hireSystem.service.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 import hireSystem.common.HireSystemAbstractMapper;
@@ -19,5 +21,19 @@ public class HireJobPostingDao extends HireSystemAbstractMapper {
 	public int selectJobPostingCount(JobPostingSearchVo searchVo) {
 		return selectOne("hireJobPostingDao.selectJobPostingCount", searchVo);
 	}
+
+	public EgovMap normalJobDetail(int jobPostingId) {
+		return selectOne("hireJobPostingDao.normalJobDetail", jobPostingId);
+	}
+
+	public int increaseViewCnt(int jobPostingId) {
+		return update("hireJobPostingDao.increaseViewCnt", jobPostingId);
+	}
+
+	/** 지원하기 완료 시 누적 지원자수 +1 */
+	public int increaseApplyCnt(int jobPostingId) {
+		return update("hireJobPostingDao.increaseApplyCnt", jobPostingId);
+	}
+
 
 }

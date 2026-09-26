@@ -1,0 +1,322 @@
+@charset "UTF-8";
+
+/* =============================================
+   지원하기 모달 오버레이
+   ============================================= */
+.apply-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.apply-modal-overlay.hidden {
+    display: none;
+}
+
+.apply-modal-box {
+    background: #fff;
+    border-radius: 12px;
+    padding: 28px 28px 24px;
+    width: 480px;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    position: relative;
+}
+
+.apply-modal-close {
+    position: absolute;
+    top: 16px; right: 18px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    color: #9ca3af;
+    padding: 0;
+    line-height: 1;
+}
+
+.apply-modal-close:hover { color: #374151; }
+
+.apply-modal-company {
+    font-size: 13px;
+    color: #667085;
+    margin: 0 0 4px;
+}
+
+.apply-modal-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #101828;
+    margin: 0 0 22px;
+    padding-right: 24px;
+    line-height: 1.4;
+}
+
+/* =============================================
+   공통 섹션
+   ============================================= */
+.apply-section {
+    margin-bottom: 22px;
+}
+
+.apply-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.apply-section-label {
+    font-size: 14px;
+    font-weight: 700;
+    color: #344054;
+}
+
+.apply-change-btn {
+    background: none;
+    border: none;
+    color: #0095c7;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.apply-change-btn:hover { text-decoration: underline; }
+
+.apply-empty-text {
+    font-size: 13px;
+    color: #98a2b3;
+    margin: 8px 0;
+}
+
+/* =============================================
+   선택된 이력서 카드
+   ============================================= */
+.apply-resume-card {
+    border: 1px solid #eaecf0;
+    border-radius: 10px;
+    padding: 14px 16px;
+    background: #f9fafb;
+}
+
+.apply-resume-card-date {
+    font-size: 12px;
+    color: #98a2b3;
+    margin: 0 0 4px;
+}
+
+.apply-resume-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #101828;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.apply-resume-card-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #0095c7 0%, #00c7b1 100%);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    vertical-align: middle;
+}
+
+/* 이력서 변경 목록 */
+.apply-resume-list {
+    margin-top: 8px;
+    border: 1px solid #eaecf0;
+    border-radius: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.apply-resume-list.hidden { display: none; }
+
+.apply-resume-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f2f4f7;
+    font-size: 13px;
+}
+
+.apply-resume-option:last-child { border-bottom: none; }
+.apply-resume-option:hover { background: #f9fafb; }
+
+.apply-resume-option.is-selected {
+    background: #ecfbf9;
+}
+
+.apply-resume-option-title {
+    font-weight: 600;
+    color: #101828;
+}
+
+.apply-resume-option-date {
+    color: #98a2b3;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+/* =============================================
+   첨부파일 목록
+   ============================================= */
+.apply-file-list {
+    border: 1px solid #eaecf0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.apply-file-list:empty,
+.apply-file-list:has(#applyFileEmpty:only-child) {
+    border: none;
+}
+
+.apply-file-entry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-bottom: 1px solid #f2f4f7;
+    font-size: 13px;
+}
+
+.apply-file-entry:last-child { border-bottom: none; }
+
+.apply-file-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.apply-file-icon { flex-shrink: 0; }
+
+.apply-file-name {
+    color: #344054;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.apply-file-name:hover { text-decoration: underline; }
+
+.apply-file-badge {
+    flex-shrink: 0;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: #eef2ff;
+    color: #4338ca;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.apply-file-delete-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    color: #98a2b3;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.apply-file-delete-btn:hover { color: #d92d20; }
+
+/* 파일추가 미니 폼 */
+.apply-file-add-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: #f9fafb;
+    border: 1px dashed #d0d5dd;
+    border-radius: 8px;
+}
+
+.apply-file-add-row.hidden { display: none; }
+
+.apply-file-add-row select {
+    padding: 6px 8px;
+    border: 1px solid #d0d5dd;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.apply-file-pick-btn,
+.apply-file-upload-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.apply-file-pick-btn {
+    background: #fff;
+    border: 1px solid #d0d5dd;
+    color: #344054;
+}
+
+.apply-file-upload-btn {
+    background: #0095c7;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    margin-left: auto;
+}
+
+.apply-file-upload-btn:hover { background: #007ba6; }
+
+.apply-file-pick-name {
+    font-size: 12px;
+    color: #98a2b3;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.apply-file-pick-name.has-file { color: #101828; }
+
+/* =============================================
+   지원하기 제출 버튼
+   ============================================= */
+.apply-submit-btn {
+    display: block;
+    width: 100%;
+    padding: 13px 0;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #0095c7 0%, #00c7b1 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.apply-submit-btn:hover { filter: brightness(0.95); }
+
+.apply-submit-btn:disabled {
+    background: #d0d5dd;
+    color: #667085;
+    cursor: not-allowed;
+    filter: none;
+}
